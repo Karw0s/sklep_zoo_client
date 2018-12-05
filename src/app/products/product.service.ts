@@ -14,4 +14,16 @@ export class ProductService {
   getProducts() {
     return this.products;
   }
+
+  getProduct(id: number) {
+    return this.products[id];
+  }
+
+  updateProduct(id: number, product: Product) {
+    this.products[id] = product;
+  }
+
+  addProduct(product: Product) {
+    this.products.push(product);
+  }
 }
