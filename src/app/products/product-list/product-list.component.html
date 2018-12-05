@@ -1,0 +1,22 @@
+<div class="row d-flex justify-content-between">
+  <div class="col-9">
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <!--todo: aktywne szukanie po nazwie produktu-->
+  </div>
+  <div class="col-3">
+    <button class="btn btn-success" routerLink="new">New Product</button>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-12 list-group">
+    <app-product-item
+      *ngFor="let product of products; let i = index"
+      [product]="product"
+      [index]="i">
+    </app-product-item>
+  </div>
+</div>
