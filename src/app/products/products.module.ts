@@ -6,13 +6,17 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProductItemComponent } from './product-list/product-item/product-item.component';
 import { ProductsRoutingModule } from './products-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductAddPageComponent } from './product-add-page/product-add-page.component';
+import { AddProductsFromFileComponent } from './product-add-page/add-products-from-file/add-products-from-file.component';
 
 @NgModule({
   declarations: [
     ProductsComponent,
     ProductListComponent,
     ProductEditComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    ProductAddPageComponent,
+    AddProductsFromFileComponent
   ],
   imports: [
     CommonModule,
