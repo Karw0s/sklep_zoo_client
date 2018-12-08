@@ -1,68 +1,95 @@
-<div class="row">
-  <div class="col-11 offset-1">
+<div class="row my-5">
+  <div class="col-sm-12 offset-md-1">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
       <div class="row">
-        <div class="col-12">
-          <button type="submit" class="btn btn-success" [disabled]="!productForm.valid">Save</button>
-          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        <div class="col-sm-12">
+
+          <button type="button" class="btn btn-success" routerLink="edit" *ngIf="!editMode">Edytuj</button>
+
+          <button type="submit" class="btn btn-success" [disabled]="!productForm.valid" *ngIf="editMode">Zapisz</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()" *ngIf="editMode">Anuluj</button>
+
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
+      <div class="row align-items-end">
+        <div class="col-sm-8">
           <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" class="form-control" formControlName="name">
+            <label for="name">Nazwa produktu</label>
+            <input type="text" id="name" class="form-control" formControlName="name" [readonly]="!editMode">
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
+        <div class="col-sm-4">
           <div class="form-group">
-            <label for="imagePath">Image URL</label>
-            <input type="text" id="imagePath" class="form-control" formControlName="imagePath" #imagePath>
+            <label for="catalogNumber">Numer Katalogowy</label>
+            <input type="text" id="catalogNumber" class="form-control" formControlName="catalogNumber"
+                   [readonly]="!editMode">
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-12">
-          <img [src]="imagePath.value" alt="" class="img-responsive">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
+        <div class="col">
           <div class="form-group">
-            <label for="description">Description</label>
-            <textarea
-              type="text"
-              id="description"
-              class="form-control"
-              rows="6"
-              formControlName="description"></textarea>
+            <label for="productManufacturer">Producent</label>
+            <input type="text" id="productManufacturer" class="form-control" formControlName="manufacturer"
+                   [readonly]="!editMode">
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-between">
+        <div class="col-sm-4 col-md-5">
+          <div class="form-group">
+            <label for="priceNetto">Cena Netto</label>
+            <div class="input-group">
+              <input type="text" id="priceNetto" class="form-control currency" min="0" formControlName="priceNetto"
+                     [readonly]="!editMode">
+              <div class="input-group-append">
+                <span class="input-group-text">zł</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-md-5">
+          <div class="form-group">
+            <label for="vat">VAT</label>
+            <div class="input-group">
+              <select class="custom-select" id="vat" formControlName="vat">
+                <option *ngFor="let v of vatValues" [value]="v">{{ v }}</option>
+              </select>
+              <div class="input-group-append">
+                <span class="input-group-text">%</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="row align-items-end">
+        <div class="col-sm-4 col-md-5">
+          <div class="form-group">
+            <label for="priceBrutto">Cena Brutto</label>
+            <div class="input-group">
+              <input type="text" id="priceBrutto" class="form-control" formControlName="priceBrutto"
+                     [readonly]="!editMode">
+              <div class="input-group-append">
+                <span class="input-group-text">zł</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="form-group">
+            <button type="button" class="btn btn-outline-secondary" (click)="onCalculateBruttoPrice()"
+                    [disabled]="!editMode">Oblicz
+            </button>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-12" formArrayName="ingredients">
-          <div
-            class="row"
-            *ngFor="let ingredientCtrl of getControls(); let i = index"
-            [formGroupName]="i"
-            style="margin-top: 10px;">
-            <div class="col-8">
-              <input type="text" class="form-control" formControlName="name">
-            </div>
-            <div class="col-2">
-              <input type="number" class="form-control" formControlName="amount">
-            </div>
-            <div class="col-2">
-              <button type="button" class="btn btn-danger" (click)="onDeleteIngerdient(i)">X</button>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-12">
-              <button type="button" class="btn btn-success" (click)="onAddIngredient()">Add Ingredient</button>
-            </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="pkiwCode">Kod PKIW</label>
+            <input type="text" class="form-control" id="pkiwCode" formControlName="pkiwCode" [readonly]="!editMode">
           </div>
         </div>
       </div>

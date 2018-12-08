@@ -1,8 +1,35 @@
 import { Product } from './product.model';
 
 export const PRODUCTS: Product[] = [
-  {name: 'Purina', description: 'karma', price: '12,22zł'},
-  {name: 'Chapi', description: 'karma', price: '12,22zł'},
-  {name: 'Kitikat', description: 'puszka', price: '12,22zł'},
-  {name: 'Purina Extra', description: 'karma', price: '12,22zł'}
+  {
+    catalogNumber: '1233',
+    name: 'Purina Adult',
+    manufacturer: 'Purina',
+    amount: 12,
+    priceNetto: '100,00',
+    priceBrutto: '123,00',
+    vat: 23,
+    pkiwCode: '12333-12333'
+  },
+  {
+    catalogNumber: '1232',
+    name: 'Kititak Kurczak',
+    manufacturer: 'Kiticat',
+    amount: 12,
+    priceNetto: '100,00',
+    priceBrutto: '123,00',
+    vat: 23,
+    pkiwCode: '12333-12213'
+  },
+  {
+    catalogNumber: '1231',
+    name: 'Purina Junior',
+    manufacturer: 'Purina',
+    amount: 12,
+    priceNetto: '100,00',
+    priceBrutto: '123,00',
+    vat: 23,
+    pkiwCode: '12333-12333'
+  }
+
 ];
