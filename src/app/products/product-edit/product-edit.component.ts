@@ -15,6 +15,7 @@ export class ProductEditComponent implements OnInit {
   private hasProduct = false;
   productForm: FormGroup;
   vatValues = [23, 8, 5, 3];
+  unitsOfMeasure = ['szt', 'kg'];
 
   constructor(private route: ActivatedRoute,
               private productService: ProductService,
@@ -42,6 +43,7 @@ export class ProductEditComponent implements OnInit {
     let catalogNumber = '';
     let productName = '';
     let productManufacturer = '';
+    let units = '';
     let amount = 0;
     let priceNetto = '';
     let priceBrutto = '';
@@ -53,11 +55,14 @@ export class ProductEditComponent implements OnInit {
       catalogNumber = product.catalogNumber;
       productName = product.name;
       productManufacturer = product.manufacturer;
+      units = product.unitOfMeasure;
       amount = product.amount;
       priceNetto = product.priceNetto;
       priceBrutto = product.priceBrutto;
       vat = product.vat;
       pkiwCode = product.pkiwCode;
+      console.log('product: ' + product);
+      console.log(product);
     }
 
 
@@ -65,7 +70,8 @@ export class ProductEditComponent implements OnInit {
       'catalogNumber': new FormControl(catalogNumber, Validators.required),
       'name': new FormControl(productName, Validators.required),
       'manufacturer': new FormControl(productManufacturer, Validators.required),
-      'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)]),
+      'unitOfMeasure': new FormControl(units, Validators.required),
+      'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*(,[0-9]{2})?$/)]),
       'priceNetto': new FormControl(priceNetto, [
         Validators.required,
         Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
@@ -81,15 +87,20 @@ export class ProductEditComponent implements OnInit {
     });
     if (!this.editMode) {
       this.productForm.get('vat').disable();
+      this.productForm.get('unitOfMeasure').disable();
     }
+
+    // console.log('form Init');
+    // console.log(this.productForm);
   }
 
   onSubmit() {
-    console.log(this.productForm.value);
+    // console.log(this.productForm);
     if (!this.hasProduct) {
       this.productService.addProduct(this.productForm.value);
     } else {
       this.productService.updateProduct(this.id, this.productForm.value);
+      // console.log(this.productForm.value);
     }
     this.router.navigate(['../'], {relativeTo: this.route});
   }
