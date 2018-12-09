@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from '../product.service';
 
@@ -12,6 +12,7 @@ export class ProductEditComponent implements OnInit {
 
   private id: number;
   private editMode = false;
+  private hasProduct = false;
   productForm: FormGroup;
   vatValues = [23, 8, 5, 3];
 
@@ -24,9 +25,13 @@ export class ProductEditComponent implements OnInit {
     this.route.params.subscribe(
       (prams: Params) => {
         this.id = +prams['id'];
-        // this.editMode = prams['id'] != null;
+        this.hasProduct = prams['id'] != null;
         const url: string = this.router.url;
         this.editMode = url.endsWith('edit');
+        // this.hasPoduct = url.endsWith('edit');
+        if (url.match('/new/')) {
+          this.editMode = true;
+        }
         this.initForm();
       }
     );
@@ -34,15 +39,27 @@ export class ProductEditComponent implements OnInit {
   }
 
   private initForm() {
-    const product = this.productService.getProduct(this.id);
-    const catalogNumber = product.catalogNumber;
-    const productName = product.name;
-    const productManufacturer = product.manufacturer;
-    const amount = product.amount;
-    const priceNetto = product.priceNetto;
-    const priceBrutto = product.priceBrutto;
-    const vat = product.vat;
-    const pkiwCode = product.pkiwCode;
+    let catalogNumber = '';
+    let productName = '';
+    let productManufacturer = '';
+    let amount = 0;
+    let priceNetto = '';
+    let priceBrutto = '';
+    let vat = 0;
+    let pkiwCode = '';
+
+    if (this.hasProduct) {
+      const product = this.productService.getProduct(this.id);
+      catalogNumber = product.catalogNumber;
+      productName = product.name;
+      productManufacturer = product.manufacturer;
+      amount = product.amount;
+      priceNetto = product.priceNetto;
+      priceBrutto = product.priceBrutto;
+      vat = product.vat;
+      pkiwCode = product.pkiwCode;
+    }
+
 
     this.productForm = new FormGroup({
       'catalogNumber': new FormControl(catalogNumber, Validators.required),
@@ -69,10 +86,10 @@ export class ProductEditComponent implements OnInit {
 
   onSubmit() {
     console.log(this.productForm.value);
-    if (this.editMode) {
-      this.productService.updateProduct(this.id, this.productForm.value);
-    } else {
+    if (!this.hasProduct) {
       this.productService.addProduct(this.productForm.value);
+    } else {
+      this.productService.updateProduct(this.id, this.productForm.value);
     }
     this.router.navigate(['../'], {relativeTo: this.route});
   }

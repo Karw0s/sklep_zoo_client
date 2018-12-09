@@ -84,6 +84,12 @@
             </button>
           </div>
         </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="amount">Ilość</label>
+            <input type="number" class="form-control" id="amount" formControlName="amount" [readonly]="!editMode">
+          </div>
+        </div>
       </div>
       <div class="row">
         <div class="col">
