@@ -7,9 +7,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddProductsFromFileComponent implements OnInit {
 
+  fileToUpload: File = null;
+
   constructor() { }
 
   ngOnInit() {
   }
+
+  onFileChanged(event) {
+    this.fileToUpload = event.target.files[0];
+  }
+
+  onUpload() {
+    // upload code goes here
+    console.log(this.fileToUpload);
+  }
+
+  // uploadFileToActivity() {
+  //   this.fileUploadService.postFile(this.fileToUpload).subscribe(data => {
+  //     // do something, if upload success
+  //   }, error => {
+  //     console.log(error);
+  //   });
+  // }
 
 }
