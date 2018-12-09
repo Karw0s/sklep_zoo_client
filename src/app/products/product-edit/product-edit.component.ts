@@ -25,14 +25,16 @@ export class ProductEditComponent implements OnInit {
 
     this.route.params.subscribe(
       (prams: Params) => {
+        const url: string = this.router.url;
+
         this.id = +prams['id'];
         this.hasProduct = prams['id'] != null;
-        const url: string = this.router.url;
         this.editMode = url.endsWith('edit');
-        // this.hasPoduct = url.endsWith('edit');
+
         if (url.match('/new/')) {
           this.editMode = true;
         }
+
         this.initForm();
       }
     );
@@ -61,8 +63,6 @@ export class ProductEditComponent implements OnInit {
       priceBrutto = product.priceBrutto;
       vat = product.vat;
       pkiwCode = product.pkiwCode;
-      console.log('product: ' + product);
-      console.log(product);
     }
 
 
@@ -80,7 +80,6 @@ export class ProductEditComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
       ]),
-      // 'vat': new FormControl(vat, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)]),
       'vat': new FormControl(vat, [Validators.required]),
       'pkiwCode': new FormControl(pkiwCode, [Validators.required])
 
@@ -89,18 +88,13 @@ export class ProductEditComponent implements OnInit {
       this.productForm.get('vat').disable();
       this.productForm.get('unitOfMeasure').disable();
     }
-
-    // console.log('form Init');
-    // console.log(this.productForm);
   }
 
   onSubmit() {
-    // console.log(this.productForm);
     if (!this.hasProduct) {
       this.productService.addProduct(this.productForm.value);
     } else {
       this.productService.updateProduct(this.id, this.productForm.value);
-      // console.log(this.productForm.value);
     }
     this.router.navigate(['../'], {relativeTo: this.route});
   }
@@ -114,10 +108,7 @@ export class ProductEditComponent implements OnInit {
     const vat = +this.productForm.value['vat'];
     const newvalue = parseFloat(String(priceNetto + ((priceNetto * vat) / 100))).toFixed(2).replace(/\./g, ',');
 
-    this.productForm.patchValue({
-      'priceBrutto': newvalue
-    });
-
+    this.productForm.patchValue({'priceBrutto': newvalue});
   }
 
 }
