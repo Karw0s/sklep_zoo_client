@@ -29,26 +29,26 @@ export class SigninComponent implements OnInit {
 
   login() {
     this.isLoading = true;
-    // this.authenticationService
-    //   .login(this.loginForm.value)
-    //   .pipe(
-    //     finalize(() => {
-    //       this.loginForm.markAsPristine();
-    //       this.isLoading = false;
-    //     })
-    //   )
-    //   .subscribe(
-    //     credentials => {
-    //       // log.debug(`${credentials.username} successfully logged in`);
-    //       this.route.queryParams.subscribe(params =>
-    //         this.router.navigate([params.redirect || '/'], { replaceUrl: true })
-    //       );
-    //     },
-    //     error => {
-    //       // log.debug(`Login error: ${error}`);
-    //       this.error = error;
-    //     }
-    //   );
+    this.authenticationService
+      .login(this.loginForm.value)
+      .pipe(
+        finalize(() => {
+          this.loginForm.markAsPristine();
+          this.isLoading = false;
+        })
+      )
+      .subscribe(
+        credentials => {
+          // log.debug(`${credentials.username} successfully logged in`);
+          this.route.queryParams.subscribe(params =>
+            this.router.navigate([params.redirect || '/'], { replaceUrl: true })
+          );
+        },
+        error => {
+          // log.debug(`Login error: ${error}`);
+          this.error = error;
+        }
+      );
   }
 
   private createForm() {
