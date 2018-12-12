@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from '../product.service';
+import { HttpEvent } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-edit',
@@ -91,10 +92,18 @@ export class ProductEditComponent implements OnInit {
   }
 
   onSubmit() {
+    const product = this.productForm.value;
+    product.priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.')).toFixed(2);
+    product.priceBrutto = parseFloat(this.productForm.value['priceBrutto'].replace(/,/g, '.')).toFixed(2);
     if (!this.hasProduct) {
-      this.productService.addProduct(this.productForm.value);
+      this.productService.addProduct(product)
+        .subscribe(
+          (response: HttpEvent<Object>) => {
+            console.log(response);
+          }
+        );
     } else {
-      this.productService.updateProduct(this.id, this.productForm.value);
+      this.productService.updateProduct(this.id, product);
     }
     this.router.navigate(['../'], {relativeTo: this.route});
   }

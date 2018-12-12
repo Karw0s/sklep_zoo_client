@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Credentials {
   // todo: Customize received credentials here
@@ -11,6 +12,7 @@ export interface LoginContext {
   username: string;
   password: string;
 }
+
 const credentialsKey = 'credentials';
 
 @Injectable({
@@ -19,8 +21,9 @@ const credentialsKey = 'credentials';
 export class AuthService {
 
   private _credentials: Credentials | null;
+  apiEndpoint = 'http://localhost:9000/';
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
     if (savedCredentials) {
       this._credentials = JSON.parse(savedCredentials);
@@ -29,12 +32,19 @@ export class AuthService {
 
   login(context: LoginContext): Observable<Credentials> {
     // todo: implementacja logowanai
-    const data = {
-      username: context.username,
-      token: '1221212'
-    };
+    this.httpClient.post(this.apiEndpoint + 'login', context)
+      .subscribe(
+        response => {
+          this.setCredentials({
+            username: response['username'],
+            token: response['token']
+          });
+          console.log(this.credentials);
+        }
+      );
+
     // this.setCredentials(data, context.remember);
-    return of(data);
+    return of(this._credentials);
   }
 
 
@@ -77,5 +87,9 @@ export class AuthService {
       sessionStorage.removeItem(credentialsKey);
       localStorage.removeItem(credentialsKey);
     }
+  }
+
+  getToken() {
+    return this._credentials.token;
   }
 }
