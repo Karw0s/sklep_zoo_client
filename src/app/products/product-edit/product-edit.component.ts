@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { HttpEvent } from '@angular/common/http';
+import { Product } from '../product.model';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-edit',
@@ -14,6 +16,7 @@ export class ProductEditComponent implements OnInit {
   private id: number;
   private editMode = false;
   private hasProduct = false;
+  private product: Product;
   productForm: FormGroup;
   vatValues = [23, 8, 5, 3];
   unitsOfMeasure = ['szt', 'kg'];
@@ -37,6 +40,16 @@ export class ProductEditComponent implements OnInit {
         }
 
         this.initForm();
+
+        if (this.hasProduct) {
+          this.productService.getProduct(this.id).pipe(
+            tap(prod => {
+              this.productForm.patchValue(prod);
+            })
+          ).subscribe(
+            prod => { this.product = prod; }
+          );
+        }
       }
     );
 
@@ -46,25 +59,12 @@ export class ProductEditComponent implements OnInit {
     let catalogNumber = '';
     let productName = '';
     let productManufacturer = '';
-    let units = '';
+    let units = 'szt';
     let amount = 0;
     let priceNetto = '';
     let priceBrutto = '';
-    let vat = 0;
+    let vat = 23;
     let pkiwCode = '';
-
-    if (this.hasProduct) {
-      const product = this.productService.getProduct(this.id);
-      catalogNumber = product.catalogNumber;
-      productName = product.name;
-      productManufacturer = product.manufacturer;
-      units = product.unitOfMeasure;
-      amount = product.amount;
-      priceNetto = product.priceNetto;
-      priceBrutto = product.priceBrutto;
-      vat = product.vat;
-      pkiwCode = product.pkiwCode;
-    }
 
 
     this.productForm = new FormGroup({

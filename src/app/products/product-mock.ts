@@ -2,7 +2,7 @@ import { Product } from './product.model';
 
 export const PRODUCTS: Product[] = [
   {
-    id: 13,
+    id: 1,
     catalogNumber: '1233',
     name: 'Purina Adult',
     manufacturer: 'Purina',
@@ -14,7 +14,7 @@ export const PRODUCTS: Product[] = [
     pkiwCode: '12333-12333'
   },
   {
-    id: 14,
+    id: 2,
     catalogNumber: '1232',
     name: 'Kititak Kurczak',
     manufacturer: 'Kiticat',

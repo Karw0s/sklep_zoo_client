@@ -13,10 +13,11 @@ export class ProductService {
   productsChanged = new Subject<Product[]>();
   products: Product[] = PRODUCTS;
 
+  apiEndpoint = 'http://localhost:9000';
+
 
   constructor(private authService: AuthService,
               private httpClient: HttpClient) { }
-
 
 
   getProducts() {
@@ -40,7 +41,10 @@ export class ProductService {
   }
 
   getProduct(id: number) {
-    return this.products[id];
+    // return this.products[id];
+    // return this.products.find(x => x.id === id);
+
+    return this.httpClient.get<Product>(this.apiEndpoint + '/product/' + id);
   }
 
   updateProduct(id: number, product: Product) {
