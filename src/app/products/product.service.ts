@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 })
 export class ProductService {
   productsChanged = new Subject<Product>();
+  productDeleted = new Subject<Product>();
   products: Product[];
 
   apiEndpoint = 'http://localhost:9000';
@@ -51,7 +52,6 @@ export class ProductService {
     // return this.httpClient.request(req);
     const req = this.httpClient.post(this.apiEndpoint + '/product/' + product.id, product);
     this.productsChanged.next(product);
-    console.log('next')
     return req;
   }
 
@@ -60,5 +60,10 @@ export class ProductService {
     const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/add', product);
 
     return this.httpClient.request(req);
+  }
+
+  deleteProduct(product: Product) {
+    this.httpClient.delete(this.apiEndpoint + '/product/' + product.id).subscribe(resp => console.log(resp));
+    this.productDeleted.next(product);
   }
 }

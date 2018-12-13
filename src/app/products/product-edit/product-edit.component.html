@@ -9,6 +9,8 @@
           <button type="submit" class="btn btn-success mr-2 px-5" [disabled]="!productForm.valid" *ngIf="editMode">Zapisz</button>
           <button type="button" class="btn btn-danger mx-2" (click)="onCancel()" *ngIf="editMode">Anuluj</button>
 
+          <button type="button" class="btn badge-danger mx-1" (click)="onDelete()">Usuń</button>
+
         </div>
       </div>
       <div class="row align-items-end">

@@ -130,4 +130,10 @@ export class ProductEditComponent implements OnInit {
     this.productForm.patchValue({'priceBrutto': newvalue});
   }
 
+  onDelete() {
+    if (confirm('Czy na pewno chcesz usnąć ten produkt?')) {
+      this.productService.deleteProduct(this.product);
+      this.router.navigate(['../'], {relativeTo: this.route});
+    }
+  }
 }

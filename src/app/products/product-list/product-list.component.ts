@@ -12,6 +12,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   products: Product[];
   subscription: Subscription;
+  private subscription2: Subscription;
 
   constructor(private productService: ProductService) { }
 
@@ -19,7 +20,16 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.subscription = this.productService.productsChanged
       .subscribe(
         (newProduct: Product) => {
-        this.products = this.products.map(prod => prod.id === newProduct.id ? newProduct : prod);
+          this.products = this.products.map(prod => prod.id === newProduct.id ? newProduct : prod);
+        }
+      );
+    this.subscription2 = this.productService.productDeleted
+      .subscribe(
+        deletedProduct => {
+          const index = this.products.findIndex(x => x.id === deletedProduct.id);
+          if (index !== -1) {
+            this.products.splice(index, 1);
+          }
         }
       );
     this.productService.getProducts()
@@ -32,6 +42,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 
 
