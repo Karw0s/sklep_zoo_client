@@ -16,12 +16,18 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
-    this.subscription = this.productService.productsChanged.subscribe(
-      (products: Product[]) => {
-        this.products = products;
-      }
-    );
-    this.products = this.productService.getProducts();
+    this.subscription = this.productService.productsChanged
+      .subscribe(
+        (newProduct: Product) => {
+        this.products = this.products.map(prod => prod.id === newProduct.id ? newProduct : prod);
+        }
+      );
+    this.productService.getProducts()
+      .subscribe(
+        products => {
+          this.products = products;
+        }
+      );
   }
 
   ngOnDestroy() {

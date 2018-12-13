@@ -10,8 +10,8 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductService {
-  productsChanged = new Subject<Product[]>();
-  products: Product[] = PRODUCTS;
+  productsChanged = new Subject<Product>();
+  products: Product[];
 
   apiEndpoint = 'http://localhost:9000';
 
@@ -21,13 +21,10 @@ export class ProductService {
 
 
   getProducts() {
-    return this.products;
+    // return this.products;
     // const req = new HttpRequest('GET', this.authService.apiEndpoint + 'product');
 
-    // return this.httpClient.get<Product[]>(this.authService.apiEndpoint + 'product', {
-    //   observe: 'body',
-    //   responseType: 'json'
-    // })
+    return this.httpClient.get<Product[]>(this.apiEndpoint + '/product');
     //   .pipe(map(
     //     (products) => {
     //       return products;
@@ -48,11 +45,14 @@ export class ProductService {
   }
 
   updateProduct(id: number, product: Product) {
-    this.products[id] = product;
+    // this.products[id] = product;
     // const prodID = product.id;
     // const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/' + prodID, product);
-    //
     // return this.httpClient.request(req);
+    const req = this.httpClient.post(this.apiEndpoint + '/product/' + product.id, product);
+    this.productsChanged.next(product);
+    console.log('next')
+    return req;
   }
 
   addProduct(product: Product) {

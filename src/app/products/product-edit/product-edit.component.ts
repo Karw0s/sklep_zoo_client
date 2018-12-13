@@ -68,6 +68,7 @@ export class ProductEditComponent implements OnInit {
 
 
     this.productForm = new FormGroup({
+      'id': new FormControl(null),
       'catalogNumber': new FormControl(catalogNumber, Validators.required),
       'name': new FormControl(productName, Validators.required),
       'manufacturer': new FormControl(productManufacturer, Validators.required),
@@ -75,11 +76,11 @@ export class ProductEditComponent implements OnInit {
       'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*(,[0-9]{2})?$/)]),
       'priceNetto': new FormControl(priceNetto, [
         Validators.required,
-        Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
+        // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
       ]),
       'priceBrutto': new FormControl(priceBrutto, [
         Validators.required,
-        Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
+        // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
       ]),
       'vat': new FormControl(vat, [Validators.required]),
       'pkiwCode': new FormControl(pkiwCode, [Validators.required])
@@ -93,8 +94,8 @@ export class ProductEditComponent implements OnInit {
 
   onSubmit() {
     const product = this.productForm.value;
-    product.priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.')).toFixed(2);
-    product.priceBrutto = parseFloat(this.productForm.value['priceBrutto'].replace(/,/g, '.')).toFixed(2);
+    // product.priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.')).toFixed(2);
+    // product.priceBrutto = parseFloat(this.productForm.value['priceBrutto'].replace(/,/g, '.')).toFixed(2);
     if (!this.hasProduct) {
       this.productService.addProduct(product)
         .subscribe(
@@ -103,9 +104,18 @@ export class ProductEditComponent implements OnInit {
           }
         );
     } else {
-      this.productService.updateProduct(this.id, product);
+      this.productService.updateProduct(this.id, product)
+        .pipe(tap(
+          product => { this.productForm.patchValue(product); }
+        ))
+        .subscribe(
+          (product2: Product) => {
+            this.product = product2;
+            this.router.navigate(['../'], {relativeTo: this.route});
+          }
+        );
     }
-    this.router.navigate(['../'], {relativeTo: this.route});
+    //
   }
 
   onCancel() {
