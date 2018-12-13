@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
+import { InvoicesModule } from './invoices/invoices.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SharedModule } from './shared/shared.module';
     CoreModule,
     HttpClientModule,
     SharedModule,
+    InvoicesModule,
     AppRoutingModule
   ],
   providers: [],
