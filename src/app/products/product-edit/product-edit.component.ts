@@ -63,7 +63,7 @@ export class ProductEditComponent implements OnInit {
     let amount = 0;
     let priceNetto = '';
     let priceBrutto = '';
-    let vat = 23;
+    let tax = 23;
     let pkiwCode = '';
 
 
@@ -82,12 +82,12 @@ export class ProductEditComponent implements OnInit {
         Validators.required,
         // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
       ]),
-      'vat': new FormControl(vat, [Validators.required]),
+      'tax': new FormControl(tax, [Validators.required]),
       'pkiwCode': new FormControl(pkiwCode, [Validators.required])
 
     });
     if (!this.editMode) {
-      this.productForm.get('vat').disable();
+      this.productForm.get('tax').disable();
       this.productForm.get('unitOfMeasure').disable();
     }
   }
@@ -101,6 +101,7 @@ export class ProductEditComponent implements OnInit {
         .subscribe(
           (response: HttpEvent<Object>) => {
             console.log(response);
+            this.router.navigate(['../'], {relativeTo: this.route});
           }
         );
     } else {
@@ -124,8 +125,8 @@ export class ProductEditComponent implements OnInit {
 
   onCalculateBruttoPrice() {
     const priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.'));
-    const vat = +this.productForm.value['vat'];
-    const newvalue = parseFloat(String(priceNetto + ((priceNetto * vat) / 100))).toFixed(2).replace(/\./g, ',');
+    const tax = +this.productForm.value['tax'];
+    const newvalue = parseFloat(String(priceNetto + ((priceNetto * tax) / 100))).toFixed(2).replace(/\./g, ',');
 
     this.productForm.patchValue({'priceBrutto': newvalue});
   }

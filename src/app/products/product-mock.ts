@@ -10,7 +10,7 @@ export const PRODUCTS: Product[] = [
     amount: 12,
     priceNetto: '100,00',
     priceBrutto: '123,00',
-    vat: 23,
+    tax: 23,
     pkiwCode: '12333-12333'
   },
   {
@@ -22,7 +22,7 @@ export const PRODUCTS: Product[] = [
     amount: 12,
     priceNetto: '100,00',
     priceBrutto: '123,00',
-    vat: 23,
+    tax: 23,
     pkiwCode: '12333-12213'
   },
   {
@@ -34,7 +34,7 @@ export const PRODUCTS: Product[] = [
     amount: 12,
     priceNetto: '100,00',
     priceBrutto: '123,00',
-    vat: 23,
+    tax: 23,
     pkiwCode: '12333-12333'
   }
 

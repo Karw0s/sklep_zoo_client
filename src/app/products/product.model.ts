@@ -7,7 +7,7 @@ export class Product {
   public amount: number;
   public priceNetto: string;
   public priceBrutto: string;
-  public vat: number;
+  public tax: number;
   public pkiwCode: string;
 
 

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Product } from './product.model';
-import { PRODUCTS } from './product-mock';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
-import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -56,7 +54,7 @@ export class ProductService {
   }
 
   addProduct(product: Product) {
-    this.products.push(product);
+    // this.products.push(product);
     const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/add', product);
 
     return this.httpClient.request(req);

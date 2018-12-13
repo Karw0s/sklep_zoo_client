@@ -9,7 +9,7 @@
           <button type="submit" class="btn btn-success mr-2 px-5" [disabled]="!productForm.valid" *ngIf="editMode">Zapisz</button>
           <button type="button" class="btn btn-danger mx-2" (click)="onCancel()" *ngIf="editMode">Anuluj</button>
 
-          <button type="button" class="btn badge-danger mx-1" (click)="onDelete()">Usuń</button>
+          <button type="button" class="btn badge-danger mx-1" (click)="onDelete()" *ngIf="!editMode" >Usuń</button>
 
         </div>
       </div>
@@ -52,9 +52,9 @@
         </div>
         <div class="col-sm-4 col-md-5">
           <div class="form-group">
-            <label for="vat">VAT</label>
+            <label for="tax">VAT</label>
             <div class="input-group">
-              <select class="custom-select" id="vat" formControlName="vat">
+              <select class="custom-select" id="tax" formControlName="tax">
                 <option *ngFor="let v of vatValues" [value]="v">{{ v }}</option>
               </select>
               <div class="input-group-append">
