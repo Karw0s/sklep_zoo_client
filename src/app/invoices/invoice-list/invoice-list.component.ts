@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { InvoiceService } from '../invoice.service';
+import { Invoice } from '../invoice.model';
 
 @Component({
   selector: 'app-invoice-list',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InvoiceListComponent implements OnInit {
 
-  constructor() { }
+  invoices: Invoice[];
+
+  constructor(private invoiceService: InvoiceService) { }
 
   ngOnInit() {
+    this.invoices = this.invoiceService.getInvoices();
   }
 
 }

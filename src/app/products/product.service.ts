@@ -23,7 +23,7 @@ export class ProductService {
     // return this.products;
     // const req = new HttpRequest('GET', this.authService.apiEndpoint + 'product');
 
-    return this.httpClient.get<Product[]>(this.apiEndpoint + '/product');
+    return this.httpClient.get<Product[]>(this.apiEndpoint + '/products');
     //   .pipe(map(
     //     (products) => {
     //       return products;
@@ -40,7 +40,7 @@ export class ProductService {
     // return this.products[id];
     // return this.products.find(x => x.id === id);
 
-    return this.httpClient.get<Product>(this.apiEndpoint + '/product/' + id);
+    return this.httpClient.get<Product>(this.apiEndpoint + '/products/' + id);
   }
 
   updateProduct(id: number, product: Product) {
@@ -48,20 +48,20 @@ export class ProductService {
     // const prodID = product.id;
     // const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/' + prodID, product);
     // return this.httpClient.request(req);
-    const req = this.httpClient.post(this.apiEndpoint + '/product/' + product.id, product);
+    const req = this.httpClient.post(this.apiEndpoint + '/products/' + product.id, product);
     this.productsChanged.next(product);
     return req;
   }
 
   addProduct(product: Product) {
     // this.products.push(product);
-    const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/add', product);
+    const req = new HttpRequest('POST', this.authService.apiEndpoint + 'products/add', product);
 
     return this.httpClient.request(req);
   }
 
   deleteProduct(product: Product) {
-    this.httpClient.delete(this.apiEndpoint + '/product/' + product.id).subscribe(resp => console.log(resp));
+    this.httpClient.delete(this.apiEndpoint + '/products/' + product.id).subscribe(resp => console.log(resp));
     this.productDeleted.next(product);
   }
 }

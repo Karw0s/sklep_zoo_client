@@ -4,7 +4,7 @@ export class Client {
   id: number;
   companyName: string;
   nipNumber: number;
-  adress: Address;
+  address: Address;
   firstName: string;
   lastName: string;
 }
