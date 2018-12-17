@@ -1,3 +1,14 @@
 <div class="container">
-
+  <form>
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input id="date"
+             type="text"
+             placeholder="Datepicker"
+             class="form-control"
+             bsDatepicker
+             [bsValue]="bsValue"
+             [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }">
+    </div>
+  </form>
 </div>

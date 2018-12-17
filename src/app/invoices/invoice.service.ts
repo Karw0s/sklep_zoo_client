@@ -24,7 +24,7 @@ export class InvoiceService {
     return this.httpClient.get(this.apiEndpoint + '/invoices/list');
   }
 
-  getInvoice(invoiceId: string) {
+  getInvoice(invoiceId: number) {
     return this.httpClient.get(this.apiEndpoint + '/invoices/' + invoiceId);
   }
 

@@ -5,6 +5,7 @@ import { InvoiceEditComponent } from './invoice-edit/invoice-edit.component';
 import { InvoicesMainPageComponent } from './invoices-main-page/invoices-main-page.component';
 import { InvoicesRoutingModule } from './invoices-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
+    BsDatepickerModule.forRoot(),
     InvoicesRoutingModule
   ]
 })
