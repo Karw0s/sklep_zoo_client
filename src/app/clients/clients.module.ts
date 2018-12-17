@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ClientsMainPageComponent } from './clients-main-page/clients-main-page.component';
 import { ClientEditComponent } from './client-edit/client-edit.component';
 import { ClientListComponent } from './client-list/client-list.component';
-import { ClientShowPageComponent } from './client-show-page/client-show-page.component';
+import { ClientDetailsComponent } from './client-details/client-details.component';
 import { ClientsRoutingModule } from './clients-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -12,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ClientsMainPageComponent,
     ClientEditComponent,
     ClientListComponent,
-    ClientShowPageComponent
+    ClientDetailsComponent
   ],
   imports: [
     CommonModule,

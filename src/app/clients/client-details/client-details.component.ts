@@ -4,14 +4,14 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Client } from '../../models/client.model';
 
 @Component({
-  selector: 'app-client-show-page',
-  templateUrl: './client-show-page.component.html',
-  styleUrls: ['./client-show-page.component.css']
+  selector: 'app-client-details',
+  templateUrl: './client-details.component.html',
+  styleUrls: ['./client-details.component.css']
 })
-export class ClientShowPageComponent implements OnInit {
+export class ClientDetailsComponent implements OnInit {
 
   private id: number;
-  client: Client;
+  client;
 
   constructor(private clientService: ClientService,
               private router: Router,
@@ -21,9 +21,7 @@ export class ClientShowPageComponent implements OnInit {
     this.route.params.subscribe(
       (prams: Params) => {
         this.id = +prams['id'];
-        this.clientService.getClient(this.id).subscribe(
-          (client: Client) => { this.client = client; }
-        );
+        this.client = this.clientService.getClient(this.id);
       }
     );
   }

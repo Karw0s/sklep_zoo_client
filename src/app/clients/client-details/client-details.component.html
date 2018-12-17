@@ -1,0 +1,54 @@
+<div *ngIf="client | async as clientas; else loading">
+  <div class="row">
+    <div class="col-6">
+      <h2>{{ clientas.companyName }}</h2>
+      <hr>
+    </div>
+    <div class="col-6">
+      <button class="btn btn-success mx-2" [routerLink]="['/invoices/new']" [queryParams]="{ client: clientas.id}">
+        <i class="fas fa-file-invoice"></i> Wystaw fakturę
+      </button>
+      <button class="btn btn-primary mx-2" [routerLink]="[clientas.id,'edit']">
+        <i class="fas fa-edit"></i> Edytuj
+      </button>
+      <button class="btn btn-danger mx-2" (click)="deleteClient(client.id)">
+        <i class="fas fa-minus-circle"></i> Usuń
+      </button>
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col">
+      <p><strong>Nazwa firmy:</strong> {{ clientas.companyName }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p><strong>Nip: </strong> {{ clientas.nipNumber }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p><strong>Adres:</strong><br>
+        {{ clientas.address.street }}<br>
+        {{ clientas.address.zipCode }}  {{ clientas.address.city }}, {{ clientas.address.country }}</p>
+    </div>
+  </div>
+  <div *ngIf="clientas.firstName !== '' && clientas.lastName !== ''">
+    <div class="row">
+      <div class="col">
+        <p><strong>Imię i Nazwisko: </strong>{{ clientas.firstName }} {{ clientas.lastName }}</p>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-outline-secondary" [routerLink]="['../']">Powrót</button>
+    </div>
+  </div>
+
+</div>
+
+
+<ng-template #loading>loading animation...</ng-template>
