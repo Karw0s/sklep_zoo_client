@@ -82,7 +82,11 @@ export class ClientEditComponent implements OnInit {
         }
       );
     } else {
-      this.clientService.updateClient(client);
+      this.clientService.updateClient(client).subscribe(
+        (success: Client) => {
+          this.router.navigate(['/clients', success.id]);
+        }
+      );
     }
   }
 }

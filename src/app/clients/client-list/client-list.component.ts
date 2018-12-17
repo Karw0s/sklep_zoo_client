@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ClientsDetailDTO } from '../../models/dto/clients-detail-dto';
+import { ClientService } from '../client.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-list',
@@ -6,10 +9,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
+  clients: ClientsDetailDTO[];
 
-  constructor() { }
+  constructor(private clientService: ClientService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.clientService.getClients().subscribe(
+      (clients: ClientsDetailDTO[]) => {
+        console.log(clients);
+        this.clients = clients;
+      }
+    );
   }
 
+  deleteClient(id: number) {
+    if (confirm('Czy na pewno chcesz usunac tego klienta?')) {
+      this.clientService.deleteClient(id).subscribe(
+        respons => {
+          this.getClientList();
+        }
+      );
+    }
+  }
+
+  getClientList() {
+    this.clientService.getClients().subscribe(
+      (clients: ClientsDetailDTO[]) => {
+        console.log(clients);
+        this.clients = clients;
+      }
+    );
+  }
 }

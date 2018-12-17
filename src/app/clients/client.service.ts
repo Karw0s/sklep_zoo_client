@@ -14,10 +14,11 @@ export class ClientService {
               private httpClient: HttpClient) { }
 
   getClients() {
+    return this.httpClient.get(this.apiEndpoint);
   }
 
   getClient(id: number) {
-    return this.httpClient.get(this.apiEndpoint + id);
+    return this.httpClient.get(this.apiEndpoint + '/' + id);
   }
 
   createClient(client: Client) {
@@ -25,6 +26,10 @@ export class ClientService {
   }
 
   updateClient(client: Client) {
-    return this.httpClient.post(this.apiEndpoint + client.id, client);
+    return this.httpClient.put(this.apiEndpoint + '/' + client.id, client);
+  }
+
+  deleteClient(id: number) {
+    return this.httpClient.delete(this.apiEndpoint + '/' + id);
   }
 }

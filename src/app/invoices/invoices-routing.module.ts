@@ -11,6 +11,7 @@ const routes: Routes = [
 
   {path: 'invoices', component: InvoicesMainPageComponent, children: [
       {path: '', component: InvoiceListComponent},
+      {path: 'new', component: InvoiceEditComponent},
       {path: ':id', component: InvoiceEditComponent},
       {path: ':id/edit', component: InvoiceEditComponent},
     ], }, // canActivate: [AuthGuardService]},
