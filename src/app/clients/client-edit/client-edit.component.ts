@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { Product } from '../../products/product.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Client } from '../../models/client.model';
 
 @Component({
   selector: 'app-client-edit',
@@ -14,7 +15,7 @@ export class ClientEditComponent implements OnInit {
 
   private id: number;
   private editMode = false;
-  private product: Product;
+  private client: Client;
   clientForm: FormGroup;
 
 
@@ -39,7 +40,7 @@ export class ClientEditComponent implements OnInit {
               this.clientForm.patchValue(client);
             })
           ).subscribe(
-            prod => { this.product = prod; }
+            (client: Client) => { this.client = client; }
           );
         }
       });
@@ -59,7 +60,7 @@ export class ClientEditComponent implements OnInit {
     this.clientForm = new FormGroup({
       'id': new FormControl(null),
       'companyName': new FormControl(companyName, Validators.required),
-      'nipNumber': new FormControl(nipNumber, [Validators.required, Validators.pattern(/^[0-9]{10}}$/)]), // todo: dodac validator NIP
+      'nipNumber': new FormControl(nipNumber, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]), // todo: dodac validator NIP
       'address': new FormGroup({
         'id': new FormControl(null),
         'street': new FormControl(addressStreet, [Validators.required]),
@@ -73,6 +74,15 @@ export class ClientEditComponent implements OnInit {
   }
 
   onSubmit() {
-
+    const client = this.clientForm.value;
+    if (!this.editMode) {
+      this.clientService.createClient(client).subscribe(
+        (success: Client) => {
+          this.router.navigate(['/clients', success.id]);
+        }
+      );
+    } else {
+      this.clientService.updateClient(client);
+    }
   }
 }

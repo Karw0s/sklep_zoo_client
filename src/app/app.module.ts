@@ -9,6 +9,7 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { InvoicesModule } from './invoices/invoices.module';
+import { ClientsModule } from './clients/clients.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { InvoicesModule } from './invoices/invoices.module';
     HttpClientModule,
     SharedModule,
     InvoicesModule,
+    ClientsModule,
     AppRoutingModule
   ],
   providers: [],
