@@ -1,3 +1,4 @@
+<div class="container">
 <div class="row">
   <div class="col-12 col-sm-10 col-md-6 col-sm-offset-1 col-md-offset-2 mx-auto">
     <form (ngSubmit)="login()" [formGroup]="loginForm">
@@ -21,4 +22,5 @@
       <button class="btn btn-primary w-100" type="submit" [disabled]="loginForm.invalid || isLoading">Login</button>
     </form>
   </div>
+</div>
 </div>

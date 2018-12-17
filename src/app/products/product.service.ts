@@ -55,7 +55,7 @@ export class ProductService {
 
   addProduct(product: Product) {
     // this.products.push(product);
-    const req = new HttpRequest('POST', this.authService.apiEndpoint + 'products/add', product);
+    const req = new HttpRequest('POST', this.apiEndpoint + 'products/add', product);
 
     return this.httpClient.request(req);
   }

@@ -2,11 +2,14 @@ import { Invoice } from './invoice.model';
 
 export const INVOICES: Invoice[] = [
   {
+    id: 1,
     number: '1/12/2018',
     saleDate: '1.12.2018',
     issueDate: '1.12.2018',
     paymentType: 'gotówka',
-    client: {
+    priceNet: 100.00,
+    priceGross: 123.00,
+    seller: {
       id: 1,
       companyName: 'Helion sp Zoo',
       nipNumber: 5272526138,

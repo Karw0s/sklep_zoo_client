@@ -20,14 +20,20 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
+            routerLinkActive="active"
           >
             Produkty
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" routerLinkActive="active" routerLink="/products">Lista Produktów</a>
+            <a class="dropdown-item"
+               routerLinkActive="active"
+               routerLink="/products"
+               [routerLinkActiveOptions]="{exact:true}">Lista Produktów</a>
             <a class="dropdown-item" href="#">Szukaj najlepszej ceny</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" routerLink="/products/new">Wprowadź produkty</a>
+            <a class="dropdown-item"
+               routerLink="/products/new"
+               routerLinkActive="active">Wprowadź produkty</a>
           </div>
         </li>
         <li class="nav-item">

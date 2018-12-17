@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../invoice.service';
-import { Invoice } from '../invoice.model';
+import { InvoiceListDTO } from '../invoice-list-dto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-invoice-list',
@@ -9,12 +10,25 @@ import { Invoice } from '../invoice.model';
 })
 export class InvoiceListComponent implements OnInit {
 
-  invoices: Invoice[];
+  invoices: InvoiceListDTO[];
 
-  constructor(private invoiceService: InvoiceService) { }
+  constructor(private invoiceService: InvoiceService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.invoices = this.invoiceService.getInvoices();
+    this.invoiceService.getInvoices().subscribe(
+      (invoiceListDTO: InvoiceListDTO[]) => { this.invoices = invoiceListDTO; }
+    );
   }
 
+  deleteInvoice(id: number) {
+    if (confirm('Czy na pewno chcesz usnąć fakture?')) {
+      this.invoiceService.deleteInvoice(id).subscribe(
+        res => {
+            console.log(res);
+        }
+      );
+    }
+  }
 }

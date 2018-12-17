@@ -1,4 +1,4 @@
-import { Address } from './address';
+import { Address } from './address.model';
 
 export class Client {
   id: number;
