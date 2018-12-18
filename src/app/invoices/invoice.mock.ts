@@ -5,6 +5,7 @@ export const INVOICES: Invoice[] = [
     id: 1,
     number: '1/12/2018',
     saleDate: '1.12.2018',
+    issuePlace: 'Warszawa',
     issueDate: '1.12.2018',
     paymentType: 'gotówka',
     priceNet: 100.00,

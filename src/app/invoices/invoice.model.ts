@@ -5,6 +5,7 @@ export class Invoice {
   id: number;
   number: string;
   issueDate: string;
+  issuePlace: string;
   saleDate: string;
   paymentType: string;
   seller: Client;

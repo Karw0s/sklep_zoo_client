@@ -1,14 +1,304 @@
 <div class="container">
-  <form>
-    <div class="form-group">
-      <label for="date">Date</label>
-      <input id="date"
-             type="text"
-             placeholder="Datepicker"
-             class="form-control"
-             bsDatepicker
-             [bsValue]="bsValue"
-             [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }">
+  <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <label for="number">Nr Faktury</label>
+          <input id="number" type="text" class="form-control" formControlName="number">
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <label for="issueDate">Data wystawienia</label>
+          <input id="issueDate"
+                 type="text"
+                 placeholder="Data wystawienia"
+                 class="form-control"
+                 bsDatepicker
+                 [bsValue]="bsValue"
+                 [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY',
+                               containerClass: 'theme-dark-blue' }"
+                 formControlName="issueDate">
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <label for="issuePlace">Miejsce wystawienia</label>
+          <input id="issuePlace" type="text" class="form-control" formControlName="issuePlace">
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="form-group">
+          <label for="saleDate">Data sprzedaży</label>
+          <input id="saleDate"
+                 type="text"
+                 placeholder="Data sprzedaży"
+                 class="form-control"
+                 bsDatepicker
+                 [bsValue]="bsValue"
+                 [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY',
+                               containerClass: 'theme-dark-blue' }"
+                 formControlName="saleDate">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col" formGroupName="seller">
+        <!--sprzedawca-->
+        <h3>Sprzedawca</h3>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-group">
+              <label for="companyNameSeller">Nazwa firmy</label>
+              <input type="text" id="companyNameSeller" class="form-control" formControlName="companyName">
+            </div>
+          </div>
+          <div class="col">
+            <label for="nipNumberSeller">Nip</label>
+            <input type="text" id="nipNumberSeller" class="form-control" formControlName="nipNumber">
+          </div>
+        </div>
+        <div class="row" formGroupName="address">
+          <div class="col">
+            <div class="form-group">
+              <label for="streetSeller">Ulica</label>
+              <input type="text" id="streetSeller" class="form-control" formControlName="street">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label for="zipCodeSeller">Kod pocztowy</label>
+              <input type="text" id="zipCodeSeller" class="form-control" formControlName="zipCode">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="citySeller">Miejscowość</label>
+              <input type="text" id="citySeller" class="form-control" formControlName="city">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label for="countrySeller">Kraj</label>
+              <input type="text" id="countrySeller" class="form-control" formControlName="country">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="firstNameSeller">Imię</label>
+              <input type="text" id="firstNameSeller" class="form-control" formControlName="firstName">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="lastNameSeller">Nazwisko</label>
+              <input type="text" id="lastNameSeller" class="form-control" formControlName="lastName">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col" formGroupName="buyer">
+        <!--nabywca-->
+        <h3>Nabywca</h3>
+        <div class="row">
+          <div class="col-8">
+            <div class="form-group">
+              <label for="companyName">Nazwa firmy</label>
+              <input type="text" id="companyName" class="form-control" formControlName="companyName">
+            </div>
+          </div>
+          <div class="col">
+            <label for="nipNumber">Nip</label>
+            <input type="text" id="nipNumber" class="form-control" formControlName="nipNumber">
+          </div>
+        </div>
+        <div class="row" formGroupName="address">
+          <div class="col">
+            <div class="form-group">
+              <label for="street">Ulica</label>
+              <input type="text" id="street" class="form-control" formControlName="street">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label for="zipCode">Kod pocztowy</label>
+              <input type="text" id="zipCode" class="form-control" formControlName="zipCode">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="city">Miejscowość</label>
+              <input type="text" id="city" class="form-control" formControlName="city">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <label for="country">Kraj</label>
+              <input type="text" id="country" class="form-control" formControlName="country">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="firstName">Imię</label>
+              <input type="text" id="firstName" class="form-control" formControlName="firstName">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="lastName">Nazwisko</label>
+              <input type="text" id="lastName" class="form-control" formControlName="lastName">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-none d-md-block">
+      <div class="col-12">
+        <hr>
+        <div class="row">
+          <h3>Pozycje na fkaturze</h3>
+        </div>
+        <div class="row d-flex" id="positionsLabels">
+          <div class="col-md-6 col-lg-4">
+            Nazwa Produktu
+          </div>
+          <div class="col-1">
+            Ilość
+          </div>
+          <!--jednostka-->
+          <div class="col-1">
+            Jednostka
+          </div>
+          <!--cena netto-->
+          <div class="col-1">
+            Cena netto
+          </div>
+          <!--vat-->
+          <div class="col-1">
+            VAT
+          </div>
+          <!--wartosc netto-->
+          <div class="col-1">
+            Watrość netto
+          </div>
+          <!--wartosc brutto-->
+          <div class="col-1">
+            Wartość brutto
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--pozycje faktury-->
+      <div class="col-12" formArrayName="positions">
+        <div class="row"
+             *ngFor="let positionCtrl of getControls(); let i = index"
+             [formGroupName]="i"
+             style="margin-top: 10px;">
+          <div class="col-12 col-md-6 col-lg-4 px-1">
+
+            <!--nazwa produktu-->
+            <!--{{ i + 1 }}.-->
+            <div class="form-group" formGroupName="product">
+              <label class="d-block d-md-none" for="name">Nazwa Produktu</label>
+              <div class="input-group">
+                <button class="btn btn-outline-danger mx-1" type="button" (click)="onDeletePosition(i)"><i
+                  class="fas fa-minus-circle"></i></button>
+                <input id="name" type="text" class="form-control" formControlName="name" #myInput
+                       (input)="filterProducts(myInput.value)">
+                <div class="input-group-append">
+                  <button type="button"
+                          class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <!--lista produktow-->
+                    <div *ngFor="let product of filteredProducts">
+                      <a class="dropdown-item"
+                         style="cursor: pointer;"
+                         (click)="onSelectProduct(i, product)">{{ product.name }}  {{ product.priceNetto }}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-1 px-1">
+            <!--ilosc-->
+            <label class="d-block d-md-none" for="quantity">Ilość</label>
+            <input id="quantity" type="text" class="form-control" formControlName="quantity">
+          </div>
+          <!--jednostka-->
+          <div class="form-group col-12 col-md-1 px-1">
+            <div formGroupName="product">
+              <label class="d-block d-md-none" for="unitOfMeasure">Jednostka miary</label>
+              <input id="unitOfMeasure" type="text" class="form-control" formControlName="unitOfMeasure">
+            </div>
+          </div>
+          <!--cena netto-->
+          <div class="form-group col-12 col-md-1 px-1">
+            <div formGroupName="product">
+              <label class="d-block d-md-none" for="priceNetto">Cena Netto</label>
+              <input id="priceNetto" type="text" class="form-control" formControlName="priceNetto">
+            </div>
+          </div>
+          <!--vat-->
+          <div class="form-group col-12 col-md-1 px-1">
+            <div formGroupName="product">
+              <label class="d-block d-md-none" for="tax">VAT</label>
+              <input id="tax" type="text" class="form-control" formControlName="tax">
+            </div>
+          </div>
+          <!--wartosc netto-->
+          <div class="form-group col-12 col-md-1 px-1">
+            <label class="d-block d-md-none" for="nettoValue">Wartość Netto</label>
+            <input id="nettoValue" type="text" class="form-control" formControlName="nettoValue">
+          </div>
+          <!--wartosc brutto-->
+          <div class="form-group col-12 col-md-1 px-1">
+            <label class="d-block d-md-none" for="bruttoValue">Wartość Brutto</label>
+            <input id="bruttoValue" type="text" class="form-control" formControlName="bruttoValue">
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-12">
+            <button type="button" class="btn btn-outline-success" (click)="addPosition()"><i class="fas fa-plus"></i>
+              Dodaj pozycję
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--podsumowanie-->
+      <div class="form-group col-12 col-md-1 px-1">
+        <label for="paymentType">Rodzaj Płatności</label>
+        <input id="paymentType" type="text" class="form-control" formControlName="paymentType">
+      </div>
+      <div class="form-group col-12 col-md-1 px-1">
+        <label for="priceNet">Netto</label>
+        <input id="priceNet" type="text" class="form-control" formControlName="priceNet">
+      </div>
+      <div class="form-group col-12 col-md-1 px-1">
+        <label for="priceGross">Brutto</label>
+        <input id="priceGross" type="text" class="form-control" formControlName="priceGross">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <button class="btn btn-success" type="submit" [disabled]="!invoiceForm.valid">Zapisz</button>
+        </div>
+      </div>
     </div>
   </form>
 </div>
