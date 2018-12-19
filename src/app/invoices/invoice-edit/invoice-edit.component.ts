@@ -20,6 +20,7 @@ import index from '@angular/cli/lib/cli';
 })
 export class InvoiceEditComponent implements OnInit {
   products: Product[];
+  clients: Client[];
   locale = 'pl';
   bsValue = new Date();
   invoice: Invoice = new Invoice();
@@ -29,6 +30,7 @@ export class InvoiceEditComponent implements OnInit {
   private editMode = false;
   private clientID: number;
   private filteredProducts: any[] & Product[];
+  private filteredClients: any[] & Client[];
 
   constructor(private invoiceService: InvoiceService,
               private clientService: ClientService,
@@ -44,17 +46,23 @@ export class InvoiceEditComponent implements OnInit {
     this.productService.getProducts().subscribe(
       (products: Product[]) => {
         this.products = products;
-        this.assignCopy();
+        this.assignProductsCopy();
       }
     );
 
+    this.clientService.getClients().subscribe(
+      (clients: Client[]) => {
+        this.clients = clients;
+        this.assignClientsCopy();
+      }
+    );
 
     this.route.queryParams.subscribe(
       params => {
         this.clientID = +params.client;
       }
     );
-    let invlicePositions = new FormArray([])
+    let invlicePositions = new FormArray([]);
 
     this.route.params.subscribe(
       (prams: Params) => {
@@ -112,68 +120,8 @@ export class InvoiceEditComponent implements OnInit {
     });
   }
 
-  getControls() {
-    return (<FormArray>this.invoiceForm.get('positions')).controls;
-  }
+  onSubmit() {
 
-  getProduct(positionCtrl) {
-    return positionCtrl.get('product').contorls;
-  }
-
-  addPosition() {
-    // const positionControl = new FormControl(null);
-    (<FormArray>this.invoiceForm.get('positions')).push(
-      new FormGroup({
-        'id': new FormControl(null),
-        'invoice': new FormControl(null),
-        'product': new FormGroup({
-            'id': new FormControl(null),
-            'catalogNumber': new FormControl(null, Validators.required),
-            'name': new FormControl(null, Validators.required),
-            'manufacturer': new FormControl(null, Validators.required),
-            'unitOfMeasure': new FormControl(null, Validators.required),
-            'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*(,[0-9]{2})?$/)]),
-            'priceNetto': new FormControl(null, [
-              Validators.required,
-              // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
-            ]),
-            'priceBrutto': new FormControl(null, [
-              Validators.required,
-              // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
-            ]),
-            'tax': new FormControl(null, [Validators.required]),
-            'pkiwCode': new FormControl(null, [Validators.required])
-        }),
-        'quantity': new FormControl(1),
-        'nettoValue': new FormControl(null),
-        'bruttoValue': new FormControl(null),
-        'totalTaxValue': new FormControl(null),
-      })
-    );
-    console.log(this.invoiceForm);
-  }
-
-  assignCopy() {
-    this.filteredProducts = Object.assign([], this.products);
-  }
-
-  filterProducts(value) {
-    if (!value) { this.assignCopy(); }
-    this.filteredProducts = Object.assign([], this.products).filter(
-      item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1
-    );
-  }
-
-  onDeletePosition(index: number) {
-    (<FormArray>this.invoiceForm.get('positions')).removeAt(index);
-  }
-
-  onSelectProduct(i: number, product: Product) {
-    (<FormArray>this.invoiceForm.get('positions')).at(i).get('product').patchValue(product);
-  }
-
-  setClient(client: Client) {
-    this.invoiceForm.get('buyer').patchValue(client);
   }
 
   newPersonFormGroup() {
@@ -193,7 +141,78 @@ export class InvoiceEditComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  getControls() {
+    return (<FormArray>this.invoiceForm.get('positions')).controls;
+  }
 
+  getProduct(positionCtrl) {
+    return positionCtrl.get('product').contorls;
+  }
+
+  addPosition() {
+    // const positionControl = new FormControl(null);
+    const tax = 23;
+    (<FormArray>this.invoiceForm.get('positions')).push(
+      new FormGroup({
+        'id': new FormControl(null),
+        'invoice': new FormControl(null),
+        'product': new FormGroup({
+          'id': new FormControl(null),
+          'catalogNumber': new FormControl(null, Validators.required),
+          'name': new FormControl(null, Validators.required),
+          'manufacturer': new FormControl(null, Validators.required),
+          'unitOfMeasure': new FormControl(null, Validators.required),
+          'amount': new FormControl(null, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*(,[0-9]{2})?$/)]),
+          'priceNetto': new FormControl(null, [
+            Validators.required,
+            // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
+          ]),
+          'priceBrutto': new FormControl(null, [
+            Validators.required,
+            // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
+          ]),
+          'tax': new FormControl(null, [Validators.required]),
+          'pkiwCode': new FormControl(null, [Validators.required])
+        }),
+        'quantity': new FormControl(1),
+        'nettoValue': new FormControl(null),
+        'bruttoValue': new FormControl(null),
+        'totalTaxValue': new FormControl(null),
+      })
+    );
+    console.log(this.invoiceForm);
+  }
+
+  onDeletePosition(index: number) {
+    (<FormArray>this.invoiceForm.get('positions')).removeAt(index);
+  }
+
+  assignProductsCopy() {
+    this.filteredProducts = Object.assign([], this.products);
+  }
+
+  filterProducts(value) {
+    if (!value) { this.assignProductsCopy(); }
+    this.filteredProducts = Object.assign([], this.products).filter(
+      item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+    );
+  }
+
+  onSelectProduct(i: number, product: Product) {
+    (<FormArray>this.invoiceForm.get('positions')).at(i).get('product').patchValue(product);
+  }
+
+  setClient(client: Client) {
+    this.invoiceForm.get('buyer').patchValue(client);
+  }
+
+  assignClientsCopy() {
+    this.filteredClients = Object.assign([], this.clients);
+  }
+
+  onSelectClient(client: Client) {
+    this.clientService.getClient(client.id).subscribe(
+      buyer => this.setClient(<Client>buyer)
+    );
   }
 }
