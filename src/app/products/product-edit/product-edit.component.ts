@@ -14,7 +14,7 @@ import { tap } from 'rxjs/operators';
 export class ProductEditComponent implements OnInit {
 
   private id: number;
-  private editMode = false;
+  editMode = false;
   private hasProduct = false;
   private product: Product;
   productForm: FormGroup;

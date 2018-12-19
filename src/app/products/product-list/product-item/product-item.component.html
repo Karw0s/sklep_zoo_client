@@ -3,16 +3,12 @@
   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
   [routerLink]="[product.id]"
   routerLinkActive="active">
-  <!--(click)="recipeClicked()">-->
   <div class="pull-left">
-    <h5 class="mb-1">{{ product.name }}</h5>
-    <p class="list-group-item-text">{{ product.description }}</p>
+    <h4 class="mb-1">{{ product.name }}</h4>
+    <h5 class="list-group-item-text">{{ product.manufacturer }}</h5>
   </div>
   <span class="pull-right">
-        <img
-          src="https://cdn.pixabay.com/photo/2013/07/12/14/17/tin-148168_960_720.png"
-          alt="{{ product.name }}"
-          class="img-responsive"
-          style="max-height: 50px;">
-      </span>
+    <strong>Cena netto:  </strong>{{ product.priceNetto }}<br>
+    <strong>Cena brutto: </strong>{{ product.priceBrutto }}
+  </span>
 </a>

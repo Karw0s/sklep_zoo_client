@@ -7,3 +7,10 @@
   padding-left: 8px;
   padding-right: 8px;
 }
+
+.list-group{
+  max-height: 560px;
+  margin-bottom: 10px;
+  overflow-y:scroll;
+  -webkit-overflow-scrolling: touch;
+}

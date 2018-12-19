@@ -54,6 +54,7 @@ export class InvoiceEditComponent implements OnInit {
         this.clientID = +params.client;
       }
     );
+    let invlicePositions = new FormArray([])
 
     this.route.params.subscribe(
       (prams: Params) => {
@@ -103,8 +104,8 @@ export class InvoiceEditComponent implements OnInit {
       'issuePlace': new FormControl(null, [Validators.required]),
       'saleDate': new FormControl(this.bsValue.getDate(), [Validators.required]),
       'paymentType': new FormControl(null, [Validators.required]),
-      'seller': this.newPersonFormGorup(),
-      'buyer': this.newPersonFormGorup(),
+      'seller': this.newPersonFormGroup(),
+      'buyer': this.newPersonFormGroup(),
       'positions': new FormArray([]),
       'priceNet': new FormControl(null, [Validators.required]),
       'priceGross': new FormControl(null, [Validators.required])
@@ -143,7 +144,7 @@ export class InvoiceEditComponent implements OnInit {
             'tax': new FormControl(null, [Validators.required]),
             'pkiwCode': new FormControl(null, [Validators.required])
         }),
-        'quantity': new FormControl(null),
+        'quantity': new FormControl(1),
         'nettoValue': new FormControl(null),
         'bruttoValue': new FormControl(null),
         'totalTaxValue': new FormControl(null),
@@ -175,7 +176,7 @@ export class InvoiceEditComponent implements OnInit {
     this.invoiceForm.get('buyer').patchValue(client);
   }
 
-  newPersonFormGorup() {
+  newPersonFormGroup() {
     return new FormGroup({
       'id': new FormControl(null),
       'companyName': new FormControl(null, Validators.required),
@@ -190,5 +191,9 @@ export class InvoiceEditComponent implements OnInit {
       'firstName': new FormControl(null),
       'lastName': new FormControl(null),
     });
+  }
+
+  onSubmit() {
+
   }
 }

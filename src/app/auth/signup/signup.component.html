@@ -1,11 +1,11 @@
 <div class="container">
 <div class="row">
   <div class="col-12 col-sm-10 col-md-6 col-sm-offset-1 col-md-offset-2 mx-auto">
-    <form (ngSubmit)="login()" [formGroup]="loginForm">
+    <form (ngSubmit)="login()" [formGroup]="signupForm">
       <div class="form-group">
         <label for="username">Nazwa użytkowinka</label>
         <input type="text" id="username" name="username" class="form-control" formControlName="username" [placeholder]="'Nazwa użytkownika'">
-        <small [hidden]="loginForm.controls.username.valid || loginForm.controls.username.untouched"
+        <small [hidden]="signupForm.controls.username.valid || signupForm.controls.username.untouched"
                class="text-danger">
           Nazwa użytkownika jest wymagana
         </small>
@@ -14,12 +14,12 @@
         <label for="password">Hasło</label>
         <input type="password" id="password" name="password" class="form-control" formControlName="password" autocomplete="current-password"
                [placeholder]="'Hasło'">
-        <small [hidden]="loginForm.controls.password.valid || loginForm.controls.password.untouched"
+        <small [hidden]="signupForm.controls.password.valid || signupForm.controls.password.untouched"
                class="text-danger">
           Hasło jest wymagane
         </small>
       </div>
-      <button class="btn btn-primary w-100" type="submit" [disabled]="loginForm.invalid || isLoading">Login</button>
+      <button class="btn btn-primary w-100" type="submit" [disabled]="signupForm.invalid || isLoading">Login</button>
     </form>
   </div>
 </div>
