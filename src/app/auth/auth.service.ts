@@ -88,8 +88,4 @@ export class AuthService {
       localStorage.removeItem(credentialsKey);
     }
   }
-
-  getToken() {
-    return this._credentials.token;
-  }
 }
