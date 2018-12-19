@@ -1,11 +1,11 @@
-<div *ngIf="client | async as clientas; else loading">
+<div *ngIf="client | async as clientAsync; else loading">
   <div class="row">
     <div class="col-6">
-      <h2>{{ clientas.companyName }}</h2>
+      <h2>{{ clientAsync.companyName }}</h2>
       <hr>
     </div>
     <div class="col-6">
-      <button class="btn btn-success mx-2" [routerLink]="['/invoices/new']" [queryParams]="{ client: clientas.id}">
+      <button class="btn btn-success mx-2" [routerLink]="['/invoices/new']" [queryParams]="{ client: clientAsync.id}">
         <i class="fas fa-file-invoice"></i> Wystaw fakturę
       </button>
       <button class="btn btn-primary mx-2" [routerLink]="['edit']">
@@ -19,25 +19,25 @@
   </div>
   <div class="row">
     <div class="col">
-      <p><strong>Nazwa firmy:</strong> {{ clientas.companyName }}</p>
+      <p><strong>Nazwa firmy:</strong> {{ clientAsync.companyName }}</p>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <p><strong>Nip: </strong> {{ clientas.nipNumber }}</p>
+      <p><strong>Nip: </strong> {{ clientAsync.nipNumber }}</p>
     </div>
   </div>
   <div class="row">
     <div class="col">
       <p><strong>Adres:</strong><br>
-        {{ clientas.address.street }}<br>
-        {{ clientas.address.zipCode }}  {{ clientas.address.city }}, {{ clientas.address.country }}</p>
+        {{ clientAsync.address.street }}<br>
+        {{ clientAsync.address.zipCode }}  {{ clientAsync.address.city }}, {{ clientAsync.address.country }}</p>
     </div>
   </div>
-  <div *ngIf="clientas.firstName !== '' && clientas.lastName !== ''">
+  <div *ngIf="clientAsync.firstName !== '' && clientAsync.lastName !== ''">
     <div class="row">
       <div class="col">
-        <p><strong>Imię i Nazwisko: </strong>{{ clientas.firstName }} {{ clientas.lastName }}</p>
+        <p><strong>Imię i Nazwisko: </strong>{{ clientAsync.firstName }} {{ clientAsync.lastName }}</p>
 
       </div>
     </div>

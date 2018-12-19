@@ -9,19 +9,20 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
-  clients: ClientsDetailDTO[];
+  clients;
 
   constructor(private clientService: ClientService,
               private router: Router,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.clientService.getClients().subscribe(
-      (clients: ClientsDetailDTO[]) => {
-        console.log(clients);
-        this.clients = clients;
-      }
-    );
+    this.clients = this.clientService.getClients();
+    //   .subscribe(
+    //   (clients: ClientsDetailDTO[]) => {
+    //     console.log(clients);
+    //     this.clients = clients;
+    //   }
+    // );
   }
 
   deleteClient(id: number) {
