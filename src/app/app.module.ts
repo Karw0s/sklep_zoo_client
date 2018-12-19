@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { ClientsModule } from './clients/clients.module';
+import { UsersModule } from './users/users.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ClientsModule } from './clients/clients.module';
     SharedModule,
     InvoicesModule,
     ClientsModule,
+    UsersModule,
     AppRoutingModule
   ],
   providers: [],

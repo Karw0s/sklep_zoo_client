@@ -51,6 +51,9 @@
           <a class="nav-link" routerLink="/signin">Zaloguj</a>
         </li>
         <li class="nav-item" *ngIf="isAuthenticated()">
+          <a class="nav-link" routerLink="/user/details" >Dane firmy</a>
+        </li>
+        <li class="nav-item" *ngIf="isAuthenticated()">
           <a class="nav-link" style="cursor: pointer;" (click)="onLogout()">Wyloguj</a>
         </li>
       </ul>
