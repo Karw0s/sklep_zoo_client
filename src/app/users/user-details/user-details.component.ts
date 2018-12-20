@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from '../../clients/client.service';
 import { Address } from '../../models/address.model';
 import { Location } from '@angular/common';
+import { UserService } from '../user.service';
+import { UserDetails } from '../../models/user-details.model';
 
 @Component({
   selector: 'app-user-details',
@@ -11,15 +13,23 @@ import { Location } from '@angular/common';
 })
 export class UserDetailsComponent implements OnInit {
 
+  userDetails: UserDetails;
   userDetailForm: FormGroup;
 
   constructor(private fb: FormBuilder,
-              private location: Location) {
+              private location: Location,
+              private userService: UserService) {
     this.formInit();
   }
 
   ngOnInit() {
-
+    this.userService.getUserDetails().subscribe(
+      (userDetails: UserDetails) => {
+        this.userDetails = userDetails;
+        this.setFormValue(this.userDetails);
+      },
+      error => { console.log(error); }
+    );
   }
 
   formInit() {
@@ -27,7 +37,7 @@ export class UserDetailsComponent implements OnInit {
       id: [null],
       bank: ['', Validators.required],
       bankAccountNumber: ['', Validators.required],
-      email: ['', Validators.required],
+      email: [''],
       companyName: ['', Validators.required],
       nipNumber: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -44,9 +54,21 @@ export class UserDetailsComponent implements OnInit {
 
   onSubmit() {
     console.log(this.userDetailForm.value);
+    this.userService.updateUserDetails(this.userDetailForm.value).subscribe(
+      (userDetails: UserDetails) => {
+        this.userDetails = userDetails;
+        console.log('updated', userDetails);
+        // this.setFormValue(this.userDetails);
+      },
+      error => { console.log(error); }
+    );
   }
 
   backClicked() {
     this.location.back();
+  }
+
+  setFormValue(userDetails: UserDetails) {
+    this.userDetailForm.patchValue(userDetails);
   }
 }
