@@ -39,8 +39,8 @@
       </div>
     </div>
     <div class="row">
+      <!--sprzedawca-->
       <div class="col-12 col-lg-6" formGroupName="seller">
-        <!--sprzedawca-->
         <h3>Sprzedawca</h3>
         <div class="row">
           <div class="form-groupcol-12 col-sm-12 col-md-7">
@@ -81,8 +81,8 @@
           </div>
         </div>
       </div>
+      <!--nabywca-->
       <div class="col-12 col-lg-6" formGroupName="buyer">
-        <!--nabywca-->
         <h3>Nabywca</h3>
         <div class="row">
           <div class="form-group col-12 col-sm-12 col-md-7">
@@ -144,11 +144,12 @@
         </div>
       </div>
     </div>
+    <!--Pozycje faktury etykiety-->
     <div class="row d-none d-md-block">
       <div class="col-12">
         <hr>
         <div class="row">
-          <h3>Pozycje na fkaturze</h3>
+          <h3>Pozycje na fakturze</h3>
         </div>
         <div class="row d-flex" id="positionsLabels">
           <div class="col-md-6 col-lg-4">
@@ -180,8 +181,8 @@
         </div>
       </div>
     </div>
+    <!--pozycje faktury-->
     <div class="row">
-      <!--pozycje faktury-->
       <div class="col-12" formArrayName="positions">
         <div class="row"
              *ngFor="let positionCtrl of getControls(); let i = index"
@@ -262,9 +263,8 @@
         </div>
       </div>
     </div>
+    <!--podsumowanie-->
     <div class="row d-flex justify-content-end">
-      <!--podsumowanie-->
-
       <div class="form-group col-12 col-md-1 px-1">
         <label for="priceNet">Netto</label>
         <input id="priceNet" type="text" class="form-control" formControlName="priceNet">
