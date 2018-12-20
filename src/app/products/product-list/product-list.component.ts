@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Product } from '../product.model';
 import { ProductService } from '../product.service';
 import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-product-list',
@@ -33,6 +35,19 @@ export class ProductListComponent implements OnInit, OnDestroy {
         }
       );
     this.productService.getProducts()
+      .pipe(tap(
+        products => {
+          products.forEach((value, index) => {
+            let nett = value.priceNetto;
+            nett = parseFloat(nett).toFixed(2);
+            value.priceNetto = nett.toString().replace(/\./g, ',');
+
+            let gross = value.priceBrutto;
+            gross = parseFloat(gross).toFixed(2);
+            value.priceBrutto = gross.toString().replace(/\./g, ',');
+          });
+        }
+      ))
       .subscribe(
         products => {
           this.products = products;

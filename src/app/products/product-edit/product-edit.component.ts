@@ -45,6 +45,7 @@ export class ProductEditComponent implements OnInit {
           this.productService.getProduct(this.id).pipe(
             tap(prod => {
               this.productForm.patchValue(prod);
+              this.fixPrices();
             })
           ).subscribe(
             prod => { this.product = prod; }
@@ -94,8 +95,17 @@ export class ProductEditComponent implements OnInit {
 
   onSubmit() {
     const product = this.productForm.value;
-    // product.priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.')).toFixed(2);
-    // product.priceBrutto = parseFloat(this.productForm.value['priceBrutto'].replace(/,/g, '.')).toFixed(2);
+    try {
+      product.priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.')).toFixed(2);
+    } catch (e) {
+      product.priceNetto = parseFloat(this.productForm.value['priceNetto']).toFixed(2);
+    }
+    try {
+      product.priceBrutto = parseFloat(this.productForm.value['priceBrutto'].replace(/,/g, '.')).toFixed(2);
+    } catch (e) {
+      product.priceBrutto = parseFloat(this.productForm.value['priceBrutto']).toFixed(2);
+    }
+
     if (!this.hasProduct) {
       this.productService.addProduct(product)
         .subscribe(
@@ -107,7 +117,7 @@ export class ProductEditComponent implements OnInit {
     } else {
       this.productService.updateProduct(this.id, product)
         .pipe(tap(
-          product => { this.productForm.patchValue(product); }
+          product => { this.productForm.patchValue(product); console.log(product); }
         ))
         .subscribe(
           (product2: Product) => {
@@ -123,18 +133,38 @@ export class ProductEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
+  onDelete() {
+    if (confirm('Czy na pewno chcesz usnąć ten produkt?')) {
+      this.productService.deleteProduct(this.product);
+      this.router.navigate(['../'], {relativeTo: this.route});
+    }
+  }
+
   onCalculateBruttoPrice() {
-    const priceNetto = parseFloat(this.productForm.value['priceNetto'].replace(/,/g, '.'));
+    let nett = this.productForm.value['priceNetto'];
+    let priceNetto = 0;
+    try {
+      nett = nett.replace(/,/g, '.');
+      priceNetto = parseFloat(nett);
+    } catch (e) {
+      priceNetto = nett;
+    }
     const tax = +this.productForm.value['tax'];
     const newvalue = parseFloat(String(priceNetto + ((priceNetto * tax) / 100))).toFixed(2).replace(/\./g, ',');
 
     this.productForm.patchValue({'priceBrutto': newvalue});
   }
 
-  onDelete() {
-    if (confirm('Czy na pewno chcesz usnąć ten produkt?')) {
-      this.productService.deleteProduct(this.product);
-      this.router.navigate(['../'], {relativeTo: this.route});
-    }
+  fixPrices() {
+    let nett = this.productForm.value['priceNetto'];
+    let gross = this.productForm.value['priceBrutto'];
+
+    nett = parseFloat(nett).toFixed(2);
+    nett = nett.toString().replace(/\./g, ',');
+    gross = parseFloat(gross).toFixed(2);
+    gross = gross.toString().replace(/\./g, ',');
+
+    this.productForm.patchValue({'priceNetto': nett});
+    this.productForm.patchValue({'priceBrutto': gross});
   }
 }
