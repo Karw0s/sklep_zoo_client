@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Product } from '../../product.model';
+import { ProductDetailsDTO } from '../../../models/dto/products/product-details-dto';
 
 @Component({
   selector: 'app-product-item',
@@ -7,7 +8,7 @@ import { Product } from '../../product.model';
   styleUrls: ['./product-item.component.css']
 })
 export class ProductItemComponent implements OnInit {
-  @Input() product: Product;
+  @Input() product: ProductDetailsDTO;
   @Input() index: number;
 
   constructor() { }

@@ -5,6 +5,7 @@ import { ProductService } from '../product.service';
 import { HttpEvent } from '@angular/common/http';
 import { Product } from '../product.model';
 import { tap } from 'rxjs/operators';
+import { ProductDTO } from '../../models/dto/products/product-dto';
 
 @Component({
   selector: 'app-product-edit',
@@ -16,7 +17,7 @@ export class ProductEditComponent implements OnInit {
   private id: number;
   editMode = false;
   private hasProduct = false;
-  private product: Product;
+  private product: ProductDTO;
   productForm: FormGroup;
   vatValues = [23, 8, 5, 3];
   unitsOfMeasure = ['szt', 'kg'];
@@ -69,7 +70,6 @@ export class ProductEditComponent implements OnInit {
 
 
     this.productForm = new FormGroup({
-      'id': new FormControl(null),
       'catalogNumber': new FormControl(catalogNumber, Validators.required),
       'name': new FormControl(productName, Validators.required),
       'manufacturer': new FormControl(productManufacturer, Validators.required),
@@ -135,7 +135,7 @@ export class ProductEditComponent implements OnInit {
 
   onDelete() {
     if (confirm('Czy na pewno chcesz usnąć ten produkt?')) {
-      this.productService.deleteProduct(this.product);
+      this.productService.deleteProduct(this.id);
       this.router.navigate(['../'], {relativeTo: this.route});
     }
   }

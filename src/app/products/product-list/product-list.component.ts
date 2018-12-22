@@ -4,6 +4,8 @@ import { ProductService } from '../product.service';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
+import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto';
+import { ProductDTO } from '../../models/dto/products/product-dto';
 
 @Component({
   selector: 'app-product-list',
@@ -12,7 +14,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
 
-  products: Product[];
+  products;
   subscription: Subscription;
   private subscription2: Subscription;
 
@@ -21,19 +23,34 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.productService.productsChanged
       .subscribe(
-        (newProduct: Product) => {
-          this.products = this.products.map(prod => prod.id === newProduct.id ? newProduct : prod);
+        (newProduct: ProductDTO) => {
+          this.setProductList();
         }
       );
     this.subscription2 = this.productService.productDeleted
       .subscribe(
         deletedProduct => {
-          const index = this.products.findIndex(x => x.id === deletedProduct.id);
+          const index = this.products.findIndex(x => x.id === deletedProduct);
           if (index !== -1) {
             this.products.splice(index, 1);
           }
         }
       );
+    this.setProductList();
+
+      // .subscribe(
+      //   products => {
+      //      = products;
+      //   }
+      // );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
+  }
+
+  setProductList() {
     this.productService.getProducts()
       .pipe(tap(
         products => {
@@ -49,15 +66,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
         }
       ))
       .subscribe(
-        products => {
-          this.products = products;
+        next => {
+          this.products = next;
         }
       );
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
   }
 
 
