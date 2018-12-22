@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientsDetailDTO } from '../../models/dto/clients-detail-dto';
+import { ClientsDetailDTO } from '../../models/dto/clients/clients-detail-dto';
 import { ClientService } from '../client.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -30,17 +30,22 @@ export class ClientListComponent implements OnInit {
       this.clientService.deleteClient(id).subscribe(
         respons => {
           this.getClientList();
+        },
+        error1 => {
+          console.log(error1);
+          this.getClientList();
         }
       );
     }
   }
 
   getClientList() {
-    this.clientService.getClients().subscribe(
-      (clients: ClientsDetailDTO[]) => {
-        console.log(clients);
-        this.clients = clients;
-      }
-    );
+    this.clients = this.clientService.getClients()
+    //   .subscribe(
+    //   (clients: ClientsDetailDTO[]) => {
+    //     console.log(clients);
+    //      = clients;
+    //   }
+    // );
   }
 }

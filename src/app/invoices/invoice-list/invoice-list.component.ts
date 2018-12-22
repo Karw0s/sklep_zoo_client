@@ -26,7 +26,7 @@ export class InvoiceListComponent implements OnInit {
     if (confirm('Czy na pewno chcesz usnąć fakture?')) {
       this.invoiceService.deleteInvoice(id).subscribe(
         res => {
-            console.log(res);
+          console.log(res);
         }
       );
     }

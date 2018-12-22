@@ -14,22 +14,22 @@ export class ClientService {
               private httpClient: HttpClient) { }
 
   getClients() {
-    return this.httpClient.get(this.apiEndpoint);
+    return this.httpClient.get(this.apiEndpoint);                         // clients-details-dto
   }
 
   getClient(id: number) {
-    return this.httpClient.get(this.apiEndpoint + '/' + id);
+    return this.httpClient.get(`${this.apiEndpoint}/${id}`);          // client-dto
   }
 
   createClient(client: Client) {
-    return this.httpClient.post(this.apiEndpoint, client);
+    return this.httpClient.post(this.apiEndpoint, client);                // ClientCreateResponseDTO
   }
 
-  updateClient(client: Client) {
-    return this.httpClient.put(this.apiEndpoint + '/' + client.id, client);
+  updateClient(id: number, client: Client) {
+    return this.httpClient.put(`${this.apiEndpoint}/${id}`, client);  // client-dto
   }
 
   deleteClient(id: number) {
-    return this.httpClient.delete(this.apiEndpoint + '/' + id);
+    return this.httpClient.delete(`${this.apiEndpoint}/${id}`);
   }
 }

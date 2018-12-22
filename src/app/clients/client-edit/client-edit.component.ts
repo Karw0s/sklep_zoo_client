@@ -5,6 +5,8 @@ import { tap } from 'rxjs/operators';
 import { Product } from '../../products/product.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Client } from '../../models/client.model';
+import { ClientDTO } from '../../models/dto/clients/client-dto';
+import { ClientCreateResponseDTO } from '../../models/dto/clients/client-create-response-dto';
 
 @Component({
   selector: 'app-client-edit',
@@ -15,7 +17,7 @@ export class ClientEditComponent implements OnInit {
 
   private id: number;
   private editMode = false;
-  private client: Client;
+  private client: ClientDTO;
   clientForm: FormGroup;
 
 
@@ -40,7 +42,7 @@ export class ClientEditComponent implements OnInit {
               this.clientForm.patchValue(client);
             })
           ).subscribe(
-            (client: Client) => { this.client = client; }
+            (client: ClientDTO) => { this.client = client; }
           );
         }
       });
@@ -58,11 +60,9 @@ export class ClientEditComponent implements OnInit {
     let lastName = '';
 
     this.clientForm = new FormGroup({
-      'id': new FormControl(null),
       'companyName': new FormControl(companyName, Validators.required),
       'nipNumber': new FormControl(nipNumber, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]), // todo: dodac validator NIP
       'address': new FormGroup({
-        'id': new FormControl(null),
         'street': new FormControl(addressStreet, [Validators.required]),
         'zipCode': new FormControl(zipCode, [Validators.required]),
         'city': new FormControl(city, [Validators.required]),
@@ -77,14 +77,14 @@ export class ClientEditComponent implements OnInit {
     const client = this.clientForm.value;
     if (!this.editMode) {
       this.clientService.createClient(client).subscribe(
-        (success: Client) => {
+        (success: ClientCreateResponseDTO) => {
           this.router.navigate(['/clients', success.id]);
         }
       );
     } else {
-      this.clientService.updateClient(client).subscribe(
-        (success: Client) => {
-          this.router.navigate(['/clients', success.id]);
+      this.clientService.updateClient(this.id, client).subscribe(
+        (success: ClientDTO) => {
+          this.router.navigate(['/clients', this.id]);
         }
       );
     }
