@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Invoice } from './invoice.model';
-import { INVOICES } from './invoice.mock';
 import { Subject } from 'rxjs';
 
 @Injectable({

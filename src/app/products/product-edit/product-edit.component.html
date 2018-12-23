@@ -14,25 +14,32 @@
         </div>
       </div>
       <div class="row align-items-end">
-        <div class="col-sm-8">
+        <div class="col-sm-7">
           <div class="form-group">
             <label for="name">Nazwa produktu</label>
             <input type="text" id="name" class="form-control" formControlName="name" [readonly]="!editMode">
           </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-5">
           <div class="form-group">
-            <label for="catalogNumber">Numer Katalogowy</label>
-            <input type="text" id="catalogNumber" class="form-control" formControlName="catalogNumber"
+            <label for="barCode">Kod kreskowy</label>
+            <input type="text" id="barCode" class="form-control" formControlName="barCode"
                    [readonly]="!editMode">
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col">
+        <div class="col-sm-7">
           <div class="form-group">
             <label for="productManufacturer">Producent</label>
             <input type="text" id="productManufacturer" class="form-control" formControlName="manufacturer"
+                   [readonly]="!editMode">
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="form-group">
+            <label for="catalogNumber">Numer Katalogowy</label>
+            <input type="text" id="catalogNumber" class="form-control" formControlName="catalogNumber"
                    [readonly]="!editMode">
           </div>
         </div>
@@ -107,8 +114,8 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="pkiwCode">Kod PKWiU</label>
-            <input type="text" class="form-control" id="pkiwCode" formControlName="pkiwCode" [readonly]="!editMode">
+            <label for="pkwiuCode">Kod PKWiU</label>
+            <input type="text" class="form-control" id="pkwiuCode" formControlName="pkwiuCode" [readonly]="!editMode">
           </div>
         </div>
       </div>

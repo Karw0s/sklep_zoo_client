@@ -66,7 +66,7 @@ export class ProductEditComponent implements OnInit {
     let priceNetto = '';
     let priceBrutto = '';
     let tax = 23;
-    let pkiwCode = '';
+    let pkwiuCode = '';
 
 
     this.productForm = new FormGroup({
@@ -84,7 +84,8 @@ export class ProductEditComponent implements OnInit {
         // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
       ]),
       'tax': new FormControl(tax, [Validators.required]),
-      'pkiwCode': new FormControl(pkiwCode, [Validators.required])
+      'pkwiuCode': new FormControl(pkwiuCode, [Validators.required]),
+      'barCode': new FormControl('')
 
     });
     if (!this.editMode) {

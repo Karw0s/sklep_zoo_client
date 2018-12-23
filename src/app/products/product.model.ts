@@ -8,7 +8,8 @@ export class Product {
   public priceNetto: string;
   public priceBrutto: string;
   public tax: number;
-  public pkiwCode: string;
+  public pkwiuCode: string;
+  public barCode: string;
 
 
   constructor() {
