@@ -19,7 +19,7 @@ export class ProductEditComponent implements OnInit {
   private hasProduct = false;
   private product: ProductDTO;
   productForm: FormGroup;
-  vatValues = [23, 8, 5, 3];
+  vatValues = [23, 8, 7, 5, 0, 'zw'];
   unitsOfMeasure = ['szt', 'kg'];
 
   constructor(private route: ActivatedRoute,
@@ -149,7 +149,12 @@ export class ProductEditComponent implements OnInit {
     } catch (e) {
       priceNetto = nett;
     }
-    const tax = +this.productForm.value['tax'];
+    let tax;
+    if (this.productForm.value['tax'] === 'zw') {
+      tax = 0;
+    } else {
+      tax = +this.productForm.value['tax'];
+    }
     const newvalue = parseFloat(String(priceNetto + ((priceNetto * tax) / 100))).toFixed(2).replace(/\./g, ',');
 
     this.productForm.patchValue({'priceBrutto': newvalue});

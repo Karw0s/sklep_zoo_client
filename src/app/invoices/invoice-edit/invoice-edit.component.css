@@ -1,5 +1,5 @@
-{
-  outline-style: solid;
-  outline-color: cadetblue;
-  outline-width: thin;
+.required label:after {
+  color: #FF1200;
+  content: " *";
+  font-weight: bold;
 }

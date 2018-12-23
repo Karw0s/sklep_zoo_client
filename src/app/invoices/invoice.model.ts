@@ -13,5 +13,6 @@ export class Invoice {
   positions: InvoicePosition[];
   priceNet: number;
   priceGross: number;
+  priceTax: number;
 
 }

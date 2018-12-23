@@ -40,19 +40,19 @@
     </div>
     <div class="row">
       <!--sprzedawca-->
-      <div class="col-12 col-lg-6" formGroupName="seller">
+      <div class="col-12 col-lg-6" formGroupName="seller" *ngIf="!sellerDetails; else sellerDetailsTemp">
         <h3>Sprzedawca</h3>
         <div class="row">
-          <div class="form-groupcol-12 col-sm-12 col-md-7">
+          <div class="form-groupcol-12 col-sm-12 col-md-7 required">
             <label for="companyNameSeller">Nazwa firmy</label>
             <input type="text" id="companyNameSeller" class="form-control" formControlName="companyName">
           </div>
-          <div class="form-group col-12 col-md-5">
+          <div class="form-group col-12 col-md-5 required">
             <label for="nipNumberSeller">Nip</label>
             <input type="text" id="nipNumberSeller" class="form-control" formControlName="nipNumber">
           </div>
         </div>
-        <div class="row" formGroupName="address">
+        <div class="row required" formGroupName="address">
           <div class="form-group col-12 col-lg-8">
             <label for="streetSeller">Ulica</label>
             <input type="text" id="streetSeller" class="form-control" formControlName="street">
@@ -80,12 +80,68 @@
             <input type="text" id="lastNameSeller" class="form-control" formControlName="lastName">
           </div>
         </div>
+        <div class="row">
+          <div class="form-group col-12 col-md-5">
+            <label for="bank">Bank</label>
+            <input type="text" id="bank" class="form-control" formControlName="bank">
+          </div>
+          <div class="form-group col-12 col-md-7">
+            <label for="bankAccountNumber">Numer konta</label>
+            <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-outline-success" (click)="saveSellerDetails()">Zapisz dane</button>
+          </div>
+        </div>
       </div>
+      <ng-template #sellerDetailsTemp>
+        <div class="col-12 col-lg-6">
+          <h3>Sprzedawca</h3>
+          <div class="row my-0">
+            <div class="col">
+              <h5>{{ sellerDetailsDTO.companyName }}</h5>
+              <hr>
+            </div>
+          </div>
+          <div class="row my-0">
+            <div class="col">
+              <p><strong>Nip: </strong> {{ sellerDetailsDTO.nipNumber }}</p>
+            </div>
+          </div>
+          <div class="row my-0">
+            <div class="col">
+              <p><strong>Adres:</strong><br>
+                {{ sellerDetailsDTO.address.street }}<br>
+                {{ sellerDetailsDTO.address.zipCode }}  {{ sellerDetailsDTO.address.city }}, {{ sellerDetailsDTO.address.country }}</p>
+            </div>
+          </div>
+          <div *ngIf="sellerDetailsDTO.firstName !== '' && sellerDetailsDTO.lastName !== ''">
+            <div class="row my-0">
+              <div class="col">
+                <p><strong>Imię i Nazwisko: </strong>{{ sellerDetailsDTO.firstName }} {{ sellerDetailsDTO.lastName }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row my-0">
+            <div class="col">
+              <p><strong>{{ sellerDetailsDTO.bank }}</strong><br>
+              {{ sellerDetailsDTO.bankAccountNumber }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button type="button" class="btn btn-outline-primary" (click)="editSeller()">Edytuj</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
       <!--nabywca-->
       <div class="col-12 col-lg-6" formGroupName="buyer">
         <h3>Nabywca</h3>
         <div class="row">
-          <div class="form-group col-12 col-sm-12 col-md-7">
+          <div class="form-group col-12 col-sm-12 col-md-7 required">
             <label for="companyNameBuyer">Nazwa firmy</label>
             <div class="input-group">
               <input type="text" id="companyNameBuyer" class="form-control" formControlName="companyName">
@@ -109,12 +165,12 @@
             </div>
           </div>
 
-          <div class="form-group col-12 col-md-5">
+          <div class="form-group col-12 col-md-5 required">
             <label for="nipNumberBuyer">Nip</label>
             <input type="text" id="nipNumberBuyer" class="form-control" formControlName="nipNumber">
           </div>
         </div>
-        <div class="row" formGroupName="address">
+        <div class="row required d-flex align-items-end" formGroupName="address">
           <div class="form-group col-12 col-lg-8">
             <label for="streetBuyer">Ulica</label>
             <input type="text" id="streetBuyer" class="form-control" formControlName="street">
@@ -190,7 +246,7 @@
              style="margin-top: 10px;">
           <!--nazwa produktu-->
           <!--{{ i + 1 }}.-->
-          <div class="form-group col-12 col-md-6 col-lg-4 px-1" formGroupName="product">
+          <div class="form-group col-12 col-md-6 col-lg-4 px-1">
             <label class="d-block d-md-none" for="name">Nazwa Produktu</label>
             <div class="input-group">
               <button class="btn btn-outline-danger mx-1" type="button" (click)="onDeletePosition(i)"><i
@@ -219,38 +275,54 @@
           <div class="form-group col-12 col-md-1 px-1">
             <!--ilosc-->
             <label class="d-block d-md-none" for="quantity">Ilość</label>
-            <input id="quantity" type="text" class="form-control" formControlName="quantity">
+            <input id="quantity"
+                   type="text"
+                   class="form-control"
+                   formControlName="quantity"
+                   (change)="onChange1(i)">
           </div>
           <!--jednostka-->
           <div class="form-group col-12 col-md-1 px-1">
-            <div formGroupName="product">
+            <div >
               <label class="d-block d-md-none" for="unitOfMeasure">Jednostka miary</label>
               <input id="unitOfMeasure" type="text" class="form-control" formControlName="unitOfMeasure">
             </div>
           </div>
           <!--cena netto-->
           <div class="form-group col-12 col-md-1 px-1">
-            <div formGroupName="product">
+            <div >
               <label class="d-block d-md-none" for="priceNetto">Cena Netto</label>
-              <input id="priceNetto" type="text" class="form-control" formControlName="priceNetto">
+              <input id="priceNetto"
+                     type="text"
+                     class="form-control"
+                     formControlName="priceNetto"
+                     (change)="onChange1(i)">
             </div>
           </div>
           <!--vat-->
           <div class="form-group col-12 col-md-1 px-1">
-            <div formGroupName="product">
+            <div >
               <label class="d-block d-md-none" for="tax">VAT</label>
-              <input id="tax" type="text" class="form-control" formControlName="tax">
+              <input id="tax" type="text" class="form-control" formControlName="tax" (change)="onChange1(i)">
             </div>
           </div>
           <!--wartosc netto-->
           <div class="form-group col-12 col-md-1 px-1">
-            <label class="d-block d-md-none" for="nettoValue">Wartość Netto</label>
-            <input id="nettoValue" type="text" class="form-control" formControlName="nettoValue">
+            <label class="d-block d-md-none" for="totalPriceNetto">Wartość Netto</label>
+            <input id="totalPriceNetto"
+                   type="text"
+                   class="form-control"
+                   formControlName="totalPriceNetto"
+                   (change)="onTotalPriceChange(i)">
           </div>
           <!--wartosc brutto-->
           <div class="form-group col-12 col-md-1 px-1">
-            <label class="d-block d-md-none" for="bruttoValue">Wartość Brutto</label>
-            <input id="bruttoValue" type="text" class="form-control" formControlName="bruttoValue">
+            <label class="d-block d-md-none" for="totalPriceBrutto">Wartość Brutto</label>
+            <input id="totalPriceBrutto"
+                   type="text"
+                   class="form-control"
+                   formControlName="totalPriceBrutto"
+                   (change)="onTotalPriceChange(i)">
           </div>
         </div>
         <hr>
@@ -265,20 +337,34 @@
     </div>
     <!--podsumowanie-->
     <div class="row d-flex justify-content-end">
-      <div class="form-group col-12 col-md-1 px-1">
-        <label for="priceNet">Netto</label>
-        <input id="priceNet" type="text" class="form-control" formControlName="priceNet">
-      </div>
-      <div class="form-group col-12 col-md-1 px-1">
-        <label for="priceGross">Brutto</label>
-        <input id="priceGross" type="text" class="form-control" formControlName="priceGross">
+      <div class="col-sm-4">
+        <table class="table table-sm">
+          <tbody>
+          <tr>
+            <th>Suma netto</th>
+            <td>{{ invoiceForm.get('priceNet').value }} zł</td>
+          </tr>
+          <tr>
+            <th>Suma VAT</th>
+            <td>{{ invoiceForm.get('priceTax').value }} zł</td>
+          </tr>
+          <tr>
+            <th>Suma brutto</th>
+            <td>{{ invoiceForm.get('priceGross').value }} zł</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <button class="btn btn-success" type="submit" [disabled]="!invoiceForm.valid">Zapisz</button>
+          <button
+            class="btn btn-success"
+            type="submit" >
+            <!--[disabled]="!invoiceForm.valid"-->
+          >Zapisz</button>
         </div>
       </div>
     </div>
