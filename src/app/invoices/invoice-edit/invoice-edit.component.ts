@@ -127,7 +127,6 @@ export class InvoiceEditComponent implements OnInit {
     const issueDate = null;
 
     this.invoiceForm = new FormGroup({
-      'id': new FormControl(null),
       'number': new FormControl(number, [Validators.required]),
       'issueDate': new FormControl(this.bsValue.getDate(), [Validators.required]),
       'issuePlace': new FormControl(null, [Validators.required]),
@@ -161,6 +160,7 @@ export class InvoiceEditComponent implements OnInit {
 
   newPersonFormGroup() {
     return new FormGroup({
+      'id': new FormControl(null),
       'companyName': new FormControl(null, Validators.required),
       'nipNumber': new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]), // todo: dodac validator NIP
       'address': new FormGroup({
@@ -186,7 +186,7 @@ export class InvoiceEditComponent implements OnInit {
     const tax = 23;
     (<FormArray>this.invoiceForm.get('positions')).push(
       this.formBuilder.group({
-          'id': [null, Validators.required],
+          'id': [null],
           'productId': [null, Validators.required],
           'name': [null, Validators.required],
           'unitOfMeasure': [null, Validators.required],
@@ -236,8 +236,11 @@ export class InvoiceEditComponent implements OnInit {
     this.calculateSummary();
   }
 
-  setClient(client: Client) {
+  setClient(id: number, client: Client) {
     this.invoiceForm.get('buyer').patchValue(client);
+    this.invoiceForm.get('buyer').patchValue({
+      id: id
+    });
   }
 
   assignClientsCopy() {
@@ -246,7 +249,7 @@ export class InvoiceEditComponent implements OnInit {
 
   onSelectClient(client: Client) {
     this.clientService.getClient(client.id).subscribe(
-      buyer => this.setClient(<Client>buyer)
+      buyer => this.setClient(client.id, <Client>buyer)
     );
   }
 
@@ -331,9 +334,9 @@ export class InvoiceEditComponent implements OnInit {
       priceGross += +gross;
     }
     this.invoiceForm.patchValue({
-      priceNet: priceNet.toFixed(2),
-      priceTax: priceTax.toFixed(2),
-      priceGross: priceGross.toFixed(2)
+      priceNet: priceNet.toFixed(2).replace(/\./g, ','),
+      priceTax: priceTax.toFixed(2).replace(/\./g, ','),
+      priceGross: priceGross.toFixed(2).replace(/\./g, ',')
     });
 
   }
