@@ -1,11 +1,11 @@
 <div class="container">
   <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <div class="form-group col-12 col-md-6 col-lg-2">
+      <div class="form-group col-12 col-md-6 col-lg-2 required">
         <label for="number">Nr Faktury</label>
         <input id="number" type="text" class="form-control" formControlName="number">
       </div>
-      <div class="form-group col-12 col-md-6 col-lg-2">
+      <div class="form-group col-12 col-md-6 col-lg-2 required">
         <label for="issueDate">Data wystawienia</label>
         <input id="issueDate"
                type="text"
@@ -17,11 +17,11 @@
                                containerClass: 'theme-dark-blue' }"
                formControlName="issueDate">
       </div>
-      <div class="form-group col-12 col-md-6 col-lg-3">
+      <div class="form-group col-12 col-md-6 col-lg-3 required">
         <label for="issuePlace">Miejsce wystawienia</label>
         <input id="issuePlace" type="text" class="form-control" formControlName="issuePlace">
       </div>
-      <div class="form-group col-12 col-md-6 col-lg-2">
+      <div class="form-group col-12 col-md-6 col-lg-2 required">
         <label for="saleDate">Data sprzedaży</label>
         <input id="saleDate"
                type="text"
@@ -33,7 +33,7 @@
                                containerClass: 'theme-dark-blue' }"
                formControlName="saleDate">
       </div>
-      <div class="form-group col-12 col-lg-2">
+      <div class="form-group col-12 col-lg-2 required">
         <label for="paymentType">Rodzaj Płatności</label>
         <input id="paymentType" type="text" class="form-control" formControlName="paymentType">
       </div>
@@ -313,7 +313,7 @@
                    type="text"
                    class="form-control"
                    formControlName="totalPriceNetto"
-                   (change)="onTotalPriceChange(i)">
+                   (change)="onTotalPriceNettoChange(i)">
           </div>
           <!--wartosc brutto-->
           <div class="form-group col-12 col-md-1 px-1">
@@ -322,7 +322,7 @@
                    type="text"
                    class="form-control"
                    formControlName="totalPriceBrutto"
-                   (change)="onTotalPriceChange(i)">
+                   (change)="onTotalPriceBruttoChange(i)">
           </div>
         </div>
         <hr>

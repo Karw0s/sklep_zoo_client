@@ -126,31 +126,31 @@ export class InvoiceEditComponent implements OnInit {
     const number = '';
     const issueDate = null;
 
-    this.invoiceForm = new FormGroup({
-      'number': new FormControl(number, [Validators.required]),
-      'issueDate': new FormControl(this.bsValue.getDate(), [Validators.required]),
-      'issuePlace': new FormControl(null, [Validators.required]),
-      'saleDate': new FormControl(this.bsValue.getDate(), [Validators.required]),
-      'paymentType': new FormControl(null, [Validators.required]),
-      'seller': new FormGroup({
-        'companyName': new FormControl(null, Validators.required),
-        'nipNumber': new FormControl(null, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]), // todo: dodac validator NIP
-        'address': new FormGroup({
-          'street': new FormControl(null, [Validators.required]),
-          'zipCode': new FormControl(null, [Validators.required]),
-          'city': new FormControl(null, [Validators.required]),
-          'country': new FormControl(null, [Validators.required])
+    this.invoiceForm = this.formBuilder.group({
+      'number': [number, [Validators.required]],
+      'issueDate': [this.bsValue, [Validators.required]],
+      'issuePlace': [null, [Validators.required]],
+      'saleDate': [this.bsValue, [Validators.required]],
+      'paymentType': [null, [Validators.required]],
+      'seller': this.formBuilder.group({
+        'companyName': [null, Validators.required],
+        'nipNumber': [null, [Validators.required, Validators.pattern(/^[0-9]{10}$/)]], // todo: dodac validator NIP
+        'address': this.formBuilder.group({
+          'street': [null, [Validators.required]],
+          'zipCode': [null, [Validators.required]],
+          'city': [null, [Validators.required]],
+          'country': [null, [Validators.required]]
         }),
-        'firstName': new FormControl(null),
-        'lastName': new FormControl(null),
-        'bank': new FormControl(null),
-        'bankAccountNumber': new FormControl(null),
+        'firstName': [null],
+        'lastName': [null],
+        'bank': [null],
+        'bankAccountNumber': [null],
       }),
       'buyer': this.newPersonFormGroup(),
-      'positions': new FormArray([]),
-      'priceNet': new FormControl(0, [Validators.required]),
-      'priceGross': new FormControl(0, [Validators.required]),
-      'priceTax': new FormControl(0, [Validators.required])
+      'positions': this.formBuilder.array([]),
+      'priceNet': [0, [Validators.required]],
+      'priceGross': [0, [Validators.required]],
+      'priceTax': [0, [Validators.required]]
     });
   }
 
@@ -280,8 +280,45 @@ export class InvoiceEditComponent implements OnInit {
     this.calculateSummary();
   }
 
-  onTotalPriceChange(i: number) {
-
+  onTotalPriceNettoChange(i: number) {
+    const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
+    const quantity = position.get('quantity').value;
+    let tax = position.get('tax').value;
+    if (String(tax) === 'zw') {
+      tax = 0;
+    }
+    const totalPriceNetto = position.get('totalPriceNetto').value;
+    const priceNetto = totalPriceNetto / quantity;
+    position.patchValue({
+      priceNetto: priceNetto,
+      totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
+      priceTax: this.calculatePriceTax(+1, +tax, String(priceNetto)),
+      totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
+    });
+    this.calculateSummary();
+  }
+  onTotalPriceBruttoChange(i: number) {
+    const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
+    const quantity = position.get('quantity').value;
+    let tax = position.get('tax').value;
+    if (String(tax) === 'zw') {
+      tax = 0;
+    }
+    let totalPriceBrutto = position.get('totalPriceBrutto').value;
+    try {
+      totalPriceBrutto = totalPriceBrutto.replace(/,/g, '.');
+      totalPriceBrutto = parseFloat(totalPriceBrutto);
+    } catch (e) {
+      console.error('totalPriceBrutto', 'not price');
+    }
+    const priceNetto = ((totalPriceBrutto / quantity) * 100 / (tax + 100)).toFixed(2).replace(/\./g, ',');
+    position.patchValue({
+      priceNetto: priceNetto,
+      totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
+      priceTax: this.calculatePriceTax(+1, +tax, String(priceNetto)),
+      totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
+    });
+    this.calculateSummary();
   }
 
   calculate(quantity: number, tax: number, net: string) {
@@ -307,7 +344,7 @@ export class InvoiceEditComponent implements OnInit {
       priceNetto = nett;
     }
 
-    return ((priceNetto * tax) / 100) * quantity;
+    return (((priceNetto * tax) / 100) * quantity).toFixed(2);
   }
 
   calculateSummary() {

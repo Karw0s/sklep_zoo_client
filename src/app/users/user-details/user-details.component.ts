@@ -35,13 +35,13 @@ export class UserDetailsComponent implements OnInit {
   formInit() {
     this.userDetailForm = this.fb.group({
       id: [null],
-      bank: ['', Validators.required],
-      bankAccountNumber: ['', Validators.required],
-      email: [''],
+      bank: [''],
+      bankAccountNumber: [''],
+      email: [null, Validators.email],
       companyName: ['', Validators.required],
       nipNumber: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: [null],
+      lastName: [null],
       address: this.fb.group({
         id: [null],
         street: ['', Validators.required],
