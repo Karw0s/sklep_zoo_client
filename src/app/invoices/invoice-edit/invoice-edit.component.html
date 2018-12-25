@@ -226,6 +226,10 @@
           <div class="col-1">
             VAT
           </div>
+          <!--watrosc vat-->
+          <div class="col-1">
+            Wartość VAT
+          </div>
           <!--wartosc netto-->
           <div class="col-1">
             Watrość netto
@@ -304,6 +308,13 @@
             <div >
               <label class="d-block d-md-none" for="tax">VAT</label>
               <input id="tax" type="text" class="form-control" formControlName="tax" (change)="onChange1(i)">
+            </div>
+          </div>
+          <!-- todo: wartość wat -->
+          <div class="form-group col-12 col-md-1 px-1">
+            <div >
+              <label class="d-block d-md-none" for="totalPriceTax">Wartość VAT</label>
+              <input id="totalPriceTax" type="text" class="form-control" [readonly]="1" formControlName="totalPriceTax">
             </div>
           </div>
           <!--wartosc netto-->
