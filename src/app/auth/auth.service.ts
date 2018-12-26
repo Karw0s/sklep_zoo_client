@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { UserRegistrationDTO } from '../models/dto/users/user-registration-dto';
+import { tap } from 'rxjs/operators';
 
 export interface Credentials {
-  // todo: Customize received credentials here
   username: string;
   token: string;
+  exp: string;
 }
 
 export interface LoginContext {
@@ -30,28 +32,28 @@ export class AuthService {
     }
   }
 
-  login(context: LoginContext): Observable<Credentials> {
-    // todo: implementacja logowanai
-    this.httpClient.post(this.apiEndpoint + 'login', context)
-      .subscribe(
+  login(context: LoginContext) {
+    return this.httpClient.post(this.apiEndpoint + 'login', context)
+      .pipe(tap(
         response => {
           this.setCredentials({
             username: response['username'],
-            token: response['token']
+            token: response['token'],
+            exp: response['exp']
           });
-          console.log(this.credentials);
+          console.log('authService', this.credentials);
         }
-      );
-
-    // this.setCredentials(data, context.remember);
-    return of(this._credentials);
+      ));
   }
 
 
   logout(): Observable<boolean> {
-    // todo: Customize credentials invalidation here
     this.setCredentials();
     return of(true);
+  }
+
+  register(userRegistrationDTO: UserRegistrationDTO) {
+    return this.httpClient.post(`${this.apiEndpoint}users/sign-up`, userRegistrationDTO);
   }
 
   /**

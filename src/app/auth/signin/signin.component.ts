@@ -12,7 +12,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class SigninComponent implements OnInit {
 
-  error: string;
+  error = false;
   loginForm: FormGroup;
   isLoading = false;
 
@@ -39,14 +39,10 @@ export class SigninComponent implements OnInit {
       )
       .subscribe(
         credentials => {
-          // log.debug(`${credentials.username} successfully logged in`);
-          this.route.queryParams.subscribe(params =>
-            this.router.navigate([params.redirect || '/'], { replaceUrl: true })
-          );
+          this.router.navigate( ['/'], { replaceUrl: true });
         },
         error => {
-          // log.debug(`Login error: ${error}`);
-          this.error = error;
+          this.error = true;
         }
       );
   }

@@ -1,10 +1,13 @@
 <div class="container">
 <div class="row">
   <div class="col-12 col-sm-10 col-md-6 col-sm-offset-1 col-md-offset-2 mx-auto">
-    <form (ngSubmit)="login()" [formGroup]="signupForm">
+    <h2>Rejestracja użytkownika</h2>
+    <hr>
+    <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <form class="needs-validation" (ngSubmit)="register(template)" [formGroup]="signupForm" novalidate>
       <div class="form-group">
         <label for="username">Nazwa użytkowinka</label>
-        <input type="text" id="username" name="username" class="form-control" formControlName="username" [placeholder]="'Nazwa użytkownika'">
+        <input type="text" id="username" name="username" class="form-control" formControlName="username" [placeholder]="'Nazwa użytkownika'" required>
         <small [hidden]="signupForm.controls.username.valid || signupForm.controls.username.untouched"
                class="text-danger">
           Nazwa użytkownika jest wymagana
@@ -13,14 +16,59 @@
       <div class="form-group">
         <label for="password">Hasło</label>
         <input type="password" id="password" name="password" class="form-control" formControlName="password" autocomplete="current-password"
-               [placeholder]="'Hasło'">
-        <small [hidden]="signupForm.controls.password.valid || signupForm.controls.password.untouched"
+               [placeholder]="'Hasło'" required>
+        <small>
+          <div *ngIf="signupForm.controls.password.invalid && (signupForm.controls.password.dirty || signupForm.controls.password.touched)"
                class="text-danger">
-          Hasło jest wymagane
+            <div *ngIf="signupForm.controls.password.errors.required">
+              Hasło jest wymagane
+            </div>
+            <div *ngIf="signupForm.controls.password.errors.minlength">
+              Hasło musi mieć min 8 znaków.
+            </div>
+          </div>
+        </small>
+
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Powtórz hasło</label>
+        <input type="password" id="confirmPassword" name="password" class="form-control" formControlName="confirmPassword"
+               [placeholder]="'Powtórz hasło'" required>
+        <small [hidden]="signupForm.controls.confirmPassword.valid || signupForm.controls.confirmPassword.untouched"
+               class="text-danger">
+          Powtórz hasło
+        </small>
+        <small class="text-danger" *ngIf="signupForm.controls.confirmPassword.errors?.MatchPassword">
+          Hasła się róźnią
         </small>
       </div>
-      <button class="btn btn-primary w-100" type="submit" [disabled]="signupForm.invalid || isLoading">Login</button>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" class="form-control" formControlName="email"
+               [placeholder]="'Email'" required>
+        <small [hidden]="signupForm.controls.email.valid || signupForm.controls.email.untouched"
+               class="text-danger">
+          Email jest wymagany
+        </small>
+      </div>
+      <button class="btn btn-primary w-100" type="submit" [disabled]="signupForm.invalid || isLoading">
+        <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+        <span>Zarejestruj</span>
+      </button>
     </form>
   </div>
 </div>
 </div>
+
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Sukces</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Użytkownik został utworzony.
+  </div>
+</ng-template>
