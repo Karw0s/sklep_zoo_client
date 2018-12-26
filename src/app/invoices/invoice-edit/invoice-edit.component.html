@@ -376,9 +376,14 @@
         <div class="form-group">
           <button
             class="btn btn-success"
-            type="submit" >
-            <!--[disabled]="!invoiceForm.valid"-->
-          >Zapisz</button>
+            type="submit"
+            [disabled]="!invoiceForm.valid || isLoading">
+            <span [hidden]="!isLoading">
+              <i class="fas fa-cog fa-spin" ></i>
+            </span>
+            Zapisz
+          </button>
+
         </div>
       </div>
     </div>

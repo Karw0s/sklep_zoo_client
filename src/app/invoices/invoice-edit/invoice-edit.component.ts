@@ -4,7 +4,7 @@ import { Invoice } from '../invoice.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ClientService } from '../../clients/client.service';
 import { InvoiceService } from '../invoice.service';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { Client } from '../../models/client.model';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -35,6 +35,7 @@ export class InvoiceEditComponent implements OnInit {
   invoiceForm: FormGroup;
   sellerDetailsDTO: AppUserDetailsDTO;
   sellerDetails = false;
+  isLoading = false;
   private id: number;
   private editMode = false;
   private clientID: number;
@@ -130,7 +131,7 @@ export class InvoiceEditComponent implements OnInit {
                 for (let position of this.invoice.positions) {
                   (<FormArray>this.invoiceForm.get('positions')).push(
                     this.formBuilder.group({
-                        'productId': [position.productId, Validators.required],
+                        'productId': [position.productId],
                         'name': [position.name, Validators.required],
                         'unitOfMeasure': [position.unitOfMeasure, Validators.required],
                         'quantity': [position.quantity, Validators.required],
@@ -142,6 +143,7 @@ export class InvoiceEditComponent implements OnInit {
                       })
                   );
                 }
+                console.log('form after get', this.invoiceForm);
               }
             );
         } else {
@@ -187,6 +189,7 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     this.invoice = this.invoiceForm.value;
 
     for (let i = 0; i < this.invoice.positions.length; ++i) {
@@ -208,10 +211,28 @@ export class InvoiceEditComponent implements OnInit {
 
 
     console.log(this.invoice);
-    this.invoiceService.createInvoice(this.invoice)
-      .subscribe(res => {
-        console.log(res);
-      });
+
+    if (this.editMode) {
+      this.invoiceService.updateInvoice(this.id, this.invoice)
+        .pipe(finalize(
+          () => {
+            this.isLoading = false;
+          }
+        ))
+        .subscribe();
+      console.log('updating...');
+
+    } else {
+      this.invoiceService.createInvoice(this.invoice)
+        .pipe(finalize(
+          () => {
+            this.isLoading = false;
+          }
+        ))
+        .subscribe(res => {
+          console.log(res);
+        });
+    }
   }
 
   newPersonFormGroup() {
@@ -242,7 +263,7 @@ export class InvoiceEditComponent implements OnInit {
     const tax = 23;
     (<FormArray>this.invoiceForm.get('positions')).push(
       this.formBuilder.group({
-          'productId': [null, Validators.required],
+          'productId': [null],
           'name': [null, Validators.required],
           'unitOfMeasure': [null, Validators.required],
           'quantity': [1, Validators.required],
