@@ -3,6 +3,7 @@ import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Invoice } from './invoice.model';
 import { Subject } from 'rxjs';
+import { InvoiceDTO } from '../models/dto/invoice/invoice-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,11 @@ export class InvoiceService {
     return this.httpClient.get(`${this.apiEndpoint}/${invoiceId}`);
   }
 
-  createInvoice(invoice: Invoice) {
+  createInvoice(invoice: InvoiceDTO) {
     return this.httpClient.post(this.apiEndpoint, invoice);
   }
 
-  updateInvoice(id: number, invoice: Invoice) {
+  updateInvoice(id: number, invoice: InvoiceDTO) {
     return this.httpClient.put(`${this.apiEndpoint}/${id}`, invoice);
   }
 

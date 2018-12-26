@@ -14,6 +14,11 @@ import { Product } from '../../products/product.model';
 import { UserService } from '../../users/user.service';
 import { AppUserDetailsDTO } from '../../models/dto/app-user-details-dto';
 import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto';
+import { InvoiceDTO } from '../../models/dto/invoice/invoice-dto';
+import index from '@angular/cli/lib/cli';
+import { InvoicePositionDTO } from '../../models/dto/invoice/invoice-position-dto';
+import { formatDate } from '@angular/common';
+import { ClientDTO } from '../../models/dto/clients/client-dto';
 
 @Component({
   selector: 'app-invoice-edit',
@@ -25,7 +30,7 @@ export class InvoiceEditComponent implements OnInit {
   clients: Client[];
   locale = 'pl';
   bsValue = new Date();
-  invoice: Invoice = new Invoice();
+  invoice: InvoiceDTO = new InvoiceDTO();
   client;
   invoiceForm: FormGroup;
   sellerDetailsDTO: AppUserDetailsDTO;
@@ -98,6 +103,9 @@ export class InvoiceEditComponent implements OnInit {
           this.clientService.getClient(this.clientID).subscribe(
             client => {
               this.client = client;
+              this.client.id = this.clientID;
+              console.log('client', client);
+              console.log('buyer', this.invoice.buyer);
               this.invoice.buyer = this.client;
               this.invoiceForm.patchValue(this.invoice);
             }
@@ -105,13 +113,37 @@ export class InvoiceEditComponent implements OnInit {
         }
 
         if (this.editMode) {
-          this.invoiceService.getInvoice(this.id).pipe(
-            tap(invoice => {
-              this.invoiceForm.patchValue(invoice);
-            })
-          ).subscribe(
-            (invoice: Invoice) => { this.invoice = invoice; }
-          );
+          this.invoiceService.getInvoice(this.id)
+          // .pipe(tap(invoice => {
+          //
+          // }))
+            .subscribe(
+              (invoice: InvoiceDTO) => {
+                this.invoice = invoice;
+                console.log('faktura get', invoice);
+                this.invoiceForm.patchValue(invoice);
+                this.invoiceForm.patchValue({
+                  issueDate: new Date(invoice.issueDate),
+                  saleDate: new Date(invoice.saleDate),
+                });
+
+                for (let position of this.invoice.positions) {
+                  (<FormArray>this.invoiceForm.get('positions')).push(
+                    this.formBuilder.group({
+                        'productId': [position.productId, Validators.required],
+                        'name': [position.name, Validators.required],
+                        'unitOfMeasure': [position.unitOfMeasure, Validators.required],
+                        'quantity': [position.quantity, Validators.required],
+                        'priceNetto': [position.priceNetto, Validators.required],
+                        'totalPriceNetto': [position.totalPriceNetto, Validators.required],
+                        'totalPriceBrutto': [position.totalPriceBrutto, Validators.required],
+                        'tax': [position.tax, Validators.required],
+                        'totalPriceTax': [position.totalPriceTax, Validators.required],
+                      })
+                  );
+                }
+              }
+            );
         } else {
           this.addPosition();
         }
@@ -155,7 +187,31 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.invoiceForm);
+    this.invoice = this.invoiceForm.value;
+
+    for (let i = 0; i < this.invoice.positions.length; ++i) {
+      this.invoice.positions[i].totalPriceNetto = parseFloat(String(this.invoice.positions[i].totalPriceNetto).replace(/,/g, '.'));
+      this.invoice.positions[i].totalPriceBrutto = parseFloat(String(this.invoice.positions[i].totalPriceBrutto).replace(/,/g, '.'));
+      this.invoice.positions[i].totalPriceTax = parseFloat(String(this.invoice.positions[i].totalPriceTax).replace(/,/g, '.'));
+      this.invoice.positions[i].priceNetto = parseFloat(String(this.invoice.positions[i].priceNetto).replace(/,/g, '.'));
+    }
+
+    this.invoice.priceGross = parseFloat(String(this.invoice.priceGross).replace(/,/g, '.'));
+    this.invoice.priceNet = parseFloat(String(this.invoice.priceNet).replace(/,/g, '.'));
+    this.invoice.priceTax = parseFloat(String(this.invoice.priceTax).replace(/,/g, '.'));
+
+    const issueDate: Date = this.invoiceForm.controls['issueDate'].value;
+    const saleDate: Date = this.invoiceForm.controls['saleDate'].value;
+    this.invoice.issueDate = issueDate.toJSON();
+    // formatDate(this.invoiceForm.value.issueDate, 'shortDate', 'en-US');
+    this.invoice.saleDate = saleDate.toJSON();
+
+
+    console.log(this.invoice);
+    this.invoiceService.createInvoice(this.invoice)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   newPersonFormGroup() {
@@ -186,17 +242,14 @@ export class InvoiceEditComponent implements OnInit {
     const tax = 23;
     (<FormArray>this.invoiceForm.get('positions')).push(
       this.formBuilder.group({
-          'id': [null],
           'productId': [null, Validators.required],
           'name': [null, Validators.required],
           'unitOfMeasure': [null, Validators.required],
           'quantity': [1, Validators.required],
           'priceNetto': [null, Validators.required],
-          'priceBrutto': [null, Validators.required],
           'totalPriceNetto': [null, Validators.required],
           'totalPriceBrutto': [null, Validators.required],
           'tax': [tax, Validators.required],
-          'priceTax': [null, Validators.required],
           'totalPriceTax': [null, Validators.required],
         }
       )
@@ -227,10 +280,8 @@ export class InvoiceEditComponent implements OnInit {
       unitOfMeasure: product.unitOfMeasure,
       priceNetto: product.priceNetto,
       tax: product.tax,
-      priceBrutto: product.priceBrutto,
       totalPriceNetto: this.calculate(1, 0, String(product.priceNetto)),
       totalPriceBrutto: this.calculate(1, +product.tax, String(product.priceNetto)),
-      priceTax: this.calculatePriceTax(1, +product.tax, String(product.priceNetto)),
       totalPriceTax: this.calculatePriceTax(1, +product.tax, String(product.priceNetto))
     });
     this.calculateSummary();
@@ -274,7 +325,6 @@ export class InvoiceEditComponent implements OnInit {
     position.patchValue({
       totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
       totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
-      priceTax: this.calculatePriceTax(+1, +tax, String(priceNetto)),
       totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
     });
     this.calculateSummary();
@@ -292,11 +342,11 @@ export class InvoiceEditComponent implements OnInit {
     position.patchValue({
       priceNetto: priceNetto,
       totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
-      priceTax: this.calculatePriceTax(+1, +tax, String(priceNetto)),
       totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
     });
     this.calculateSummary();
   }
+
   onTotalPriceBruttoChange(i: number) {
     const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
     const quantity = position.get('quantity').value;
@@ -315,7 +365,6 @@ export class InvoiceEditComponent implements OnInit {
     position.patchValue({
       priceNetto: priceNetto,
       totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
-      priceTax: this.calculatePriceTax(+1, +tax, String(priceNetto)),
       totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
     });
     this.calculateSummary();

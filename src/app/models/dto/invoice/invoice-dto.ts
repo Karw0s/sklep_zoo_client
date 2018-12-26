@@ -3,7 +3,7 @@ import { AppUserDetailsDTO } from '../app-user-details-dto';
 import { ClientDTO } from '../clients/client-dto';
 
 export class InvoiceDTO {
-  id: number;
+
   number: string;
   issueDate: string;
   issuePlace: string;

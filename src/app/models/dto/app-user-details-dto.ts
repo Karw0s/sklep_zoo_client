@@ -4,7 +4,6 @@ export class AppUserDetailsDTO {
 
   bank: string;
   bankAccountNumber: string;
-  email: string;
   companyName: string;
   nipNumber: number;
   address: AddressDTO;

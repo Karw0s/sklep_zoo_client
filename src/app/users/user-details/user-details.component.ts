@@ -34,7 +34,6 @@ export class UserDetailsComponent implements OnInit {
 
   formInit() {
     this.userDetailForm = this.fb.group({
-      id: [null],
       bank: [''],
       bankAccountNumber: [''],
       email: [null, Validators.email],
@@ -43,7 +42,6 @@ export class UserDetailsComponent implements OnInit {
       firstName: [null],
       lastName: [null],
       address: this.fb.group({
-        id: [null],
         street: ['', Validators.required],
         zipCode: ['', Validators.required],
         city: ['', Validators.required],
