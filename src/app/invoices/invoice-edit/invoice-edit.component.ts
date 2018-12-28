@@ -185,6 +185,7 @@ export class InvoiceEditComponent implements OnInit {
                   'id': [position.id],
                   'invoiceId': [position.invoiceId],
                   'productId': [position.productId],
+                  'ordinalNumber': [position.ordinalNumber],
                   'name': [position.name, Validators.required],
                   'unitOfMeasure': [position.unitOfMeasure, Validators.required],
                   'quantity': [position.quantity, Validators.required],
@@ -219,6 +220,7 @@ export class InvoiceEditComponent implements OnInit {
       this.invoice.positions[i].totalPriceBrutto = parseFloat(String(this.invoice.positions[i].totalPriceBrutto).replace(/,/g, '.'));
       this.invoice.positions[i].totalPriceTax = parseFloat(String(this.invoice.positions[i].totalPriceTax).replace(/,/g, '.'));
       this.invoice.positions[i].priceNetto = parseFloat(String(this.invoice.positions[i].priceNetto).replace(/,/g, '.'));
+      this.invoice.positions[i].ordinalNumber = i + 1;
     }
 
     this.invoice.priceGross = parseFloat(String(this.invoice.priceGross).replace(/,/g, '.'));
@@ -235,14 +237,19 @@ export class InvoiceEditComponent implements OnInit {
     console.log(this.invoice);
 
     if (this.editMode) {
+      console.log('updating...');
       this.invoiceService.updateInvoice(this.id, this.invoice)
         .pipe(finalize(
           () => {
             this.isSubmitting = false;
           }
         ))
-        .subscribe();
-      console.log('updating...');
+        .subscribe(
+          res => {
+            console.log('updated', res);
+          }
+        );
+
 
     } else {
       this.invoiceService.createInvoice(this.invoice)
@@ -293,6 +300,7 @@ export class InvoiceEditComponent implements OnInit {
       this.formBuilder.group({
           'productId': [null],
           'name': [null, Validators.required],
+          'ordinalNumber': [null],
           'unitOfMeasure': [null, Validators.required],
           'quantity': [1, Validators.required],
           'priceNetto': [null, Validators.required],

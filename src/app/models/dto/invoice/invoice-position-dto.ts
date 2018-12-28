@@ -2,6 +2,7 @@ export class InvoicePositionDTO {
   public id: number;
   public productId: number;
   public invoiceId: number;
+  public ordinalNumber: number;
   public name: string;
   public pkwiuCode: string;
   public unitOfMeasure: string;

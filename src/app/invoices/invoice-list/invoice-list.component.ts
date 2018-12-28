@@ -18,17 +18,17 @@ export class InvoiceListComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.invoices = this.invoiceService.getInvoices()
+    this.invoices = this.invoiceService.getInvoices();
     //   .subscribe(
     //   (invoiceListDTO: InvoiceListDTO[]) => { this.invoices = invoiceListDTO; }
     // );
   }
 
   deleteInvoice(id: number, i: number) {
-    if (confirm(`Czy na pewno chcesz usnąć fakture ${this.invoices[i].number}?`)) {
+    if (confirm(`Czy na pewno chcesz usnąć fakture?`)) {
       this.invoiceService.deleteInvoice(id).subscribe(
         res => {
-          this.invoices.splice(i, 1);
+          this.invoices = this.invoiceService.getInvoices();
         }
       );
     }
