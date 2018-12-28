@@ -4,6 +4,18 @@
       <div class="form-group col-12 col-md-6 col-lg-2 required">
         <label for="number">Nr Faktury</label>
         <input id="number" type="text" class="form-control" formControlName="number">
+        <small>
+          <div *ngIf="invoiceForm.controls.number.invalid && (invoiceForm.controls.number.dirty || invoiceForm.controls.number.touched)"
+               class="text-danger">
+            <div *ngIf="invoiceForm.controls.number.errors.pattern">
+              Numer faktury ma nieprawidłowy format.
+              Powinien być nrm/mm/yyyy.
+            </div>
+            <div *ngIf="invoiceForm.controls.number.errors.exists">
+              Faktura o tym numerze już istnieje
+            </div>
+          </div>
+        </small>
       </div>
       <div class="form-group col-12 col-md-6 col-lg-2 required">
         <label for="issueDate">Data wystawienia</label>
@@ -12,10 +24,11 @@
                placeholder="Data wystawienia"
                class="form-control"
                bsDatepicker
-               [bsValue]="bsValue"
+
                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY',
                                containerClass: 'theme-dark-blue' }"
-               formControlName="issueDate">
+               formControlName="issueDate"
+               (bsValueChange)="onIssueDateChange($event)">
       </div>
       <div class="form-group col-12 col-md-6 col-lg-3 required">
         <label for="issuePlace">Miejsce wystawienia</label>
@@ -28,7 +41,7 @@
                placeholder="Data sprzedaży"
                class="form-control"
                bsDatepicker
-               [bsValue]="bsValue"
+
                [bsConfig]="{ dateInputFormat: 'DD.MM.YYYY',
                                containerClass: 'theme-dark-blue' }"
                formControlName="saleDate">
@@ -337,12 +350,12 @@
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="col-12">
-            <button type="button" class="btn btn-outline-success" (click)="addPosition()"><i class="fas fa-plus"></i>
-              Dodaj pozycję
-            </button>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button type="button" class="btn btn-outline-success" (click)="addPosition()"><i class="fas fa-plus"></i>
+            Dodaj pozycję
+          </button>
         </div>
       </div>
     </div>

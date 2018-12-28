@@ -7,13 +7,15 @@ import { InvoicesRoutingModule } from './invoices-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PersonEditComponent } from './invoice-edit/person-edit/person-edit.component';
+import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 
 @NgModule({
   declarations: [
     InvoiceListComponent,
     InvoiceEditComponent,
     InvoicesMainPageComponent,
-    PersonEditComponent
+    PersonEditComponent,
+    InvoiceViewComponent
   ],
   imports: [
     CommonModule,
