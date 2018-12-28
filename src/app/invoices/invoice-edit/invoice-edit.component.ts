@@ -40,6 +40,7 @@ export class InvoiceEditComponent implements OnInit {
   isSubmitting = false;
   isLoading = false;
   invoiceNumber: string;
+  displayPKWiUCode = false;
   private id: number;
   private editMode = false;
   private clientID: number;
@@ -153,7 +154,8 @@ export class InvoiceEditComponent implements OnInit {
       'positions': this.formBuilder.array([]),
       'priceNet': [0, [Validators.required]],
       'priceGross': [0, [Validators.required]],
-      'priceTax': [0, [Validators.required]]
+      'priceTax': [0, [Validators.required]],
+      'showPKWIUCode': [this.displayPKWiUCode],
     });
 
 
@@ -185,6 +187,7 @@ export class InvoiceEditComponent implements OnInit {
                   'totalPriceBrutto': [position.totalPriceBrutto, Validators.required],
                   'tax': [position.tax, Validators.required],
                   'totalPriceTax': [position.totalPriceTax, Validators.required],
+                  'pkwiuCode': [position.pkwiuCode]
                 })
               );
             }
@@ -287,6 +290,7 @@ export class InvoiceEditComponent implements OnInit {
           'totalPriceBrutto': [null, Validators.required],
           'tax': [tax, Validators.required],
           'totalPriceTax': [null, Validators.required],
+          'pkwiuCode': [null]
         }
       )
     );
@@ -318,7 +322,8 @@ export class InvoiceEditComponent implements OnInit {
       tax: product.tax,
       totalPriceNetto: this.calculate(1, 0, String(product.priceNetto)),
       totalPriceBrutto: this.calculate(1, +product.tax, String(product.priceNetto)),
-      totalPriceTax: this.calculatePriceTax(1, +product.tax, String(product.priceNetto))
+      totalPriceTax: this.calculatePriceTax(1, +product.tax, String(product.priceNetto)),
+      pkwiuCode: product.pkwiuCode
     });
     this.calculateSummary();
   }
@@ -479,5 +484,10 @@ export class InvoiceEditComponent implements OnInit {
           }
         );
     }
+  }
+
+  onPKWiUChange() {
+    this.displayPKWiUCode = this.invoiceForm.controls['showPKWIUCode'].value;
+    console.log('displayPKWiUCode', this.displayPKWiUCode);
   }
 }

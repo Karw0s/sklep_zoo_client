@@ -15,4 +15,5 @@ export class InvoiceDTO {
   priceNet: number;
   priceGross: number;
   priceTax: number;
+  showPKWIUCode: boolean;
 }

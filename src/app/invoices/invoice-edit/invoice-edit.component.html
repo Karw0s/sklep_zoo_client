@@ -214,16 +214,28 @@
         </div>
       </div>
     </div>
+    <div class="row my-1 d-flex justify-content-between">
+      <div class="col">
+        <h3>Pozycje na fakturze</h3>
+      </div>
+      <div class="col d-flex align-items-end">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="customCheck1" formControlName="showPKWIUCode" (change)="onPKWiUChange()">
+          <label class="custom-control-label" for="customCheck1">Dodaj PKWiU do pól faktury</label>
+        </div>
+      </div>
+
+    </div>
     <!--Pozycje faktury etykiety-->
     <div class="row d-none d-md-block">
       <div class="col-12">
         <hr>
-        <div class="row">
-          <h3>Pozycje na fakturze</h3>
-        </div>
         <div class="row d-flex" id="positionsLabels">
           <div class="col-md-6 col-lg-4">
             Nazwa Produktu
+          </div>
+          <div class="col-lg-2" *ngIf="displayPKWiUCode">
+            PKWiU
           </div>
           <div class="col-1">
             Ilość
@@ -289,6 +301,13 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div class="form-group col-lg-2 px-1" *ngIf="displayPKWiUCode">
+            <label class="d-block d-md-none" for="pkwiuCode">PKWiU</label>
+            <input id="pkwiuCode"
+                   type="text"
+                   class="form-control"
+                   formControlName="pkwiuCode">
           </div>
           <div class="form-group col-12 col-md-1 px-1">
             <!--ilosc-->

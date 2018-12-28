@@ -6,4 +6,5 @@ export class ProductDetailsDTO {
   public priceBrutto: string;
   public tax: number;
   public unitOfMeasure: string;
+  public pkwiuCode: string;
 }

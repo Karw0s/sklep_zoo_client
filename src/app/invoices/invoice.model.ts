@@ -14,5 +14,5 @@ export class Invoice {
   priceNet: number;
   priceGross: number;
   priceTax: number;
-
+  showPKWIUCode: boolean;
 }
