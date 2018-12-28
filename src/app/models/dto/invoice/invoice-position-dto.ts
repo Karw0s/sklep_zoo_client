@@ -1,4 +1,5 @@
 export class InvoicePositionDTO {
+  public id: number;
   public productId: number;
   public invoiceId: number;
   public name: string;

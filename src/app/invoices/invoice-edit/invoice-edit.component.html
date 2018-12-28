@@ -1,4 +1,5 @@
 <div class="container">
+  <div *ngIf="!isLoading">
   <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="form-group col-12 col-md-6 col-lg-2 required">
@@ -390,8 +391,8 @@
           <button
             class="btn btn-success"
             type="submit"
-            [disabled]="!invoiceForm.valid || isLoading">
-            <span [hidden]="!isLoading">
+            [disabled]="!invoiceForm.valid || isSubmitting">
+            <span [hidden]="!isSubmitting">
               <i class="fas fa-cog fa-spin" ></i>
             </span>
             Zapisz
@@ -401,4 +402,8 @@
       </div>
     </div>
   </form>
+  </div>
+  <div class="d-flex justify-content-center" *ngIf="isLoading">
+    <i class="fas fa-cog fa-spin fa-7x" ></i>
+  </div>
 </div>

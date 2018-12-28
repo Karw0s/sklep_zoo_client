@@ -15,19 +15,19 @@ import { ProductDTO } from '../../models/dto/products/product-dto';
 export class ProductListComponent implements OnInit, OnDestroy {
 
   products;
-  subscription: Subscription;
-  private subscription2: Subscription;
+  productChangeSub: Subscription;
+  private deleteSubscription: Subscription;
 
   constructor(private productService: ProductService) { }
 
   ngOnInit() {
-    this.subscription = this.productService.productsChanged
+    this.productChangeSub = this.productService.productsChanged
       .subscribe(
         (newProduct: ProductDTO) => {
           this.setProductList();
         }
       );
-    this.subscription2 = this.productService.productDeleted
+    this.deleteSubscription = this.productService.productDeleted
       .subscribe(
         deletedProduct => {
           const index = this.products.findIndex(x => x.id === deletedProduct);
@@ -46,8 +46,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.subscription2.unsubscribe();
+    this.productChangeSub.unsubscribe();
+    this.deleteSubscription.unsubscribe();
   }
 
   setProductList() {

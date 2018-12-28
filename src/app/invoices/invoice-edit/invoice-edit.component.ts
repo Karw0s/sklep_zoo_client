@@ -37,6 +37,7 @@ export class InvoiceEditComponent implements OnInit {
   invoiceForm: FormGroup;
   sellerDetailsDTO: AppUserDetailsDTO;
   sellerDetails = false;
+  isSubmitting = false;
   isLoading = false;
   invoiceNumber: string;
   private id: number;
@@ -157,10 +158,11 @@ export class InvoiceEditComponent implements OnInit {
 
 
     if (this.editMode) {
+      this.isLoading = true;
       this.invoiceService.getInvoice(this.id)
-      // .pipe(tap(invoice => {
-      //
-      // }))
+        .pipe(finalize(
+          () => this.isLoading = false
+        ))
         .subscribe(
           (invoice: InvoiceDTO) => {
             this.invoice = invoice;
@@ -196,7 +198,7 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   onSubmit() {
-    this.isLoading = true;
+    this.isSubmitting = true;
     this.invoice = this.invoiceForm.value;
 
     for (let i = 0; i < this.invoice.positions.length; ++i) {
@@ -223,7 +225,7 @@ export class InvoiceEditComponent implements OnInit {
       this.invoiceService.updateInvoice(this.id, this.invoice)
         .pipe(finalize(
           () => {
-            this.isLoading = false;
+            this.isSubmitting = false;
           }
         ))
         .subscribe();
@@ -233,7 +235,7 @@ export class InvoiceEditComponent implements OnInit {
       this.invoiceService.createInvoice(this.invoice)
         .pipe(finalize(
           () => {
-            this.isLoading = false;
+            this.isSubmitting = false;
           }
         ))
         .subscribe(
