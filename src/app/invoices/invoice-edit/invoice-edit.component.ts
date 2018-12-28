@@ -60,34 +60,20 @@ export class InvoiceEditComponent implements OnInit {
     defineLocale('pl', plLocale);
     this.localeService.use(this.locale);
 
-    this.productService.getProducts().subscribe(
+    this.productService.getProducts()
+      .subscribe(
       (products: ProductDetailsDTO[]) => {
         console.log('products', products);
         this.products = products;
         this.assignProductsCopy();
-      }
-    );
+      });
 
-    this.clientService.getClients().subscribe(
+    this.clientService.getClients()
+      .subscribe(
       (clients: Client[]) => {
         this.clients = clients;
         this.assignClientsCopy();
-      }
-    );
-
-    this.userService.getUserDetails()
-      .subscribe(
-        (detailsDTO: AppUserDetailsDTO) => {
-          this.sellerDetailsDTO = detailsDTO;
-          this.invoiceForm.get('issuePlace').patchValue(this.sellerDetailsDTO.address.city);
-          this.invoiceForm.get('seller').patchValue(this.sellerDetailsDTO);
-          this.sellerDetails = true;
-        },
-        error => {
-          this.sellerDetails = false;
-          console.log('cannot get app user details');
-        }
-      );
+      });
 
     this.route.queryParams.subscribe(
       params => {
@@ -118,7 +104,25 @@ export class InvoiceEditComponent implements OnInit {
           );
         }
 
-
+        if (url.match('/new$')) {
+          this.isLoading = true;
+          this.userService.getUserDetails()
+            .pipe(finalize(
+              () => this.isLoading = false
+            ))
+            .subscribe(
+              (detailsDTO: AppUserDetailsDTO) => {
+                this.sellerDetailsDTO = detailsDTO;
+                this.invoiceForm.get('issuePlace').patchValue(this.sellerDetailsDTO.address.city);
+                this.invoiceForm.get('seller').patchValue(this.sellerDetailsDTO);
+                this.sellerDetails = true;
+              },
+              error => {
+                this.sellerDetails = false;
+                console.log('cannot get app user details');
+              }
+            );
+        }
       }
     );
 
