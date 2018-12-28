@@ -182,6 +182,8 @@ export class InvoiceEditComponent implements OnInit {
             for (let position of this.invoice.positions) {
               (<FormArray>this.invoiceForm.get('positions')).push(
                 this.formBuilder.group({
+                  'id': [position.id],
+                  'invoiceId': [position.invoiceId],
                   'productId': [position.productId],
                   'name': [position.name, Validators.required],
                   'unitOfMeasure': [position.unitOfMeasure, Validators.required],
@@ -195,6 +197,10 @@ export class InvoiceEditComponent implements OnInit {
                 })
               );
             }
+
+            this.sellerDetailsDTO = invoice.seller;
+            this.sellerDetails = true;
+            this.displayPKWiUCode = invoice.showPKWIUCode;
             console.log('form after get', this.invoiceForm);
           }
         );
