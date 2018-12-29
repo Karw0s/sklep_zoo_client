@@ -3,6 +3,7 @@ import { InvoiceService } from '../invoice.service';
 import { InvoiceListDTO } from '../invoice-list-dto';
 import { ActivatedRoute, Router } from '@angular/router';
 import index from '@angular/cli/lib/cli';
+import { BsLocaleService, defineLocale, plLocale } from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-invoice-list',

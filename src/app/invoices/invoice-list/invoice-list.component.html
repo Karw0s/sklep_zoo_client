@@ -1,35 +1,31 @@
 <div class="row">
-  <div class="col-lg-3">
+  <div class="col">
     <!--navigacja-->
-    <div class="row my-2">
-      <button class="btn btn-primary" routerLink="new">Nowa Faktura</button>
-    </div>
+    <div class="row d-flex align-items-center justify-content-start">
 
+      <button class="btn btn-primary mx-3" routerLink="new">Nowa Faktura</button>
 
-    <div class="row">
-      <form class="form-inline my-2 my-lg-0">
+      <form class="form-inline my-2 my-lg-0 mx-2">
         <div class="input-group">
           <input class="form-control" type="search" placeholder="Szukaj Faktury" aria-label="Szukaj Faktury">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
           </div>
         </div>
-
       </form>
     </div>
-
   </div>
-  <div class="col-lg-9">
-    <div class="row d-flex">
-      <div class="col-12">
-        <table class="table table-sm table-hover table-fixed table-bordred table-responsive"
+</div>
+<div class="row  my-2">
+  <div class="col">
+        <table class="table table-sm table-hover  table-responsive-md"
         *ngIf="invoices | async as invoicesAsync; else loading">
           <thead class="thead-light">
           <tr>
             <th scope="col">Numer</th>
             <th scope="col">Wartość netto</th>
             <th scope="col">Wartość brutto</th>
-            <th scope="col" class="col-4">Klient</th>
+            <th scope="col">Klient</th>
             <th scope="col">Data wystawienia</th>
             <th scope="col">Edytuj</th>
             <th scope="col">Usuń</th>
@@ -41,9 +37,9 @@
             <td [routerLink]="[invoice.id]"
                 style="cursor: pointer">{{ invoice.number }}</td>
             <td [routerLink]="[invoice.id]"
-            style="cursor: pointer">{{ invoice.priceNet | number:'1.2-2' }}</td>
+            style="cursor: pointer">{{ invoice.priceNet.toLocaleString('pl') }} zł</td>
             <td [routerLink]="[invoice.id]"
-                style="cursor: pointer">{{ invoice.priceGross | number:'1.2-2' }}</td>
+                style="cursor: pointer">{{ invoice.priceGross.toLocaleString('pl') }} zł</td>
             <td [routerLink]="[invoice.id]"
                 style="cursor: pointer">{{ invoice.buyerCompanyName }}</td>
             <td [routerLink]="[invoice.id]"
@@ -72,8 +68,6 @@
             <i class="fas fa-cog fa-spin fa-7x"></i>
           </div>
         </ng-template>
-      </div>
-    </div>
   </div>
 </div>
 

@@ -250,7 +250,7 @@
           </div>
           <!--vat-->
           <div class="col-1">
-            VAT
+            VAT %
           </div>
           <!--watrosc vat-->
           <!--<div class="col-1">-->
@@ -340,7 +340,9 @@
           <div class="form-group col-12 col-md-1 px-1">
             <div >
               <label class="d-block d-md-none" for="tax">VAT</label>
-              <input id="tax" type="text" class="form-control" formControlName="tax" (change)="onChange1(i)">
+              <select class="custom-select" id="tax" formControlName="tax" (change)="onChange1(i)">
+                <option *ngFor="let v of vatValues" [value]="v">{{ v }}</option>
+              </select>
             </div>
           </div>
           <!-- todo: wartość wat -->

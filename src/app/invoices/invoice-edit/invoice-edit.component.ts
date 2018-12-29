@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Invoice } from '../invoice.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ClientService } from '../../clients/client.service';
 import { InvoiceService } from '../invoice.service';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { Client } from '../../models/client.model';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -15,10 +14,6 @@ import { UserService } from '../../users/user.service';
 import { AppUserDetailsDTO } from '../../models/dto/app-user-details-dto';
 import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto';
 import { InvoiceDTO } from '../../models/dto/invoice/invoice-dto';
-import index from '@angular/cli/lib/cli';
-import { InvoicePositionDTO } from '../../models/dto/invoice/invoice-position-dto';
-import { formatDate } from '@angular/common';
-import { ClientDTO } from '../../models/dto/clients/client-dto';
 import { InvoiceNextNumberDTO } from '../../models/dto/invoice/invoice-next-number-dto';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -30,6 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class InvoiceEditComponent implements OnInit {
   products: ProductDetailsDTO[];
   clients: Client[];
+  vatValues = [23, 8, 7, 5, 0, 'zw'];
   locale = 'pl';
   bsValue = new Date();
   invoice: InvoiceDTO = new InvoiceDTO();
@@ -177,6 +173,9 @@ export class InvoiceEditComponent implements OnInit {
             this.invoiceForm.patchValue({
               issueDate: new Date(invoice.issueDate),
               saleDate: new Date(invoice.saleDate),
+              priceTax: invoice.priceTax.toLocaleString('pl'),
+              priceGross: invoice.priceGross.toLocaleString('pl'),
+              priceNet: invoice.priceNet.toLocaleString('pl'),
             });
 
             for (let position of this.invoice.positions) {
@@ -189,9 +188,9 @@ export class InvoiceEditComponent implements OnInit {
                   'name': [position.name, Validators.required],
                   'unitOfMeasure': [position.unitOfMeasure, Validators.required],
                   'quantity': [position.quantity, Validators.required],
-                  'priceNetto': [position.priceNetto, Validators.required],
-                  'totalPriceNetto': [position.totalPriceNetto, Validators.required],
-                  'totalPriceBrutto': [position.totalPriceBrutto, Validators.required],
+                  'priceNetto': [position.priceNetto.toFixed(2).replace('\.', ','), Validators.required],
+                  'totalPriceNetto': [position.totalPriceNetto.toFixed(2).replace('\.', ','), Validators.required],
+                  'totalPriceBrutto': [position.totalPriceBrutto.toFixed(2).replace('\.', ','), Validators.required],
                   'tax': [position.tax, Validators.required],
                   'totalPriceTax': [position.totalPriceTax, Validators.required],
                   'pkwiuCode': [position.pkwiuCode]
@@ -220,6 +219,7 @@ export class InvoiceEditComponent implements OnInit {
       this.invoice.positions[i].totalPriceBrutto = parseFloat(String(this.invoice.positions[i].totalPriceBrutto).replace(/,/g, '.'));
       this.invoice.positions[i].totalPriceTax = parseFloat(String(this.invoice.positions[i].totalPriceTax).replace(/,/g, '.'));
       this.invoice.positions[i].priceNetto = parseFloat(String(this.invoice.positions[i].priceNetto).replace(/,/g, '.'));
+      this.invoice.positions[i].quantity = parseFloat(String(this.invoice.positions[i].quantity).replace(/,/g, '.'));
       this.invoice.positions[i].ordinalNumber = i + 1;
     }
 
@@ -315,9 +315,11 @@ export class InvoiceEditComponent implements OnInit {
     console.log(this.invoiceForm);
   }
 
-  onDeletePosition(index: number) {
-    (<FormArray>this.invoiceForm.get('positions')).removeAt(index);
-    this.calculateSummary();
+  onDeletePosition(i: number) {
+    if (confirm(`Czy na pewno chcesz usnąć?`)) {
+      (<FormArray>this.invoiceForm.get('positions')).removeAt(i);
+      this.calculateSummary();
+    }
   }
 
   assignProductsCopy() {
@@ -375,7 +377,7 @@ export class InvoiceEditComponent implements OnInit {
 
   onChange1(i: number) {
     const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
-    const quantity = position.get('quantity').value;
+    const quantity = position.get('quantity').value.toString().replace(',', '\.');
     let tax = position.get('tax').value;
     if (String(tax) === 'zw') {
       tax = 0;
@@ -391,12 +393,12 @@ export class InvoiceEditComponent implements OnInit {
 
   onTotalPriceNettoChange(i: number) {
     const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
-    const quantity = position.get('quantity').value;
+    const quantity = position.get('quantity').value.toString().replace(',', '\.');
     let tax = position.get('tax').value;
     if (String(tax) === 'zw') {
       tax = 0;
     }
-    const totalPriceNetto = position.get('totalPriceNetto').value;
+    const totalPriceNetto = position.get('totalPriceNetto').value.toString().replace(',', '\.');
     const priceNetto = totalPriceNetto / quantity;
     position.patchValue({
       priceNetto: priceNetto,
@@ -408,7 +410,7 @@ export class InvoiceEditComponent implements OnInit {
 
   onTotalPriceBruttoChange(i: number) {
     const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
-    const quantity = position.get('quantity').value;
+    const quantity = position.get('quantity').value.toString().replace(',', '\.');
     let tax = position.get('tax').value;
     if (String(tax) === 'zw') {
       tax = 0;
@@ -420,9 +422,9 @@ export class InvoiceEditComponent implements OnInit {
     } catch (e) {
       console.error('totalPriceBrutto', 'not price');
     }
-    const priceNetto = ((totalPriceBrutto / quantity) * 100 / (tax + 100)).toFixed(2).replace(/\./g, ',');
+    const priceNetto = ((totalPriceBrutto / quantity) / (+tax / 100 + 1)).toFixed(2);
     position.patchValue({
-      priceNetto: priceNetto,
+      priceNetto: priceNetto.replace('\.', ','),
       totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
       totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
     });
