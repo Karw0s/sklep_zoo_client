@@ -247,6 +247,11 @@ export class InvoiceEditComponent implements OnInit {
         .subscribe(
           res => {
             console.log('updated', res);
+          },
+          (error: HttpErrorResponse) => {
+            if (error.error.errorField === 'number') {
+              this.invoiceForm.controls['number'].setErrors({exists: true});
+            }
           }
         );
 
