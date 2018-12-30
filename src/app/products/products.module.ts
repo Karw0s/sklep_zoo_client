@@ -8,7 +8,7 @@ import { ProductsRoutingModule } from './products-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductAddPageComponent } from './product-add-page/product-add-page.component';
 import { AddProductsFromFileComponent } from './product-add-page/add-products-from-file/add-products-from-file.component';
-import { SharedModule } from '../shared/shared.module';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [
     CommonModule,
-    SharedModule,
+    Ng2SearchPipeModule,
     FormsModule,
     ReactiveFormsModule,
     ProductsRoutingModule

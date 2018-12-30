@@ -9,6 +9,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PersonEditComponent } from './invoice-edit/person-edit/person-edit.component';
 import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     FormsModule,
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    Ng2SearchPipeModule,
     InvoicesRoutingModule
   ]
 })

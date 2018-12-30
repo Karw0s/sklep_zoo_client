@@ -5,14 +5,14 @@
 
       <button class="btn btn-primary mx-3" routerLink="new">Nowa Faktura</button>
 
-      <form class="form-inline my-2 my-lg-0 mx-2">
+      <div class="my-2 my-lg-0 mx-2">
         <div class="input-group">
-          <input class="form-control" type="search" placeholder="Szukaj Faktury" aria-label="Szukaj Faktury">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
           </div>
+          <input class="form-control" type="search" placeholder="Szukaj Faktury" aria-label="Szukaj Faktury" [(ngModel)]="searchString" [ngModelOptions]="{standalone: true}">
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
@@ -33,7 +33,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let invoice of returnedArray; let i = index">
+          <tr *ngFor="let invoice of invoices | filter:searchString ; let i = index">
             <td [routerLink]="[invoice.id]"
                 style="cursor: pointer">{{ invoice.number }}</td>
             <td [routerLink]="[invoice.id]"
@@ -45,29 +45,34 @@
             <td [routerLink]="[invoice.id]"
                 style="cursor: pointer">{{ invoice.issueDate }}</td>
             <td>
-              <p data-placement="top" data-toggle="tooltip" title="Edit">
-                <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit"
-                        [routerLink]="[invoice.id,'edit']">
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-primary btn-xs" [routerLink]="[invoice.id,'edit']">
                   <i class="fas fa-edit"></i>
                 </button>
-              </p>
+              </div>
             </td>
             <td>
-              <p data-placement="top" data-toggle="tooltip" title="Delete">
-                <button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" (click)="deleteInvoice(invoice.id, i)">
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-danger btn-xs" (click)="deleteInvoice(invoice.id, i)">
                   <i class="fas fa-minus-circle"></i>
                 </button>
-              </p>
+              </div>
             </td>
-            <td><button class="btn btn-outline-success" (click)="onInvoicePdf(invoice.id)"><i class="fas fa-file-pdf" style="font-size: 1em;"></i></button></td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <button class="btn btn-outline-success" (click)="onInvoicePdf(invoice.id)">
+                  <i class="fas fa-file-pdf" style="font-size: 1em;"></i>
+                </button>
+              </div>
+            </td>
           </tr>
           </tbody>
         </table>
-        <pagination *ngIf="!isLoading"
-                    [totalItems]="contentArray.length"
-                    previousText="&lsaquo;"
-                    nextText="&rsaquo;"
-                    (pageChanged)="pageChanged($event)"></pagination>
+        <!--<pagination *ngIf="!isLoading"-->
+                    <!--[totalItems]="contentArray.length"-->
+                    <!--previousText="&lsaquo;"-->
+                    <!--nextText="&rsaquo;"-->
+                    <!--(pageChanged)="pageChanged($event)"></pagination>-->
         <div *ngIf="isLoading">
           <div class="d-flex justify-content-center">
             <i class="fas fa-cog fa-spin fa-7x"></i>

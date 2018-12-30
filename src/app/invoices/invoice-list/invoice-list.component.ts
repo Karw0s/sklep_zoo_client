@@ -18,6 +18,7 @@ export class InvoiceListComponent implements OnInit {
   isLoading = false;
   private returnedArray: InvoiceListDTO[];
   private contentArray: InvoiceListDTO[];
+  searchString: any;
 
   constructor(private invoiceService: InvoiceService,
               private router: Router,
@@ -30,12 +31,12 @@ export class InvoiceListComponent implements OnInit {
         () => this.isLoading = false
       ))
       .subscribe(
-      (invoiceListDTO: InvoiceListDTO[]) => {
-        this.invoices = invoiceListDTO;
-        this.contentArray = invoiceListDTO;
-        this.returnedArray = this.contentArray.slice(0, 10);
-      }
-    );
+        (invoiceListDTO: InvoiceListDTO[]) => {
+          this.invoices = invoiceListDTO;
+          this.contentArray = invoiceListDTO;
+          this.returnedArray = this.contentArray.slice(0, 10);
+        }
+      );
   }
 
   deleteInvoice(id: number, i: number) {
@@ -50,10 +51,12 @@ export class InvoiceListComponent implements OnInit {
   }
 
   onInvoicePdf(id: number) {
-    this.invoiceService.getInvoicePdf(id)
+    this.invoiceService.getInvoicePdf(id, true)
       .subscribe(response => {
         const blob = new Blob([response.content], {type: 'application/pdf'});
-            saveAs(blob, response.fileName);
+        saveAs(blob, response.fileName);
+        // const fileURL = URL.createObjectURL(blob);
+        // window.open(fileURL, '_blank');
       });
   }
 

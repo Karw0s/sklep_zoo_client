@@ -25,12 +25,19 @@ export class InvoiceService {
     return this.httpClient.get(`${this.apiEndpoint}/${invoiceId}`);
   }
 
-  getInvoicePdf(invoiceId: number) {
+  getInvoicePdf(invoiceId: number, originalPlusCopy: boolean) {
     const headers = new HttpHeaders();
     headers.append('Accept', 'application/pdf');
-    return this.httpClient.get(`${this.apiEndpoint}/${invoiceId}/pdf`, { responseType: 'blob', observe: 'response' })
-      .pipe(map(res => ({content: res.body,
-        fileName: res.headers.get('Content-Filename')})
+    return this.httpClient.get(`${this.apiEndpoint}/${invoiceId}/pdf`,
+      {
+        responseType: 'blob',
+        observe: 'response',
+        params: new HttpParams().set('originalPlusCopy', String(originalPlusCopy))
+      })
+      .pipe(map(res => ({
+          content: res.body,
+          fileName: res.headers.get('Content-Filename')
+        })
       ));
   }
 
