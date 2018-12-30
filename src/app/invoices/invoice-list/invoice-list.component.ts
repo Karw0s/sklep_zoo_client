@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../invoice.service';
-import { InvoiceListDTO } from '../invoice-list-dto';
 import { ActivatedRoute, Router } from '@angular/router';
-import index from '@angular/cli/lib/cli';
-import { BsLocaleService, defineLocale, plLocale } from 'ngx-bootstrap';
+import { saveAs } from 'file-saver';
+import { map } from 'rxjs/operators';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-invoice-list',
@@ -13,6 +13,7 @@ import { BsLocaleService, defineLocale, plLocale } from 'ngx-bootstrap';
 export class InvoiceListComponent implements OnInit {
 
   invoices;
+  private filename: string;
 
   constructor(private invoiceService: InvoiceService,
               private router: Router,
@@ -27,11 +28,20 @@ export class InvoiceListComponent implements OnInit {
 
   deleteInvoice(id: number, i: number) {
     if (confirm(`Czy na pewno chcesz usnąć fakture?`)) {
-      this.invoiceService.deleteInvoice(id).subscribe(
-        res => {
-          this.invoices = this.invoiceService.getInvoices();
-        }
-      );
+      this.invoiceService.deleteInvoice(id)
+        .subscribe(
+          res => {
+            this.invoices = this.invoiceService.getInvoices();
+          }
+        );
     }
+  }
+
+  onInvoicePdf(id: number) {
+    this.invoiceService.getInvoicePdf(id)
+      .subscribe(response => {
+        const blob = new Blob([response.content], {type: 'application/pdf'});
+            saveAs(blob, response.fileName);
+      });
   }
 }
