@@ -14,9 +14,10 @@ import { ProductDTO } from '../../models/dto/products/product-dto';
 })
 export class ProductListComponent implements OnInit, OnDestroy {
 
-  products;
+  products: ProductDetailsDTO[];
   productChangeSub: Subscription;
   private deleteSubscription: Subscription;
+  public searchString: string;
 
   constructor(private productService: ProductService) { }
 

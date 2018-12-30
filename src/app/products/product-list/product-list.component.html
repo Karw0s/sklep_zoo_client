@@ -1,20 +1,22 @@
 <div class="row justify-content-between">
   <div class="col">
     <form class="form-inline  my-lg-0">
-      <input class="form-control mr-sm-2" width="" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-0" type="submit">Szukaj</button>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fas fa-search"></i></span>
+        </div>
+        <input class="form-control mr-sm-2" width="" type="search" placeholder="Szukaj" aria-label="Search" [(ngModel)]="searchString" [ngModelOptions]="{standalone: true}">
+      </div>
     </form>
-    <!--todo: aktywne szukanie po nazwie produktu-->
   </div>
 </div>
 <hr>
 <div class="row">
   <div class="col-12 list-group">
     <app-product-item
-      *ngFor="let product of products; let i = index"
+      *ngFor="let product of products | filter:'name': searchString; let i = index"
       [product]="product"
       [index]="i">
     </app-product-item>
   </div>
 </div>
-<!--*ngFor="let product of products | async ; let i = index"-->

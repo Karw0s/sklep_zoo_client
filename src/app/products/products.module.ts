@@ -8,6 +8,7 @@ import { ProductsRoutingModule } from './products-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductAddPageComponent } from './product-add-page/product-add-page.component';
 import { AddProductsFromFileComponent } from './product-add-page/add-products-from-file/add-products-from-file.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { AddProductsFromFileComponent } from './product-add-page/add-products-fr
   ],
   imports: [
     CommonModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
     ProductsRoutingModule
