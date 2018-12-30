@@ -6,6 +6,7 @@ import { ClientListComponent } from './client-list/client-list.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { ClientsRoutingModule } from './clients-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
     FormsModule,
     ClientsRoutingModule

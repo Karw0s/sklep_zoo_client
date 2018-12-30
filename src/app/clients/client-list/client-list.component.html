@@ -7,14 +7,21 @@
       <!--</div>-->
 
       <!--<div class="col-12 col-sm-6">-->
-        <form class="form-inline my-2 my-lg-0 mx-2">
+        <div class="my-2 my-lg-0 mx-2">
           <div class="input-group">
-            <input class="form-control" type="search" placeholder="Szukaj Klienta" aria-label="Szukaj Klienta">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
+            <input class="form-control" type="search" placeholder="Szukaj Klienta" aria-label="Szukaj Klienta" [(ngModel)]="searchString" [ngModelOptions]="{standalone: true}">
+            <!--<div class="input-group-append">-->
+              <!--<select class="custom-select" id="exampleFormControlSelect1">-->
+                <!--<option value="companyName">Nazwa Firmy</option>-->
+                <!--<option value="nipNumber">Nip</option>-->
+                <!--<option value="address">Adres</option>-->
+              <!--</select>-->
+            <!--</div>-->
           </div>
-        </form>
+        </div>
       <!--</div>-->
     </div>
   </div>
@@ -42,7 +49,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let client of clientsAsync">
+      <tr *ngFor="let client of clientsAsync | filter:'companyName': searchString">
         <td [routerLink]="[client.id]"
             style="cursor: pointer">{{ client.companyName }}</td>
         <td [routerLink]="[client.id]"

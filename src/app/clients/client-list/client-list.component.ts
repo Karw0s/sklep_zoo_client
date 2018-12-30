@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ClientListComponent implements OnInit {
   clients;
+  public searchString: string;
 
   constructor(private clientService: ClientService,
               private router: Router,
