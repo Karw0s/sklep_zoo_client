@@ -33,7 +33,7 @@
       </div>
       <div class="form-group col-12 col-md-6 col-lg-3 required">
         <label for="issuePlace">Miejsce wystawienia</label>
-        <input id="issuePlace" type="text" class="form-control" formControlName="issuePlace">
+        <input id="issuePlace" type="text" class="form-control" formControlName="issuePlace" autocomplete="issuePlace">
       </div>
       <div class="form-group col-12 col-md-6 col-lg-2 required">
         <label for="saleDate">Data sprzedaży</label>
@@ -59,49 +59,49 @@
         <div class="row">
           <div class="form-groupcol-12 col-sm-12 col-md-7 required">
             <label for="companyNameSeller">Nazwa firmy</label>
-            <input type="text" id="companyNameSeller" class="form-control" formControlName="companyName">
+            <input type="text" id="companyNameSeller" class="form-control" formControlName="companyName" autocomplete="seller companyName">
           </div>
           <div class="form-group col-12 col-md-5 required">
             <label for="nipNumberSeller">Nip</label>
-            <input type="text" id="nipNumberSeller" class="form-control" formControlName="nipNumber">
+            <input type="text" id="nipNumberSeller" class="form-control" formControlName="nipNumber" autocomplete="seller nipNumber">
           </div>
         </div>
         <div class="row required" formGroupName="address">
           <div class="form-group col-12 col-lg-8">
             <label for="streetSeller">Ulica</label>
-            <input type="text" id="streetSeller" class="form-control" formControlName="street">
+            <input type="text" id="streetSeller" class="form-control" formControlName="street" autocomplete="seller street-address">
           </div>
           <div class="form-group col-12 col-sm-4 col-md-2 col-lg-4">
             <label for="zipCodeSeller">Kod pocztowy</label>
-            <input type="text" id="zipCodeSeller" class="form-control" formControlName="zipCode">
+            <input type="text" id="zipCodeSeller" class="form-control" formControlName="zipCode" autocomplete="seller postal-code">
           </div>
           <div class="form-group col-12 col-sm-8 col-md-6">
             <label for="citySeller">Miejscowość</label>
-            <input type="text" id="citySeller" class="form-control" formControlName="city">
+            <input type="text" id="citySeller" class="form-control" formControlName="city" autocomplete="seller city">
           </div>
           <div class="form-group col-12 col-md-4 col-lg-6">
             <label for="countrySeller">Kraj</label>
-            <input type="text" id="countrySeller" class="form-control" formControlName="country">
+            <input type="text" id="countrySeller" class="form-control" formControlName="country" autocomplete="seller country">
           </div>
         </div>
         <div class="row">
           <div class="form-group col-12 col-md-6">
             <label for="firstNameSeller">Imię</label>
-            <input type="text" id="firstNameSeller" class="form-control" formControlName="firstName">
+            <input type="text" id="firstNameSeller" class="form-control" formControlName="firstName" autocomplete="seller firstName">
           </div>
           <div class="form-group col-12 col-md-6">
             <label for="lastNameSeller">Nazwisko</label>
-            <input type="text" id="lastNameSeller" class="form-control" formControlName="lastName">
+            <input type="text" id="lastNameSeller" class="form-control" formControlName="lastName" autocomplete="seller lastName">
           </div>
         </div>
         <div class="row">
-          <div class="form-group col-12 col-md-5">
+          <div class="form-group col-12 col-md-5 pr-1">
             <label for="bank">Bank</label>
-            <input type="text" id="bank" class="form-control" formControlName="bank">
+            <input type="text" id="bank" class="form-control" formControlName="bank" autocomplete="seller bankName">
           </div>
-          <div class="form-group col-12 col-md-7">
+          <div class="form-group col-12 col-md-7 pl-1">
             <label for="bankAccountNumber">Numer konta</label>
-            <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber">
+            <input type="text" id="bankAccountNumber" class="form-control" formControlName="bankAccountNumber" autocomplete="seller bankAccountNumber">
           </div>
         </div>
         <div class="row">
@@ -181,35 +181,35 @@
 
           <div class="form-group col-12 col-md-5 required">
             <label for="nipNumberBuyer">Nip</label>
-            <input type="text" id="nipNumberBuyer" class="form-control" formControlName="nipNumber">
+            <input type="text" id="nipNumberBuyer" class="form-control" formControlName="nipNumber" autocomplete="buyer nipNumber">
           </div>
         </div>
         <div class="row required d-flex align-items-end" formGroupName="address">
           <div class="form-group col-12 col-lg-8">
             <label for="streetBuyer">Ulica</label>
-            <input type="text" id="streetBuyer" class="form-control" formControlName="street">
+            <input type="text" id="streetBuyer" class="form-control" formControlName="street" autocomplete="buyer street-address">
           </div>
           <div class="form-group col-12 col-sm-4 col-md-2 col-lg-4">
             <label for="zipCodeBuyer">Kod pocztowy</label>
-            <input type="text" id="zipCodeBuyer" class="form-control" formControlName="zipCode">
+            <input type="text" id="zipCodeBuyer" class="form-control" formControlName="zipCode" autocomplete="buyer postalCode">
           </div>
           <div class="form-group col-12 col-sm-8 col-md-6">
             <label for="cityBuyer">Miejscowość</label>
-            <input type="text" id="cityBuyer" class="form-control" formControlName="city">
+            <input type="text" id="cityBuyer" class="form-control" formControlName="city" autocomplete="buyer city">
           </div>
           <div class="form-group col-12 col-md-4 col-lg-6">
             <label for="countryBuyer">Kraj</label>
-            <input type="text" id="countryBuyer" class="form-control" formControlName="country">
+            <input type="text" id="countryBuyer" class="form-control" formControlName="country" autocomplete="buyer country">
           </div>
         </div>
         <div class="row">
           <div class="form-group col-12 col-md-6">
             <label for="firstNameBuyer">Imię</label>
-            <input type="text" id="firstNameBuyer" class="form-control" formControlName="firstName">
+            <input type="text" id="firstNameBuyer" class="form-control" formControlName="firstName" autocomplete="buyer firstName">
           </div>
           <div class="form-group col-12 col-md-6">
             <label for="lastNameBuyer">Nazwisko</label>
-            <input type="text" id="lastNameBuyer" class="form-control" formControlName="lastName">
+            <input type="text" id="lastNameBuyer" class="form-control" formControlName="lastName" autocomplete="buyer lastName">
           </div>
         </div>
       </div>
@@ -252,10 +252,6 @@
           <div class="col-1">
             VAT %
           </div>
-          <!--watrosc vat-->
-          <!--<div class="col-1">-->
-            <!--Wartość VAT-->
-          <!--</div>-->
           <!--wartosc netto-->
           <div class="col-1">
             Watrość netto
@@ -282,7 +278,7 @@
               <button class="btn btn-outline-danger mx-1" type="button" (click)="onDeletePosition(i)"><i
                 class="fas fa-minus-circle"></i></button>
               <input id="name" type="text" class="form-control" formControlName="name" #myInput
-                     (input)="filterProducts(myInput.value)">
+                     (input)="filterProducts(myInput.value)" autocomplete="product-name">
               <div class="input-group-append">
                 <button type="button"
                         class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
@@ -307,7 +303,7 @@
             <input id="pkwiuCode"
                    type="text"
                    class="form-control"
-                   formControlName="pkwiuCode">
+                   formControlName="pkwiuCode" autocomplete="pkwiuCode">
           </div>
           <div class="form-group col-12 col-md-1 px-1">
             <!--ilosc-->
@@ -315,14 +311,14 @@
             <input id="quantity"
                    type="text"
                    class="form-control"
-                   formControlName="quantity"
+                   formControlName="quantity" autocomplete="quantity"
                    (change)="onChange1(i)">
           </div>
           <!--jednostka-->
           <div class="form-group col-12 col-md-1 px-1">
             <div >
               <label class="d-block d-md-none" for="unitOfMeasure">Jednostka miary</label>
-              <input id="unitOfMeasure" type="text" class="form-control" formControlName="unitOfMeasure">
+              <input id="unitOfMeasure" type="text" class="form-control" formControlName="unitOfMeasure" autocomplete="unitOfMeasure">
             </div>
           </div>
           <!--cena netto-->
@@ -333,6 +329,7 @@
                      type="text"
                      class="form-control"
                      formControlName="priceNetto"
+                     autocomplete="priceNetto"
                      (change)="onChange1(i)">
             </div>
           </div>
@@ -345,20 +342,13 @@
               </select>
             </div>
           </div>
-          <!-- todo: wartość wat -->
-          <!--<div class="form-group col-12 col-md-1 px-1">-->
-            <!--<div >-->
-              <!--<label class="d-block d-md-none" for="totalPriceTax">Wartość VAT</label>-->
-              <!--<input id="totalPriceTax" type="text" class="form-control" [readonly]="1" formControlName="totalPriceTax">-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--wartosc netto-->
           <div class="form-group col-12 col-md-1 px-1">
             <label class="d-block d-md-none" for="totalPriceNetto">Wartość Netto</label>
             <input id="totalPriceNetto"
                    type="text"
                    class="form-control"
                    formControlName="totalPriceNetto"
+                   autocomplete="totalPriceNetto"
                    (change)="onTotalPriceNettoChange(i)">
           </div>
           <!--wartosc brutto-->
@@ -368,6 +358,7 @@
                    type="text"
                    class="form-control"
                    formControlName="totalPriceBrutto"
+                   autocomplete="totalPriceBrutto"
                    (change)="onTotalPriceBruttoChange(i)">
           </div>
         </div>

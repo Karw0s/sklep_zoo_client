@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PersonEditComponent } from './invoice-edit/person-edit/person-edit.component';
 import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
     ReactiveFormsModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
     InvoicesRoutingModule
   ]
 })

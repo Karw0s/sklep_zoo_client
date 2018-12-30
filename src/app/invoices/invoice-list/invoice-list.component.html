@@ -19,7 +19,7 @@
 <div class="row  my-2">
   <div class="col">
         <table class="table table-sm table-hover  table-responsive-md"
-        *ngIf="invoices | async as invoicesAsync; else loading">
+        *ngIf="!isLoading">
           <thead class="thead-light">
           <tr>
             <th scope="col">Numer</th>
@@ -33,7 +33,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let invoice of invoicesAsync; let i = index">
+          <tr *ngFor="let invoice of returnedArray; let i = index">
             <td [routerLink]="[invoice.id]"
                 style="cursor: pointer">{{ invoice.number }}</td>
             <td [routerLink]="[invoice.id]"
@@ -63,11 +63,16 @@
           </tr>
           </tbody>
         </table>
-        <ng-template #loading>
+        <pagination *ngIf="!isLoading"
+                    [totalItems]="contentArray.length"
+                    previousText="&lsaquo;"
+                    nextText="&rsaquo;"
+                    (pageChanged)="pageChanged($event)"></pagination>
+        <div *ngIf="isLoading">
           <div class="d-flex justify-content-center">
             <i class="fas fa-cog fa-spin fa-7x"></i>
           </div>
-        </ng-template>
+        </div>
   </div>
 </div>
 

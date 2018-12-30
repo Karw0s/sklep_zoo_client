@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../invoice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { saveAs } from 'file-saver';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { InvoiceListDTO } from '../invoice-list-dto';
 
 @Component({
   selector: 'app-invoice-list',
@@ -13,17 +15,27 @@ import { HttpResponse } from '@angular/common/http';
 export class InvoiceListComponent implements OnInit {
 
   invoices;
-  private filename: string;
+  isLoading = false;
+  private returnedArray: InvoiceListDTO[];
+  private contentArray: InvoiceListDTO[];
 
   constructor(private invoiceService: InvoiceService,
               private router: Router,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.invoices = this.invoiceService.getInvoices();
-    //   .subscribe(
-    //   (invoiceListDTO: InvoiceListDTO[]) => { this.invoices = invoiceListDTO; }
-    // );
+    this.isLoading = true;
+    this.invoices = this.invoiceService.getInvoices()
+      .pipe(finalize(
+        () => this.isLoading = false
+      ))
+      .subscribe(
+      (invoiceListDTO: InvoiceListDTO[]) => {
+        this.invoices = invoiceListDTO;
+        this.contentArray = invoiceListDTO;
+        this.returnedArray = this.contentArray.slice(0, 10);
+      }
+    );
   }
 
   deleteInvoice(id: number, i: number) {
@@ -43,5 +55,11 @@ export class InvoiceListComponent implements OnInit {
         const blob = new Blob([response.content], {type: 'application/pdf'});
             saveAs(blob, response.fileName);
       });
+  }
+
+  pageChanged(event: PageChangedEvent): void {
+    const startItem = (event.page - 1) * event.itemsPerPage;
+    const endItem = event.page * event.itemsPerPage;
+    this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 }

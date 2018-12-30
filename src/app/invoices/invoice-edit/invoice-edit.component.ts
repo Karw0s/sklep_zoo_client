@@ -78,7 +78,8 @@ export class InvoiceEditComponent implements OnInit {
     );
     const invlicePositions = new FormArray([]);
 
-    this.route.params.subscribe(
+    this.route.params
+      .subscribe(
       (prams: Params) => {
         const url: string = this.router.url;
 
@@ -87,20 +88,7 @@ export class InvoiceEditComponent implements OnInit {
 
         this.formInit();
 
-        if (this.clientID) {
-          this.clientService.getClient(this.clientID).subscribe(
-            client => {
-              this.client = client;
-              this.client.id = this.clientID;
-              console.log('client', client);
-              console.log('buyer', this.invoice.buyer);
-              this.invoice.buyer = this.client;
-              this.invoiceForm.patchValue(this.invoice);
-            }
-          );
-        }
-
-        if (url.match('/new$')) {
+        if (url.match('/new')) {
           this.isLoading = true;
           this.userService.getUserDetails()
             .pipe(finalize(
@@ -112,6 +100,20 @@ export class InvoiceEditComponent implements OnInit {
                 this.invoiceForm.get('issuePlace').patchValue(this.sellerDetailsDTO.address.city);
                 this.invoiceForm.get('seller').patchValue(this.sellerDetailsDTO);
                 this.sellerDetails = true;
+
+                if (this.clientID) {
+                  this.clientService.getClient(this.clientID)
+                    .subscribe(
+                    client => {
+                      this.client = client;
+                      this.client.id = this.clientID;
+                      console.log('client', client);
+                      console.log('buyer', this.invoice.buyer);
+                      this.invoice.buyer = this.client;
+                      this.invoiceForm.get('buyer').patchValue(this.client);
+                    }
+                  );
+                }
               },
               error => {
                 this.sellerDetails = false;
@@ -293,10 +295,6 @@ export class InvoiceEditComponent implements OnInit {
 
   getControls() {
     return (<FormArray>this.invoiceForm.get('positions')).controls;
-  }
-
-  getProduct(positionCtrl) {
-    return positionCtrl.get('product').contorls;
   }
 
   addPosition() {

@@ -5,7 +5,7 @@
       <hr>
     </div>
     <div class="col-6">
-      <button class="btn btn-success mx-2" [routerLink]="['/invoices/new']" [queryParams]="{ client: clientAsync.id}">
+      <button class="btn btn-success mx-2" [routerLink]="['/invoices/new']" [queryParams]="{ client: id}">
         <i class="fas fa-file-invoice"></i> Wystaw fakturę
       </button>
       <button class="btn btn-primary mx-2" [routerLink]="['edit']">
