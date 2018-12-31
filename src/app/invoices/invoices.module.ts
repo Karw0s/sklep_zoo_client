@@ -9,6 +9,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PersonEditComponent } from './invoice-edit/person-edit/person-edit.component';
 import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
@@ -25,6 +26,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     FormsModule,
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    TypeaheadModule.forRoot(),
     Ng2SearchPipeModule,
     InvoicesRoutingModule
   ]

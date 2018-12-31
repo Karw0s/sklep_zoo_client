@@ -16,6 +16,10 @@ import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto
 import { InvoiceDTO } from '../../models/dto/invoice/invoice-dto';
 import { InvoiceNextNumberDTO } from '../../models/dto/invoice/invoice-next-number-dto';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
+import { NotificationsService } from 'angular2-notifications';
+import { el } from '@angular/platform-browser/testing/src/browser_util';
 
 @Component({
   selector: 'app-invoice-edit',
@@ -23,6 +27,11 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./invoice-edit.component.css']
 })
 export class InvoiceEditComponent implements OnInit {
+  asyncSelected: string;
+  typeaheadLoading: boolean;
+  typeaheadNoResults: boolean;
+  dataSource: Observable<any>;
+
   products: ProductDetailsDTO[];
   clients: Client[];
   vatValues = [23, 8, 7, 5, 0, 'zw'];
@@ -48,6 +57,7 @@ export class InvoiceEditComponent implements OnInit {
               private localeService: BsLocaleService,
               private productService: ProductService,
               private userService: UserService,
+              private _service: NotificationsService,
               private router: Router,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder) { }
@@ -58,71 +68,68 @@ export class InvoiceEditComponent implements OnInit {
 
     this.productService.getProducts()
       .subscribe(
-      (products: ProductDetailsDTO[]) => {
-        console.log('products', products);
-        this.products = products;
-        this.assignProductsCopy();
-      });
+        (products: ProductDetailsDTO[]) => {
+          console.log('products', products);
+          this.products = products;
+        });
 
     this.clientService.getClients()
       .subscribe(
-      (clients: Client[]) => {
-        this.clients = clients;
-        this.assignClientsCopy();
-      });
+        (clients: Client[]) => {
+          this.clients = clients;
+        });
 
     this.route.queryParams.subscribe(
       params => {
         this.clientID = +params.client;
       }
     );
-    const invlicePositions = new FormArray([]);
 
     this.route.params
       .subscribe(
-      (prams: Params) => {
-        const url: string = this.router.url;
+        (prams: Params) => {
+          const url: string = this.router.url;
 
-        this.id = +prams['id'];
-        this.editMode = prams['id'] != null;
+          this.id = +prams['id'];
+          this.editMode = prams['id'] != null;
 
-        this.formInit();
+          this.formInit();
 
-        if (url.match('/new')) {
-          this.isLoading = true;
-          this.userService.getUserDetails()
-            .pipe(finalize(
-              () => this.isLoading = false
-            ))
-            .subscribe(
-              (detailsDTO: AppUserDetailsDTO) => {
-                this.sellerDetailsDTO = detailsDTO;
-                this.invoiceForm.get('issuePlace').patchValue(this.sellerDetailsDTO.address.city);
-                this.invoiceForm.get('seller').patchValue(this.sellerDetailsDTO);
-                this.sellerDetails = true;
+          if (url.match('/new')) {
+            this.isLoading = true;
+            this.userService.getUserDetails()
+              .pipe(finalize(
+                () => this.isLoading = false
+              ))
+              .subscribe(
+                (detailsDTO: AppUserDetailsDTO) => {
+                  this.sellerDetailsDTO = detailsDTO;
+                  this.invoiceForm.get('issuePlace').patchValue(this.sellerDetailsDTO.address.city);
+                  this.invoiceForm.get('seller').patchValue(this.sellerDetailsDTO);
+                  this.sellerDetails = true;
 
-                if (this.clientID) {
-                  this.clientService.getClient(this.clientID)
-                    .subscribe(
-                    client => {
-                      this.client = client;
-                      this.client.id = this.clientID;
-                      console.log('client', client);
-                      console.log('buyer', this.invoice.buyer);
-                      this.invoice.buyer = this.client;
-                      this.invoiceForm.get('buyer').patchValue(this.client);
-                    }
-                  );
+                  if (this.clientID) {
+                    this.clientService.getClient(this.clientID)
+                      .subscribe(
+                        client => {
+                          this.client = client;
+                          this.client.id = this.clientID;
+                          console.log('client', client);
+                          console.log('buyer', this.invoice.buyer);
+                          this.invoice.buyer = this.client;
+                          this.invoiceForm.get('buyer').patchValue(this.client);
+                        }
+                      );
+                  }
+                },
+                error => {
+                  this.sellerDetails = false;
+                  console.log('cannot get app user details');
                 }
-              },
-              error => {
-                this.sellerDetails = false;
-                console.log('cannot get app user details');
-              }
-            );
+              );
+          }
         }
-      }
-    );
+      );
 
   }
 
@@ -214,66 +221,74 @@ export class InvoiceEditComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitting = true;
+
     this.invoice = this.invoiceForm.value;
+    if (this.invoice.positions.length !== 0) {
+      for (let i = 0; i < this.invoice.positions.length; ++i) {
+        this.invoice.positions[i].totalPriceNetto = parseFloat(String(this.invoice.positions[i].totalPriceNetto).replace(/,/g, '.'));
+        this.invoice.positions[i].totalPriceBrutto = parseFloat(String(this.invoice.positions[i].totalPriceBrutto).replace(/,/g, '.'));
+        this.invoice.positions[i].totalPriceTax = parseFloat(String(this.invoice.positions[i].totalPriceTax).replace(/,/g, '.'));
+        this.invoice.positions[i].priceNetto = parseFloat(String(this.invoice.positions[i].priceNetto).replace(/,/g, '.'));
+        this.invoice.positions[i].quantity = parseFloat(String(this.invoice.positions[i].quantity).replace(/,/g, '.'));
+        this.invoice.positions[i].ordinalNumber = i + 1;
+      }
 
-    for (let i = 0; i < this.invoice.positions.length; ++i) {
-      this.invoice.positions[i].totalPriceNetto = parseFloat(String(this.invoice.positions[i].totalPriceNetto).replace(/,/g, '.'));
-      this.invoice.positions[i].totalPriceBrutto = parseFloat(String(this.invoice.positions[i].totalPriceBrutto).replace(/,/g, '.'));
-      this.invoice.positions[i].totalPriceTax = parseFloat(String(this.invoice.positions[i].totalPriceTax).replace(/,/g, '.'));
-      this.invoice.positions[i].priceNetto = parseFloat(String(this.invoice.positions[i].priceNetto).replace(/,/g, '.'));
-      this.invoice.positions[i].quantity = parseFloat(String(this.invoice.positions[i].quantity).replace(/,/g, '.'));
-      this.invoice.positions[i].ordinalNumber = i + 1;
-    }
+      this.invoice.priceGross = parseFloat(String(this.invoice.priceGross).replace(/,/g, '.'));
+      this.invoice.priceNet = parseFloat(String(this.invoice.priceNet).replace(/,/g, '.'));
+      this.invoice.priceTax = parseFloat(String(this.invoice.priceTax).replace(/,/g, '.'));
 
-    this.invoice.priceGross = parseFloat(String(this.invoice.priceGross).replace(/,/g, '.'));
-    this.invoice.priceNet = parseFloat(String(this.invoice.priceNet).replace(/,/g, '.'));
-    this.invoice.priceTax = parseFloat(String(this.invoice.priceTax).replace(/,/g, '.'));
-
-    const issueDate: Date = this.invoiceForm.controls['issueDate'].value;
-    const saleDate: Date = this.invoiceForm.controls['saleDate'].value;
-    this.invoice.issueDate = issueDate.toJSON();
-    // formatDate(this.invoiceForm.value.issueDate, 'shortDate', 'en-US');
-    this.invoice.saleDate = saleDate.toJSON();
+      const issueDate: Date = this.invoiceForm.controls['issueDate'].value;
+      const saleDate: Date = this.invoiceForm.controls['saleDate'].value;
+      this.invoice.issueDate = issueDate.toJSON();
+      // formatDate(this.invoiceForm.value.issueDate, 'shortDate', 'en-US');
+      this.invoice.saleDate = saleDate.toJSON();
 
 
-    console.log(this.invoice);
+      console.log(this.invoice);
 
-    if (this.editMode) {
-      console.log('updating...');
-      this.invoiceService.updateInvoice(this.id, this.invoice)
-        .pipe(finalize(
-          () => {
-            this.isSubmitting = false;
-          }
-        ))
-        .subscribe(
-          res => {
-            console.log('updated', res);
-          },
-          (error: HttpErrorResponse) => {
-            if (error.error.errorField === 'number') {
-              this.invoiceForm.controls['number'].setErrors({exists: true});
+      if (this.editMode) {
+        console.log('updating...');
+        this.invoiceService.updateInvoice(this.id, this.invoice)
+          .pipe(finalize(
+            () => {
+              this.isSubmitting = false;
             }
-          }
-        );
-
-
+          ))
+          .subscribe(
+            res => {
+              console.log('updated', res);
+              this._service.success('Sukces', 'Faktura została pomyslnie zaktualizowana');
+            },
+            (error: HttpErrorResponse) => {
+              if (error.error.errorField === 'number') {
+                this.invoiceForm.controls['number'].setErrors({exists: true});
+              }
+              this._service.error('Błąd');
+            }
+          );
+      } else {
+        this.invoiceService.createInvoice(this.invoice)
+          .pipe(finalize(
+            () => {
+              this.isSubmitting = false;
+            }
+          ))
+          .subscribe(
+            res => {
+              console.log(res);
+              this._service.success('Sukces', 'Faktura została pomyślnie utworzona');
+            },
+            (error: HttpErrorResponse) => {
+              if (error.error.errorField === 'number') {
+                this.invoiceForm.controls['number'].setErrors({exists: true});
+              }
+              this._service.error('Błąd');
+            }
+          );
+      }
     } else {
-      this.invoiceService.createInvoice(this.invoice)
-        .pipe(finalize(
-          () => {
-            this.isSubmitting = false;
-          }
-        ))
-        .subscribe(
-          res => {
-            console.log(res);
-          },
-          (error: HttpErrorResponse) => {
-            if (error.error.errorField === 'number') {
-              this.invoiceForm.controls['number'].setErrors({exists: true});
-            }
-          });
+      this.isSubmitting = false;
+      this._service.error('Pozycje faktury', 'Faktura musi posiadać co najmniej jedną pozycję');
     }
   }
 
@@ -325,18 +340,9 @@ export class InvoiceEditComponent implements OnInit {
     }
   }
 
-  assignProductsCopy() {
-    this.filteredProducts = Object.assign([], this.products);
-  }
-
-  filterProducts(value) {
-    if (!value) { this.assignProductsCopy(); }
-    this.filteredProducts = Object.assign([], this.products).filter(
-      item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1
-    );
-  }
-
-  onSelectProduct(i: number, product: Product) {
+  onSelectProduct(i: number, e: TypeaheadMatch): void {
+    console.log('Selected value: ', e.item);
+    const product = e.item;
     (<FormArray>this.invoiceForm.get('positions')).at(i).patchValue({
       productId: product.id,
       name: product.name,
@@ -358,11 +364,8 @@ export class InvoiceEditComponent implements OnInit {
     });
   }
 
-  assignClientsCopy() {
-    this.filteredClients = Object.assign([], this.clients);
-  }
-
-  onSelectClient(client: Client) {
+  onSelectClient(e: TypeaheadMatch) {
+    const client = e.item;
     this.clientService.getClient(client.id).subscribe(
       buyer => this.setClient(client.id, <Client>buyer)
     );
