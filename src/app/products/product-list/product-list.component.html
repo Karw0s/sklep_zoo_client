@@ -1,14 +1,14 @@
-<div class="row justify-content-between">
-  <div class="col">
-    <form class="form-inline  my-lg-0">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text"><i class="fas fa-search"></i></span>
-        </div>
-        <input class="form-control mr-sm-2" width="" type="search" placeholder="Szukaj" aria-label="Search"
-               [(ngModel)]="searchString" [ngModelOptions]="{standalone: true}">
+<div class="row d-flex align-items-center justify-content-start">
+  <button class="btn btn-primary mx-3" routerLink="new/on-page">Nowy Produkt</button>
+
+  <div class="my-2 my-lg-0 mx-2">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fas fa-search"></i></span>
       </div>
-    </form>
+      <input class="form-control mr-sm-2" width="" type="search" placeholder="Szukaj" aria-label="Search"
+             [(ngModel)]="searchString" [ngModelOptions]="{standalone: true}">
+    </div>
   </div>
 </div>
 <hr>
