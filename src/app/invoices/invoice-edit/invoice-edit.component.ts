@@ -9,17 +9,15 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { plLocale } from 'ngx-bootstrap/locale';
 import { ProductService } from '../../products/product.service';
-import { Product } from '../../products/product.model';
 import { UserService } from '../../users/user.service';
 import { AppUserDetailsDTO } from '../../models/dto/app-user-details-dto';
 import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto';
 import { InvoiceDTO } from '../../models/dto/invoice/invoice-dto';
 import { InvoiceNextNumberDTO } from '../../models/dto/invoice/invoice-next-number-dto';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
-import { NotificationsService } from 'angular2-notifications';
-import { el } from '@angular/platform-browser/testing/src/browser_util';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-invoice-edit',
@@ -57,7 +55,7 @@ export class InvoiceEditComponent implements OnInit {
               private localeService: BsLocaleService,
               private productService: ProductService,
               private userService: UserService,
-              private _service: NotificationsService,
+              private toastr: ToastrService,
               private router: Router,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder) { }
@@ -257,13 +255,13 @@ export class InvoiceEditComponent implements OnInit {
           .subscribe(
             res => {
               console.log('updated', res);
-              this._service.success('Sukces', 'Faktura została pomyslnie zaktualizowana');
+              this.toastr.success('Faktura została pomyslnie zaktualizowana', 'Sukces');
             },
             (error: HttpErrorResponse) => {
               if (error.error.errorField === 'number') {
                 this.invoiceForm.controls['number'].setErrors({exists: true});
               }
-              this._service.error('Błąd');
+              this.toastr.error('Błąd');
             }
           );
       } else {
@@ -276,19 +274,19 @@ export class InvoiceEditComponent implements OnInit {
           .subscribe(
             res => {
               console.log(res);
-              this._service.success('Sukces', 'Faktura została pomyślnie utworzona');
+              this.toastr.success('Faktura została pomyślnie utworzona', 'Sukces');
             },
             (error: HttpErrorResponse) => {
               if (error.error.errorField === 'number') {
                 this.invoiceForm.controls['number'].setErrors({exists: true});
               }
-              this._service.error('Błąd');
+              this.toastr.error('Błąd');
             }
           );
       }
     } else {
       this.isSubmitting = false;
-      this._service.error('Pozycje faktury', 'Faktura musi posiadać co najmniej jedną pozycję');
+      this.toastr.error('Faktura musi posiadać co najmniej jedną pozycję', 'Pozycje faktury',);
     }
   }
 

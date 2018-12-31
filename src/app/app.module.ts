@@ -12,7 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { ClientsModule } from './clients/clients.module';
 import { UsersModule } from './users/users.module';
-import { SimpleNotificationsModule } from 'angular2-notifications';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -29,9 +29,8 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     ClientsModule,
     UsersModule,
     BrowserAnimationsModule,
-    SimpleNotificationsModule.forRoot({
-      timeOut: 5000,
-      showProgressBar: true,
+    ToastrModule.forRoot({
+      maxOpened: 8,
     }),
     AppRoutingModule
   ],
