@@ -11,12 +11,12 @@ const routes: Routes = [
   {path: 'products/new', component: ProductAddPageComponent, children: [
       {path: 'file', component: AddProductsFromFileComponent},
       {path: 'on-page', component: ProductEditComponent}
-    ], }, // canActivate: [AuthGuardService]},
+    ], canActivate: [AuthGuardService]},
   {path: 'products', component: ProductsComponent, children: [
       // {path: 'new', component: ProductEditComponent},
       {path: ':id', component: ProductEditComponent},
       {path: ':id/edit', component: ProductEditComponent},
-    ], }, // canActivate: [AuthGuardService]},
+    ], canActivate: [AuthGuardService]},
 ];
 
 @NgModule({

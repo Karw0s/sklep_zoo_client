@@ -14,7 +14,7 @@ const routes: Routes = [
       {path: 'new', component: ClientEditComponent},
       {path: ':id', component: ClientDetailsComponent},
       {path: ':id/edit', component: ClientEditComponent},
-    ], }, // canActivate: [AuthGuardService]},
+    ], canActivate: [AuthGuardService]},
 ];
 
 @NgModule({
