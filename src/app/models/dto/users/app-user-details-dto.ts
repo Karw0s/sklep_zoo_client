@@ -1,4 +1,4 @@
-import { AddressDTO } from './addresses/address-dto';
+import { AddressDTO } from '../addresses/address-dto';
 
 export class AppUserDetailsDTO {
 

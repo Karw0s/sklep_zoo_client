@@ -11,6 +11,7 @@ import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
     TypeaheadModule.forRoot(),
+    PdfViewerModule,
     Ng2SearchPipeModule,
     InvoicesRoutingModule
   ]

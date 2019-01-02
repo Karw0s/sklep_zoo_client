@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { InvoiceService } from '../invoice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { saveAs } from 'file-saver';
-import { finalize, map } from 'rxjs/operators';
-import { HttpResponse } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 import { PageChangedEvent } from 'ngx-bootstrap/pagination';
-import { InvoiceListDTO } from '../invoice-list-dto';
+import { ToastrService } from 'ngx-toastr';
+import { InvoiceListDTO } from '../../models/dto/invoice/invoice-list-dto';
 
 @Component({
   selector: 'app-invoice-list',
@@ -16,11 +16,13 @@ export class InvoiceListComponent implements OnInit {
 
   invoices;
   isLoading = false;
+  isDownloading = false;
   private returnedArray: InvoiceListDTO[];
   private contentArray: InvoiceListDTO[];
   searchString: any;
 
   constructor(private invoiceService: InvoiceService,
+              private toastr: ToastrService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -35,6 +37,9 @@ export class InvoiceListComponent implements OnInit {
           this.invoices = invoiceListDTO;
           this.contentArray = invoiceListDTO;
           this.returnedArray = this.contentArray.slice(0, 10);
+        },
+        error => {
+          this.toastr.error('Nie można załadować listy', 'Błąd servera');
         }
       );
   }
@@ -44,7 +49,11 @@ export class InvoiceListComponent implements OnInit {
       this.invoiceService.deleteInvoice(id)
         .subscribe(
           res => {
-            this.invoices = this.invoiceService.getInvoices();
+            this.invoiceService.getInvoices()
+              .subscribe(
+                response => this.invoices = response
+              );
+            this.toastr.success('Usunięto');
           }
         );
     }

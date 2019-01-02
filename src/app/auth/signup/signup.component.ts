@@ -63,8 +63,8 @@ export class SignupComponent implements OnInit {
         this.isLoading = true;
         this.authService.register(userRegistration)
           .subscribe(
-            succes => {
-              console.log('sukces', succes);
+            success => {
+              console.log('sukces', success);
               this.isLoading = false;
               this.openModal(template);
               this.router.navigate(['/signin'], { replaceUrl: true });

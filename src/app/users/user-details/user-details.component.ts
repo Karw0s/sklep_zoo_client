@@ -5,6 +5,7 @@ import { Address } from '../../models/address.model';
 import { Location } from '@angular/common';
 import { UserService } from '../user.service';
 import { UserDetails } from '../../models/user-details.model';
+import { AppUserDetailsDTO } from '../../models/dto/users/app-user-details-dto';
 
 @Component({
   selector: 'app-user-details',
@@ -13,7 +14,7 @@ import { UserDetails } from '../../models/user-details.model';
 })
 export class UserDetailsComponent implements OnInit {
 
-  userDetails: UserDetails;
+  userDetails: AppUserDetailsDTO;
   userDetailForm: FormGroup;
 
   constructor(private fb: FormBuilder,
@@ -24,7 +25,7 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUserDetails().subscribe(
-      (userDetails: UserDetails) => {
+      (userDetails: AppUserDetailsDTO) => {
         this.userDetails = userDetails;
         this.setFormValue(this.userDetails);
       },
@@ -36,7 +37,6 @@ export class UserDetailsComponent implements OnInit {
     this.userDetailForm = this.fb.group({
       bank: [''],
       bankAccountNumber: [''],
-      email: [null, Validators.email],
       companyName: ['', Validators.required],
       nipNumber: ['', Validators.required],
       firstName: [null],
@@ -66,7 +66,7 @@ export class UserDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  setFormValue(userDetails: UserDetails) {
+  setFormValue(userDetails: AppUserDetailsDTO) {
     this.userDetailForm.patchValue(userDetails);
   }
 }

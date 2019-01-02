@@ -10,7 +10,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { plLocale } from 'ngx-bootstrap/locale';
 import { ProductService } from '../../products/product.service';
 import { UserService } from '../../users/user.service';
-import { AppUserDetailsDTO } from '../../models/dto/app-user-details-dto';
+import { AppUserDetailsDTO } from '../../models/dto/users/app-user-details-dto';
 import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto';
 import { InvoiceDTO } from '../../models/dto/invoice/invoice-dto';
 import { InvoiceNextNumberDTO } from '../../models/dto/invoice/invoice-next-number-dto';
@@ -18,6 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { ToastrService } from 'ngx-toastr';
+import { InvoiceCreateResponseDTO } from '../../models/dto/invoice/invoice-create-response-dto';
 
 @Component({
   selector: 'app-invoice-edit',
@@ -128,14 +129,11 @@ export class InvoiceEditComponent implements OnInit {
           }
         }
       );
-
   }
 
   formInit() {
-
     const id = null;
     const number = '';
-
 
     this.invoiceForm = this.formBuilder.group({
       'number': [number, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*\/(1[0-2]|0[1-9])\/[0-9]{4}$/)]],
@@ -164,7 +162,6 @@ export class InvoiceEditComponent implements OnInit {
       'priceTax': [0, [Validators.required]],
       'showPKWIUCode': [this.displayPKWiUCode],
     });
-
 
     if (this.editMode) {
       this.isLoading = true;
@@ -219,8 +216,8 @@ export class InvoiceEditComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitting = true;
-
     this.invoice = this.invoiceForm.value;
+
     if (this.invoice.positions.length !== 0) {
       for (let i = 0; i < this.invoice.positions.length; ++i) {
         this.invoice.positions[i].totalPriceNetto = parseFloat(String(this.invoice.positions[i].totalPriceNetto).replace(/,/g, '.'));
@@ -241,7 +238,6 @@ export class InvoiceEditComponent implements OnInit {
       // formatDate(this.invoiceForm.value.issueDate, 'shortDate', 'en-US');
       this.invoice.saleDate = saleDate.toJSON();
 
-
       console.log(this.invoice);
 
       if (this.editMode) {
@@ -255,7 +251,8 @@ export class InvoiceEditComponent implements OnInit {
           .subscribe(
             res => {
               console.log('updated', res);
-              this.toastr.success('Faktura została pomyslnie zaktualizowana', 'Sukces');
+              this.toastr.success('Faktura została pomyślnie zaktualizowana', 'Sukces');
+              this.router.navigate(['/', 'invoices', this.id]);
             },
             (error: HttpErrorResponse) => {
               if (error.error.errorField === 'number') {
@@ -272,9 +269,10 @@ export class InvoiceEditComponent implements OnInit {
             }
           ))
           .subscribe(
-            res => {
+            (res: InvoiceCreateResponseDTO) => {
               console.log(res);
               this.toastr.success('Faktura została pomyślnie utworzona', 'Sukces');
+              this.router.navigate(['/', 'invoices', res.id]);
             },
             (error: HttpErrorResponse) => {
               if (error.error.errorField === 'number') {

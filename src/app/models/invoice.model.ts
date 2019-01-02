@@ -1,5 +1,5 @@
-import { Client } from '../models/client.model';
-import { InvoicePosition } from '../models/invoice-position.model';
+import { Client } from './client.model';
+import { InvoicePosition } from './invoice-position.model';
 
 export class Invoice {
   id: number;

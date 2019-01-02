@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { HttpEvent } from '@angular/common/http';
-import { Product } from '../product.model';
+import { Product } from '../../models/product.model';
 import { tap } from 'rxjs/operators';
 import { ProductDTO } from '../../models/dto/products/product-dto';
 

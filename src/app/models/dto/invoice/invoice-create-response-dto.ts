@@ -1,9 +1,9 @@
-import { InvoicePositionDTO } from './invoice-position-dto';
 import { AppUserDetailsDTO } from '../users/app-user-details-dto';
 import { ClientDTO } from '../clients/client-dto';
+import { InvoicePositionDTO } from './invoice-position-dto';
 
-export class InvoiceDTO {
-
+export class InvoiceCreateResponseDTO {
+  id: number;
   number: string;
   issueDate: string;
   issuePlace: string;

@@ -1,4 +1,5 @@
-import { Product } from '../products/product.model';
+import { Product } from './product.model';
+
 
 export class InvoicePosition {
   id: number;

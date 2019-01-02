@@ -1,3 +1,32 @@
-<p>
-  invoice-view works!
-</p>
+<div class="row d-flex justify-content-center" *ngIf="isLoading; else loading">
+  <div class="col-12 col-lg-11 col-xl-9">
+    <div class="row d-flex justify-content-end my-2">
+      <button class="btn btn-primary btn-xs mx-2" [routerLink]="['edit']">
+        <i class="fas fa-edit"></i> Edytuj
+      </button>
+
+      <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle mx-2" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-file-pdf"></i> Pobierz fakturę
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" style="cursor: pointer;" (click)="onDownloadInvoicePdf(false)">Pobierz</a>
+          <a class="dropdown-item" style="cursor: pointer;" (click)="onDownloadInvoicePdf(true)">Orginał + Kopia</a>
+        </div>
+      </div>
+    </div>
+    <div class="row shadow p-3 mb-5 bg-white rounded">
+      <pdf-viewer [src]="invoicePdf"
+                  [autoresize]="true"
+                  [original-size]="true"
+                  [fit-to-page]="false"></pdf-viewer>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="d-flex justify-content-center">
+    <i class="fas fa-cog fa-spin fa-7x"></i>
+  </div>
+</ng-template>

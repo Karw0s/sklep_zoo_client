@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from './product.model';
+import { Product } from '../models/product.model';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { Subject } from 'rxjs';
