@@ -6,6 +6,8 @@ import { Location } from '@angular/common';
 import { UserService } from '../user.service';
 import { UserDetails } from '../../models/user-details.model';
 import { AppUserDetailsDTO } from '../../models/dto/users/app-user-details-dto';
+import { finalize } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-details',
@@ -16,10 +18,12 @@ export class UserDetailsComponent implements OnInit {
 
   userDetails: AppUserDetailsDTO;
   userDetailForm: FormGroup;
+  isSubmitting = false;
 
   constructor(private fb: FormBuilder,
               private location: Location,
-              private userService: UserService) {
+              private userService: UserService,
+              private toastr: ToastrService) {
     this.formInit();
   }
 
@@ -51,12 +55,18 @@ export class UserDetailsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmitting = true;
     console.log(this.userDetailForm.value);
-    this.userService.updateUserDetails(this.userDetailForm.value).subscribe(
+    this.userService.updateUserDetails(this.userDetailForm.value)
+      .pipe(finalize(
+        () => this.isSubmitting = false
+      ))
+      .subscribe(
       (userDetails: UserDetails) => {
         this.userDetails = userDetails;
         console.log('updated', userDetails);
         // this.setFormValue(this.userDetails);
+        this.toastr.success('Poprawnie zaktualizowano dane');
       },
       error => { console.log(error); }
     );

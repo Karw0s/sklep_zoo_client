@@ -7,6 +7,6 @@ export class ProductDTO {
   public amount: number;
   public priceNetto: string;
   public priceBrutto: string;
-  public tax: number;
+  public tax: string;
   public pkwiuCode: string;
 }

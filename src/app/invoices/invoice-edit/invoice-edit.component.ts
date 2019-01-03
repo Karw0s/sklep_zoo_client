@@ -339,6 +339,12 @@ export class InvoiceEditComponent implements OnInit {
   onSelectProduct(i: number, e: TypeaheadMatch): void {
     console.log('Selected value: ', e.item);
     const product = e.item;
+    let tax;
+    if (product.tax === 'zw') {
+      tax = 0;
+    } else {
+      tax = product.tax;
+    }
     (<FormArray>this.invoiceForm.get('positions')).at(i).patchValue({
       productId: product.id,
       name: product.name,
@@ -346,8 +352,8 @@ export class InvoiceEditComponent implements OnInit {
       priceNetto: product.priceNetto,
       tax: product.tax,
       totalPriceNetto: this.calculate(1, 0, String(product.priceNetto)),
-      totalPriceBrutto: this.calculate(1, +product.tax, String(product.priceNetto)),
-      totalPriceTax: this.calculatePriceTax(1, +product.tax, String(product.priceNetto)),
+      totalPriceBrutto: this.calculate(1, +tax, String(product.priceNetto)),
+      totalPriceTax: this.calculatePriceTax(1, +tax, String(product.priceNetto)),
       pkwiuCode: product.pkwiuCode
     });
     this.calculateSummary();
