@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../models/product.model';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { Subject } from 'rxjs';
 import { ProductDetailsDTO } from '../models/dto/products/product-details-dto';
 import { ProductDTO } from '../models/dto/products/product-dto';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class ProductService {
 
 
   constructor(private authService: AuthService,
+              private toastr: ToastrService,
               private httpClient: HttpClient) { }
 
 
@@ -45,6 +47,14 @@ export class ProductService {
     return this.httpClient.request(req);
   }
 
+  addProductFromCSV(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const headers = new HttpHeaders({ 'enctype': 'multipart/form-data' });
+
+    return this.httpClient.post(`${this.apiEndpoint}/csv`, formData, {headers: headers});
+  }
+
   getProduct(id: number) {
     // return this.products[id];
     // return this.products.find(x => x.id === id);
@@ -63,7 +73,14 @@ export class ProductService {
   }
 
   deleteProduct(id: number) {
-    this.httpClient.delete(`${this.apiEndpoint}/${id}`).subscribe(resp => console.log(resp));
-    this.productDeleted.next(id);
+    this.httpClient.delete(`${this.apiEndpoint}/${id}`)
+      .subscribe(resp => {
+          console.log(resp);
+          this.toastr.success('Pomyślnie usunięto produkt');
+          this.productDeleted.next(id);
+        },
+        error => {
+          this.toastr.error('Błąd przy usuwaniu produktu', 'Błąd');
+        });
   }
 }

@@ -1,33 +1,26 @@
 <h3></h3>
 
-<div class="row justify-content-around">
-  <div class="col-11">
-    <!--<div class="input-group mb-3">-->
-      <!--<div class="custom-file">-->
-        <!--<input type="file"-->
-               <!--id="file"-->
-               <!--class="custom-file-input">-->
-        <!--<label class="custom-file-label" for="file">Wybierz plik</label>-->
-      <!--</div>-->
-      <!--<div class="input-group-append">-->
-        <!--<button class="btn btn-outline-secondary" type="button">Upload</button>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<input-->
-      <!--style="display: none"-->
-      <!--type="file" (change)="onFileChanged($event)"-->
-      <!--#fileInput>-->
-    <!--<button type="button" class="btn btn-outline-secondary" (click)="fileInput.click()">Select File</button>-->
-    <!--<button type="button" class="btn btn-success"  (click)="onUpload()">Upload!</button>-->
-  </div>
+<div class="row justify-content-around my-4">
   <div class="input-group">
     <div class="custom-file">
-      <input type="file" class="custom-file-input" id="inputGroupFile" aria-describedby="inputGroupFileAddon04">
-      <label class="custom-file-label" for="inputGroupFile">Wybierz plik</label>
+      <input type="file"
+             class="custom-file-input"
+             id="inputGroupFile"
+             aria-describedby="inputGroupFileAddon04"
+             accept="text/csv"
+             (change)="onFileChanged($event)">
+      <label class="custom-file-label" for="inputGroupFile" #labelInput>Wybierz plik</label>
     </div>
     <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" (click)="onUpload()">Dodaj Produkty</button>
+      <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" (click)="onUpload()">Dodaj
+        Produkty
+      </button>
     </div>
+  </div>
+</div>
+<div class="row d-flex justify-content-center">
+  <div *ngIf="isUploading">
+    <i class="fas fa-cog fa-spin fa-6x"></i>
   </div>
 </div>
 
