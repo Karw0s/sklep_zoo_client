@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserRegistrationDTO } from '../models/dto/users/user-registration-dto';
 import { tap } from 'rxjs/operators';
+import { EmailVerificationDTO } from '../models/dto/email-verification-dto';
 
 export interface Credentials {
   username: string;
@@ -48,7 +49,6 @@ export class AuthService {
       ));
   }
 
-
   logout(): Observable<boolean> {
     this.setCredentials();
     return of(true);
@@ -56,11 +56,6 @@ export class AuthService {
 
   register(userRegistrationDTO: UserRegistrationDTO) {
     return this.httpClient.post(`${this.apiEndpoint}users/sign-up`, userRegistrationDTO);
-  }
-
-  isVerified() {
-    console.log(this.credentials.verified);
-    return this._credentials.verified;
   }
 
   verifyEmail(token: string) {
@@ -84,10 +79,11 @@ export class AuthService {
   }
 
   setVerified() {
-    this.httpClient.get(`${this.apiEndpoint}account/verified`).subscribe(
-      (res: boolean) => {this._credentials.verified = res;
-      console.log(this._credentials.verified);
-      this.setCredentials(this._credentials);
+    this.httpClient.get(`${this.apiEndpoint}account/verified`)
+      .subscribe(
+        (res: EmailVerificationDTO) => {
+        this._credentials.verified = res.verified;
+        this.setCredentials(this._credentials);
       }
     );
   }
