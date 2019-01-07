@@ -46,6 +46,7 @@ export class SigninComponent implements OnInit {
       )
       .subscribe(
         resp => {
+          this.authenticationService.setVerified();
           if (this.redirectTo) {
             this.router.navigate([this.redirectTo], {replaceUrl: true});
           } else {

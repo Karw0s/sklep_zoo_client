@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserRegistrationDTO } from '../models/dto/users/user-registration-dto';
 import { tap } from 'rxjs/operators';
 
@@ -8,6 +8,7 @@ export interface Credentials {
   username: string;
   token: string;
   exp: string;
+  verified: boolean;
 }
 
 export interface LoginContext {
@@ -39,7 +40,8 @@ export class AuthService {
           this.setCredentials({
             username: response['username'],
             token: response['token'],
-            exp: response['exp']
+            exp: response['exp'],
+            verified: false
           });
           console.log('authService', this.credentials);
         }
@@ -56,6 +58,15 @@ export class AuthService {
     return this.httpClient.post(`${this.apiEndpoint}users/sign-up`, userRegistrationDTO);
   }
 
+  isVerified() {
+    console.log(this.credentials.verified);
+    return this._credentials.verified;
+  }
+
+  verifyEmail(token: string) {
+    this.httpClient.get(`${this.apiEndpoint}verify`, {params: new HttpParams().set('token', token)}).subscribe();
+  }
+
   /**
    * Checks is the user is authenticated.
    * @return True if the user is authenticated.
@@ -70,6 +81,15 @@ export class AuthService {
    */
   get credentials(): Credentials | null {
     return this._credentials;
+  }
+
+  setVerified() {
+    this.httpClient.get(`${this.apiEndpoint}account/verified`).subscribe(
+      (res: boolean) => {this._credentials.verified = res;
+      console.log(this._credentials.verified);
+      this.setCredentials(this._credentials);
+      }
+    );
   }
 
   /**

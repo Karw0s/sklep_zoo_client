@@ -56,13 +56,15 @@
              data-toggle="dropdown"
              aria-haspopup="true"
              aria-expanded="false">
+            <i class="fas fa-question-circle" title="zweryfikuj email" style="color:LightGreen"
+               *ngIf="!authService.credentials.verified"></i>
             {{ authService.credentials.username }}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
             <a class="dropdown-item"
                routerLink="/user/details"
-               routerLinkActive="active"
-               >Dane firmy</a>
+               routerLinkActive="active">
+              Dane firmy</a>
             <a class="dropdown-item" style="cursor: pointer;" (click)="onLogout()">Wyloguj</a>
           </div>
         </li>

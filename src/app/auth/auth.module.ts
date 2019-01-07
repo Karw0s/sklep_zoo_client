@@ -5,9 +5,10 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
 
 @NgModule({
-  declarations: [SigninComponent, SignupComponent],
+  declarations: [SigninComponent, SignupComponent, VerifyEmailComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
