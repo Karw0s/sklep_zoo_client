@@ -15,6 +15,7 @@ export class SigninComponent implements OnInit {
   error = false;
   loginForm: FormGroup;
   isLoading = false;
+  redirectTo = '';
 
   constructor(
     private router: Router,
@@ -25,12 +26,18 @@ export class SigninComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParams.subscribe(
+      params => {
+        this.redirectTo = params.redirect;
+        console.log(this.redirectTo);
+      }
+    );
+  }
 
   login() {
     this.isLoading = true;
-    this.authenticationService
-      .login(this.loginForm.value)
+    this.authenticationService.login(this.loginForm.value)
       .pipe(
         finalize(() => {
           this.loginForm.markAsPristine();
@@ -38,8 +45,12 @@ export class SigninComponent implements OnInit {
         })
       )
       .subscribe(
-        credentials => {
-          this.router.navigate( ['/'], { replaceUrl: true });
+        resp => {
+          if (this.redirectTo) {
+            this.router.navigate([this.redirectTo], {replaceUrl: true});
+          } else {
+            this.router.navigate(['/'], {replaceUrl: true});
+          }
         },
         error => {
           this.error = true;
