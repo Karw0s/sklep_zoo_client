@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ClientService } from '../../clients/client.service';
-import { Address } from '../../models/address.model';
 import { Location } from '@angular/common';
 import { UserService } from '../user.service';
 import { UserDetails } from '../../models/user-details.model';
 import { AppUserDetailsDTO } from '../../models/dto/users/app-user-details-dto';
 import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { AddressDTO } from '../../models/dto/addresses/address-dto';
 
 @Component({
   selector: 'app-user-details',
@@ -62,14 +61,19 @@ export class UserDetailsComponent implements OnInit {
         () => this.isSubmitting = false
       ))
       .subscribe(
-      (userDetails: UserDetails) => {
-        this.userDetails = userDetails;
-        console.log('updated', userDetails);
-        // this.setFormValue(this.userDetails);
-        this.toastr.success('Poprawnie zaktualizowano dane');
-      },
-      error => { console.log(error); }
-    );
+        (userDetails: UserDetails) => {
+          this.userDetails = userDetails;
+          console.log('updated', userDetails);
+          // this.setFormValue(this.userDetails);
+          this.toastr.success('Poprawnie zaktualizowano dane');
+        },
+        error => {
+          if (error.status === 400) {
+            this.toastr.error('');
+          }
+          console.log(error);
+        }
+      );
   }
 
   backClicked() {
@@ -77,6 +81,12 @@ export class UserDetailsComponent implements OnInit {
   }
 
   setFormValue(userDetails: AppUserDetailsDTO) {
-    this.userDetailForm.patchValue(userDetails);
+    console.log(userDetails);
+    if (userDetails != null) {
+      if (userDetails.address == null) {
+        userDetails.address = new AddressDTO();
+      }
+      this.userDetailForm.patchValue(userDetails);
+    }
   }
 }
