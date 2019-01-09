@@ -3,37 +3,42 @@
     <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
       <div class="row">
         <div class="col-8">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="companyName">Nazwa firmy</label>
             <input type="text" id="companyName" class="form-control" formControlName="companyName">
           </div>
         </div>
-        <div class="col">
+        <div class="col form-group required">
           <label for="nipNumber">Nip</label>
           <input type="text" id="nipNumber" class="form-control" formControlName="nipNumber">
+          <div class="text-danger" *ngIf="clientForm.controls['nipNumber'].invalid && (clientForm.controls['nipNumber'].touched || clientForm.controls['nipNumber'].dirty)">
+            <small>
+              <div *ngIf="clientForm.controls['nipNumber'].errors.pattern">Błędny format numeru NIP</div>
+            </small>
+          </div>
         </div>
       </div>
       <div class="row" formGroupName="address">
         <div class="col">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="street">Ulica</label>
             <input type="text" id="street" class="form-control" formControlName="street">
           </div>
         </div>
         <div class="col-2 col-xl-3">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="zipCode">Kod pocztowy</label>
             <input type="text" id="zipCode" class="form-control" formControlName="zipCode">
           </div>
         </div>
         <div class="col">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="city">Miejscowość</label>
             <input type="text" id="city" class="form-control" formControlName="city">
           </div>
         </div>
         <div class="col-2">
-          <div class="form-group">
+          <div class="form-group required">
             <label for="country">Kraj</label>
             <input type="text" id="country" class="form-control" formControlName="country">
           </div>
