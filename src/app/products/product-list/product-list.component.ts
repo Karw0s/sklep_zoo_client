@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Product } from '../../models/product.model';
 import { ProductService } from '../product.service';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { forEach } from '@angular/router/src/utils/collection';
 import { ProductDetailsDTO } from '../../models/dto/products/product-details-dto';
 import { ProductDTO } from '../../models/dto/products/product-dto';
 

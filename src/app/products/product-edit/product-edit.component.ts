@@ -70,11 +70,11 @@ export class ProductEditComponent implements OnInit {
 
 
     this.productForm = new FormGroup({
-      'catalogNumber': new FormControl(catalogNumber, Validators.required),
+      'catalogNumber': new FormControl(catalogNumber),
       'name': new FormControl(productName, Validators.required),
       'manufacturer': new FormControl(productManufacturer, Validators.required),
       'unitOfMeasure': new FormControl(units, Validators.required),
-      'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*(,[0-9]{2})?$/)]),
+      'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^(([1-9]+[0-9]*)|0)(,[0-9]{2})?$/)]),
       'priceNetto': new FormControl(priceNetto, [
         Validators.required,
         // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
@@ -84,7 +84,7 @@ export class ProductEditComponent implements OnInit {
         // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
       ]),
       'tax': new FormControl(tax, [Validators.required]),
-      'pkwiuCode': new FormControl(pkwiuCode, [Validators.required]),
+      'pkwiuCode': new FormControl(pkwiuCode),
       'barCode': new FormControl('')
 
     });
