@@ -5,13 +5,14 @@ import { Invoice } from '../models/invoice.model';
 import { Subject } from 'rxjs';
 import { InvoiceDTO } from '../models/dto/invoice/invoice-dto';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceService {
   invoiceListChanged = new Subject<Invoice>();
-  apiEndpoint = 'http://localhost:9000/invoices';
+  apiEndpoint = environment.baseUrl + '/invoices';
 
   constructor(private authService: AuthService,
               private httpClient: HttpClient) { }

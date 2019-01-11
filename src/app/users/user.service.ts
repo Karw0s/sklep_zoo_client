@@ -2,12 +2,13 @@ import { Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserDetails } from '../models/user-details.model';
 import { AppUserDetailsDTO } from '../models/dto/users/app-user-details-dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiEndpoint = 'http://localhost:9000';
+  private apiEndpoint = environment.baseUrl;
 
   constructor(private httpClient: HttpClient) { }
 

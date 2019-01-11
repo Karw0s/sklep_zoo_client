@@ -4,6 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserRegistrationDTO } from '../models/dto/users/user-registration-dto';
 import { tap } from 'rxjs/operators';
 import { EmailVerificationDTO } from '../models/dto/email-verification-dto';
+import { environment } from '../../environments/environment';
 
 export interface Credentials {
   username: string;
@@ -25,7 +26,7 @@ const credentialsKey = 'credentials';
 export class AuthService {
 
   private _credentials: Credentials | null;
-  apiEndpoint = 'http://localhost:9000/';
+  apiEndpoint = environment.baseUrl ;
 
   constructor(private httpClient: HttpClient) {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
@@ -35,7 +36,7 @@ export class AuthService {
   }
 
   login(context: LoginContext) {
-    return this.httpClient.post(this.apiEndpoint + 'login', context)
+    return this.httpClient.post(this.apiEndpoint + '/login', context)
       .pipe(tap(
         response => {
           this.setCredentials({
@@ -55,11 +56,11 @@ export class AuthService {
   }
 
   register(userRegistrationDTO: UserRegistrationDTO) {
-    return this.httpClient.post(`${this.apiEndpoint}users/sign-up`, userRegistrationDTO);
+    return this.httpClient.post(`${this.apiEndpoint}/users/sign-up`, userRegistrationDTO);
   }
 
   verifyEmail(token: string) {
-    this.httpClient.get(`${this.apiEndpoint}verify`, {params: new HttpParams().set('token', token)}).subscribe();
+    this.httpClient.get(`${this.apiEndpoint}/verify`, {params: new HttpParams().set('token', token)}).subscribe();
   }
 
   /**
@@ -79,7 +80,7 @@ export class AuthService {
   }
 
   setVerified() {
-    this.httpClient.get(`${this.apiEndpoint}account/verified`)
+    this.httpClient.get(`${this.apiEndpoint}/account/verified`)
       .subscribe(
         (res: EmailVerificationDTO) => {
         this._credentials.verified = res.verified;

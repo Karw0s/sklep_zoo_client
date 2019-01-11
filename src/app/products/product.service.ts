@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { ProductDetailsDTO } from '../models/dto/products/product-details-dto';
 import { ProductDTO } from '../models/dto/products/product-dto';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class ProductService {
   productDeleted = new Subject<number>();
   products: Product[];
 
-  apiEndpoint = 'http://localhost:9000/products';
+  apiEndpoint = environment.baseUrl + '/products';
 
 
   constructor(private authService: AuthService,
