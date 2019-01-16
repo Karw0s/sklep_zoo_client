@@ -28,7 +28,7 @@ export class SignupComponent implements OnInit {
     let password = AC.get('password').value; // to get value in input tag
     let confirmPassword = AC.get('confirmPassword').value; // to get value in input tag
     if (password !== confirmPassword) {
-      AC.get('confirmPassword').setErrors( {MatchPassword: true} );
+      AC.get('confirmPassword').setErrors({MatchPassword: true});
     } else {
       return null;
     }
@@ -40,9 +40,11 @@ export class SignupComponent implements OnInit {
   private createForm() {
     this.signupForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', [Validators.required,
-                      Validators.minLength(8),
-                      Validators.maxLength(20)]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(20),
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{8,}')]],
       confirmPassword: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     }, {
@@ -67,9 +69,9 @@ export class SignupComponent implements OnInit {
               console.log('sukces', success);
               this.isLoading = false;
               this.openModal(template);
-              this.router.navigate(['/signin'], { replaceUrl: true });
-              },
-          error => {
+              this.router.navigate(['/signin'], {replaceUrl: true});
+            },
+            error => {
               console.log('error', error);
               this.isLoading = false;
               this.errorMessage = error.error;
@@ -78,6 +80,7 @@ export class SignupComponent implements OnInit {
       }
     }
   }
+
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }

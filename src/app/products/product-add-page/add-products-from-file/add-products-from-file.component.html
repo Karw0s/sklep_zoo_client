@@ -12,8 +12,8 @@
       <label class="custom-file-label" for="inputGroupFile" #labelInput>Wybierz plik</label>
     </div>
     <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" (click)="onUpload()">Dodaj
-        Produkty
+      <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" (click)="onUpload()" [disabled]="isUploading">
+        Dodaj Produkty
       </button>
     </div>
   </div>

@@ -16,7 +16,7 @@ export class ProductService {
   productDeleted = new Subject<number>();
   products: Product[];
 
-  apiEndpoint = environment.baseUrl + '/products';
+  apiEndpoint = environment.baseApiUrl + '/products';
 
 
   constructor(private authService: AuthService,

@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
 })
 export class InvoiceService {
   invoiceListChanged = new Subject<Invoice>();
-  apiEndpoint = environment.baseUrl + '/invoices';
+  apiEndpoint = environment.baseApiUrl + '/invoices';
 
   constructor(private authService: AuthService,
               private httpClient: HttpClient) { }

@@ -26,7 +26,7 @@ const credentialsKey = 'credentials';
 export class AuthService {
 
   private _credentials: Credentials | null;
-  apiEndpoint = environment.baseUrl ;
+  apiEndpoint = environment.baseApiUrl ;
 
   constructor(private httpClient: HttpClient) {
     const savedCredentials = sessionStorage.getItem(credentialsKey) || localStorage.getItem(credentialsKey);
@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   verifyEmail(token: string) {
-    this.httpClient.get(`${this.apiEndpoint}/verify`, {params: new HttpParams().set('token', token)}).subscribe();
+    this.httpClient.get(`${this.apiEndpoint}/verify`, { params: new HttpParams().set('token', token) }).subscribe();
   }
 
   /**

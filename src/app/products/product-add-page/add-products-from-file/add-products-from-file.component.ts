@@ -45,6 +45,10 @@ export class AddProductsFromFileComponent implements OnInit {
             resp => {
               console.log(resp);
               this.toastr.success('Produkty zostały pomyślnie dodane', 'Sukces');
+            },
+            error => {
+              console.log('EEEERRRRORR');
+              this.toastr.error('Błąd podczas odczytywania danych z pliku');
             }
           );
       } else {

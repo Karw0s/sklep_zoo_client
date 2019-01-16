@@ -23,8 +23,8 @@
             <div *ngIf="signupForm.controls.password.errors.required">
               Hasło jest wymagane
             </div>
-            <div *ngIf="signupForm.controls.password.errors.minlength">
-              Hasło musi mieć min 8 znaków.
+            <div *ngIf="signupForm.controls.password.errors.pattern">
+              Hasło musi posiadać co najmniej 8 znaków oraz zawierać małą literę, wielką liertę, liczbę, znak specjalny
             </div>
           </div>
         </small>
@@ -34,12 +34,15 @@
         <label for="confirmPassword">Powtórz hasło</label>
         <input type="password" id="confirmPassword" name="password" class="form-control" formControlName="confirmPassword"
                [placeholder]="'Powtórz hasło'" required>
-        <small [hidden]="signupForm.controls.confirmPassword.valid || signupForm.controls.confirmPassword.untouched"
-               class="text-danger">
-          Powtórz hasło
-        </small>
-        <small class="text-danger" *ngIf="signupForm.controls.confirmPassword.errors?.MatchPassword">
-          Hasła się róźnią
+        <small class="text-danger">
+          <div *ngIf="signupForm.controls.confirmPassword.invalid && (signupForm.controls.confirmPassword.dirty || signupForm.controls.confirmPassword.touched)">
+            <div class="text-danger" *ngIf="signupForm.controls.confirmPassword.errors.required">
+              Powtórz hasło
+            </div>
+            <div class="text-danger" *ngIf="signupForm.controls.confirmPassword.errors?.MatchPassword">
+              Hasła są różne
+            </div>
+          </div>
         </small>
       </div>
       <div class="form-group">
