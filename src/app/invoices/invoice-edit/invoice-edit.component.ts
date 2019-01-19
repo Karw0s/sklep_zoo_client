@@ -383,20 +383,38 @@ export class InvoiceEditComponent implements OnInit {
     this.sellerDetails = true;
   }
 
-  onChange1(i: number) {
+  onChangeCalculate(i: number) {
     const position = (<FormArray>this.invoiceForm.get('positions')).at(i);
     const quantity = position.get('quantity').value.toString().replace(',', '\.');
-    let tax = position.get('tax').value;
-    if (String(tax) === 'zw') {
-      tax = 0;
+    if (!isNaN(quantity)) {
+      if (quantity > 0) {
+        let tax = position.get('tax').value;
+        if (String(tax) === 'zw') {
+          tax = 0;
+        }
+        const priceNetto = position.get('priceNetto').value.toString().replace(',', '\.');
+        console.log(priceNetto);
+        if (!isNaN(priceNetto)) {
+          if (priceNetto !== '' && priceNetto !== null) {
+            position.patchValue({
+              totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
+              totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
+              totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
+            });
+            this.calculateSummary();
+          }
+        } else {
+          position.patchValue({'priceNetto': null});
+          this.toastr.info('Cena netto musi być liczbą');
+        }
+      } else {
+        position.patchValue({'quantity': null});
+        this.toastr.info('Ilość nie może być mniejsz niż 0');
+      }
+    } else {
+      position.patchValue({'quantity': null});
+      this.toastr.info('Ilość musi być liczbą');
     }
-    const priceNetto = position.get('priceNetto').value;
-    position.patchValue({
-      totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
-      totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
-      totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
-    });
-    this.calculateSummary();
   }
 
   onTotalPriceNettoChange(i: number) {
@@ -407,13 +425,18 @@ export class InvoiceEditComponent implements OnInit {
       tax = 0;
     }
     const totalPriceNetto = position.get('totalPriceNetto').value.toString().replace(',', '\.');
-    const priceNetto = totalPriceNetto / quantity;
-    position.patchValue({
-      priceNetto: priceNetto,
-      totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
-      totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
-    });
-    this.calculateSummary();
+    if (!isNaN(totalPriceNetto)) {
+      const priceNetto = totalPriceNetto / quantity;
+      position.patchValue({
+        priceNetto: priceNetto.toString().replace('\.', ','),
+        totalPriceBrutto: this.calculate(+quantity, +tax, String(priceNetto)),
+        totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
+      });
+      this.calculateSummary();
+    } else {
+      position.patchValue({'totalPriceNetto': null});
+      this.toastr.info('Wartość netto musi być liczbą');
+    }
   }
 
   onTotalPriceBruttoChange(i: number) {
@@ -430,13 +453,18 @@ export class InvoiceEditComponent implements OnInit {
     } catch (e) {
       console.error('totalPriceBrutto', 'not price');
     }
-    const priceNetto = ((totalPriceBrutto / quantity) / (+tax / 100 + 1)).toFixed(2);
-    position.patchValue({
-      priceNetto: priceNetto.replace('\.', ','),
-      totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
-      totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
-    });
-    this.calculateSummary();
+    if (!isNaN(totalPriceBrutto)) {
+      const priceNetto = ((totalPriceBrutto / quantity) / (+tax / 100 + 1)).toFixed(2);
+      position.patchValue({
+        priceNetto: priceNetto.replace('\.', ','),
+        totalPriceNetto: this.calculate(+quantity, 0, String(priceNetto)),
+        totalPriceTax: this.calculatePriceTax(+quantity, +tax, String(priceNetto))
+      });
+      this.calculateSummary();
+    } else {
+      position.patchValue({'totalPriceBrutto': null});
+      this.toastr.info('Wartość netto musi być liczbą');
+    }
   }
 
   calculate(quantity: number, tax: number, net: string) {

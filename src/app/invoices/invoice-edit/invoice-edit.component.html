@@ -335,7 +335,7 @@
                    type="text"
                    class="form-control"
                    formControlName="quantity" autocomplete="quantity"
-                   (change)="onChange1(i)">
+                   (change)="onChangeCalculate(i)">
           </div>
           <!--jednostka-->
           <div class="form-group col-12 col-md-1 px-1">
@@ -353,14 +353,14 @@
                      class="form-control"
                      formControlName="priceNetto"
                      autocomplete="priceNetto"
-                     (change)="onChange1(i)">
+                     (change)="onChangeCalculate(i)">
             </div>
           </div>
           <!--vat-->
           <div class="form-group col-12 col-md-1 px-1">
             <div >
               <label class="d-block d-md-none" for="tax">VAT</label>
-              <select class="custom-select" id="tax" formControlName="tax" (change)="onChange1(i)">
+              <select class="custom-select" id="tax" formControlName="tax" (change)="onChangeCalculate(i)">
                 <option *ngFor="let v of vatValues" [value]="v">{{ v }}</option>
               </select>
             </div>
