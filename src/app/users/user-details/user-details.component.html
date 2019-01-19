@@ -25,7 +25,7 @@
             <input type="text" id="lastName" class="form-control" formControlName="lastName">
           </div>
         </div>
-        <div class="row">
+        <div class="row required">
           <div class="form-groupcol-12 col-sm-12 col-md-7">
             <label for="companyName">Nazwa firmy</label>
             <input type="text" id="companyName" class="form-control" formControlName="companyName">
@@ -35,7 +35,7 @@
             <input type="text" id="nipNumber" class="form-control" formControlName="nipNumber">
           </div>
         </div>
-        <div class="row" formGroupName="address">
+        <div class="row required" formGroupName="address">
           <div class="form-group col-12 col-md-8 col-lg-8">
             <label for="street">Ulica</label>
             <input type="text" id="street" class="form-control" formControlName="street">

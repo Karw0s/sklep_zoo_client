@@ -6,6 +6,7 @@ import { HttpEvent } from '@angular/common/http';
 import { Product } from '../../models/product.model';
 import { tap } from 'rxjs/operators';
 import { ProductDTO } from '../../models/dto/products/product-dto';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-edit',
@@ -24,6 +25,7 @@ export class ProductEditComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private productService: ProductService,
+              private toastr: ToastrService,
               private router: Router) { }
 
   ngOnInit() {
@@ -118,7 +120,10 @@ export class ProductEditComponent implements OnInit {
     } else {
       this.productService.updateProduct(this.id, product)
         .pipe(tap(
-          product => { this.productForm.patchValue(product); console.log(product); }
+          product => {
+            this.productForm.patchValue(product);
+            console.log(product);
+          }
         ))
         .subscribe(
           (product2: Product) => {
@@ -143,22 +148,57 @@ export class ProductEditComponent implements OnInit {
 
   onCalculateBruttoPrice() {
     let nett = this.productForm.value['priceNetto'];
-    let priceNetto = 0;
-    try {
-      nett = nett.replace(/,/g, '.');
-      priceNetto = parseFloat(nett);
-    } catch (e) {
-      priceNetto = nett;
-    }
-    let tax;
-    if (this.productForm.value['tax'] === 'zw') {
-      tax = 0;
-    } else {
-      tax = +this.productForm.value['tax'];
-    }
-    const newvalue = parseFloat(String(priceNetto + ((priceNetto * tax) / 100))).toFixed(2).replace(/\./g, ',');
+    if (nett !== '') {
+      let priceNetto = 0;
+      try {
+        nett = nett.replace(/,/g, '.');
+        priceNetto = parseFloat(nett);
+      } catch (e) {
+        priceNetto = nett;
+      }
+      let tax;
+      if (this.productForm.value['tax'] === 'zw') {
+        tax = 0;
+      } else {
+        tax = +this.productForm.value['tax'];
+      }
+      const newvalue = parseFloat(String(priceNetto + ((priceNetto * tax) / 100))).toFixed(2).replace(/\./g, ',');
 
-    this.productForm.patchValue({'priceBrutto': newvalue});
+      if (!isNaN(nett)) {
+        this.productForm.patchValue({'priceBrutto': newvalue});
+      } else {
+        this.toastr.info('Cena netto nie jest liczbą');
+      }
+    } else {
+      this.toastr.info('Nie można obliczyć cenny brutto');
+    }
+  }
+
+  onCalculateNettoPrice() {
+    let gross = this.productForm.value['priceBrutto'];
+    if (gross !== '') {
+      let tax;
+      let priceGross = 0;
+      gross = gross.replace(/,/g, '.');
+      try {
+        priceGross = parseFloat(gross);
+      } catch (e) {
+        priceGross = gross;
+      }
+      if (this.productForm.value['tax'] === 'zw') {
+        tax = 0;
+      } else {
+        tax = +this.productForm.value['tax'];
+      }
+      if (!isNaN(gross)) {
+        const priceNetto = ((priceGross) / (+tax / 100 + 1)).toFixed(2).replace(/\./g, ',');
+        this.productForm.patchValue({'priceNetto': priceNetto});
+      } else {
+        this.toastr.info('Cena brutto nie jest liczbą');
+      }
+    } else {
+      this.toastr.info('Nie można obliczyć cenny netto');
+    }
   }
 
   fixPrices() {

@@ -1,0 +1,9 @@
+.required label:after {
+  color: #FF1200;
+  content: "*";
+  font-weight: bold;
+}
+
+input.ng-dirty.ng-invalid:not(form)  {
+  border-color: #dc3545;
+}
