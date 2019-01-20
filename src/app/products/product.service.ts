@@ -7,6 +7,7 @@ import { ProductDetailsDTO } from '../models/dto/products/product-details-dto';
 import { ProductDTO } from '../models/dto/products/product-dto';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
+import { finalize } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -68,8 +69,8 @@ export class ProductService {
     // const prodID = product.id;
     // const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/' + prodID, product);
     // return this.httpClient.request(req);
-    const req = this.httpClient.put(`${this.apiEndpoint}/${id}`, product);
-    this.productsChanged.next(product);
+    const req = this.httpClient.put(`${this.apiEndpoint}/${id}`, product)
+      .pipe(finalize( () => this.productsChanged.next(product)));
     return req;
   }
 
