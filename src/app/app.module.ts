@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { ProductsModule } from './products/products.module';
 import { AuthModule } from './auth/auth.module';
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
 import { InvoicesModule } from './invoices/invoices.module';
 import { ClientsModule } from './clients/clients.module';
 import { UsersModule } from './users/users.module';
@@ -24,7 +23,6 @@ import { ToastrModule } from 'ngx-toastr';
     AuthModule,
     CoreModule,
     HttpClientModule,
-    SharedModule,
     InvoicesModule,
     ClientsModule,
     UsersModule,
