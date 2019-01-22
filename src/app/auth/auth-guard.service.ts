@@ -16,7 +16,6 @@ export class AuthGuardService implements CanActivate {
       return true;
     }
 
-    console.log('Not authenticated, redirecting and adding redirect url...');
     this.router.navigate(['/signin'], { queryParams: { redirect: state.url }, replaceUrl: true });
     return false;
   }

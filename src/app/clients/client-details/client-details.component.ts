@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../client.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Client } from '../../models/client.model';
 
 @Component({
   selector: 'app-client-details',

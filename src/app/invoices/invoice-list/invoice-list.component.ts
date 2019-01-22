@@ -3,7 +3,6 @@ import { InvoiceService } from '../invoice.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { saveAs } from 'file-saver';
 import { finalize } from 'rxjs/operators';
-import { PageChangedEvent } from 'ngx-bootstrap/pagination';
 import { ToastrService } from 'ngx-toastr';
 import { InvoiceListDTO } from '../../models/dto/invoice/invoice-list-dto';
 
@@ -16,15 +15,12 @@ export class InvoiceListComponent implements OnInit {
 
   invoices;
   isLoading = false;
-  isDownloading = false;
   private returnedArray: InvoiceListDTO[];
   private contentArray: InvoiceListDTO[];
   searchString: any;
 
   constructor(private invoiceService: InvoiceService,
-              private toastr: ToastrService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -64,14 +60,6 @@ export class InvoiceListComponent implements OnInit {
       .subscribe(response => {
         const blob = new Blob([response.content], {type: 'application/pdf'});
         saveAs(blob, response.fileName);
-        // const fileURL = URL.createObjectURL(blob);
-        // window.open(fileURL, '_blank');
       });
-  }
-
-  pageChanged(event: PageChangedEvent): void {
-    const startItem = (event.page - 1) * event.itemsPerPage;
-    const endItem = event.page * event.itemsPerPage;
-    this.returnedArray = this.contentArray.slice(startItem, endItem);
   }
 }

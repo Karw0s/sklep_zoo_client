@@ -13,7 +13,6 @@ const routes: Routes = [
       {path: 'on-page', component: ProductEditComponent}
     ], canActivate: [AuthGuardService]},
   {path: 'products', component: ProductsComponent, children: [
-      // {path: 'new', component: ProductEditComponent},
       {path: ':id', component: ProductEditComponent},
       {path: ':id/edit', component: ProductEditComponent},
     ], canActivate: [AuthGuardService]},

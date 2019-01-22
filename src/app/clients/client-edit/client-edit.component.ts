@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClientService } from '../client.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { Product } from '../../models/product.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Client } from '../../models/client.model';
 import { ClientDTO } from '../../models/dto/clients/client-dto';
 import { ClientCreateResponseDTO } from '../../models/dto/clients/client-create-response-dto';
 

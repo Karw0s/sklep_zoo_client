@@ -30,7 +30,6 @@ export class SigninComponent implements OnInit {
     this.route.queryParams.subscribe(
       params => {
         this.redirectTo = params.redirect;
-        console.log(this.redirectTo);
       }
     );
   }

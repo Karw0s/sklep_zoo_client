@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientsDetailDTO } from '../../models/dto/clients/clients-detail-dto';
 import { ClientService } from '../client.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-list',
@@ -12,18 +10,10 @@ export class ClientListComponent implements OnInit {
   clients;
   public searchString: string;
 
-  constructor(private clientService: ClientService,
-              private router: Router,
-              private route: ActivatedRoute) { }
+  constructor(private clientService: ClientService) { }
 
   ngOnInit() {
     this.clients = this.clientService.getClients();
-    //   .subscribe(
-    //   (clients: ClientsDetailDTO[]) => {
-    //     console.log(clients);
-    //     this.clients = clients;
-    //   }
-    // );
   }
 
   deleteClient(id: number) {
@@ -33,7 +23,6 @@ export class ClientListComponent implements OnInit {
           this.getClientList();
         },
         error1 => {
-          console.log(error1);
           this.getClientList();
         }
       );
@@ -41,12 +30,6 @@ export class ClientListComponent implements OnInit {
   }
 
   getClientList() {
-    this.clients = this.clientService.getClients()
-    //   .subscribe(
-    //   (clients: ClientsDetailDTO[]) => {
-    //     console.log(clients);
-    //      = clients;
-    //   }
-    // );
+    this.clients = this.clientService.getClients();
   }
 }

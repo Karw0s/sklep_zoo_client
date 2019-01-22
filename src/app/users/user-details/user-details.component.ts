@@ -55,7 +55,6 @@ export class UserDetailsComponent implements OnInit {
 
   onSubmit() {
     this.isSubmitting = true;
-    console.log(this.userDetailForm.value);
     this.userService.updateUserDetails(this.userDetailForm.value)
       .pipe(finalize(
         () => this.isSubmitting = false
@@ -63,15 +62,13 @@ export class UserDetailsComponent implements OnInit {
       .subscribe(
         (userDetails: UserDetails) => {
           this.userDetails = userDetails;
-          console.log('updated', userDetails);
-          // this.setFormValue(this.userDetails);
+          this.setFormValue(this.userDetails);
           this.toastr.success('Poprawnie zaktualizowano dane');
         },
         error => {
-          if (error.status === 400) {
-            this.toastr.error('');
+          if (error.status === 417) {
+            this.toastr.error('Dane nie zostały zmienione');
           }
-          console.log(error);
         }
       );
   }
@@ -81,7 +78,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   setFormValue(userDetails: AppUserDetailsDTO) {
-    console.log(userDetails);
     if (userDetails != null) {
       if (userDetails.address == null) {
         userDetails.address = new AddressDTO();

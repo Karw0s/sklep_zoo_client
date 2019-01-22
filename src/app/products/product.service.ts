@@ -26,26 +26,11 @@ export class ProductService {
 
 
   getProducts() {
-    // return this.products;
-    // const req = new HttpRequest('GET', this.authService.apiEndpoint + 'product');
-
     return this.httpClient.get<ProductDetailsDTO[]>(this.apiEndpoint);
-    //   .pipe(map(
-    //     (products) => {
-    //       return products;
-    //   }
-    //   ))
-    //   .subscribe(
-    //     (products) => {
-    //       this.products = products;
-    //     }
-    //   );
   }
 
   addProduct(product: Product) {
-    // this.products.push(product);
     const req = new HttpRequest('POST', this.apiEndpoint, product);
-
     return this.httpClient.request(req);
   }
 
@@ -58,17 +43,10 @@ export class ProductService {
   }
 
   getProduct(id: number) {
-    // return this.products[id];
-    // return this.products.find(x => x.id === id);
-
     return this.httpClient.get<ProductDTO>(`${this.apiEndpoint}/${id}`);
   }
 
   updateProduct(id: number, product: ProductDTO) {
-    // this.products[id] = product;
-    // const prodID = product.id;
-    // const req = new HttpRequest('POST', this.authService.apiEndpoint + 'product/' + prodID, product);
-    // return this.httpClient.request(req);
     const req = this.httpClient.put(`${this.apiEndpoint}/${id}`, product)
       .pipe(finalize( () => this.productsChanged.next(product)));
     return req;
@@ -77,7 +55,6 @@ export class ProductService {
   deleteProduct(id: number) {
     this.httpClient.delete(`${this.apiEndpoint}/${id}`)
       .subscribe(resp => {
-          console.log(resp);
           this.toastr.success('Pomyślnie usunięto produkt');
           this.productDeleted.next(id);
         },

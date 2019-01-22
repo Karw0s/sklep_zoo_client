@@ -158,7 +158,6 @@
           <div class="form-group col-12 col-sm-12 col-md-7 required">
             <label for="companyNameBuyer">Nazwa firmy</label>
             <div class="input-group">
-              <!--<input type="text" id="companyNameBuyer" class="form-control" formControlName="companyName">-->
               <input id="companyNameBuyer"
                      [typeahead]="clients"
                      (typeaheadOnSelect)="onSelectClient($event)"
@@ -170,23 +169,6 @@
                      class="form-control"
                      formControlName="companyName"
                      autocomplete="companyName">
-              <!--<div class="input-group-append">-->
-                <!--<button type="button"-->
-                        <!--class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"-->
-                        <!--data-toggle="dropdown"-->
-                        <!--aria-haspopup="true"-->
-                        <!--aria-expanded="false">-->
-                  <!--<span class="sr-only">Toggle Dropdown</span>-->
-                <!--</button>-->
-                <!--<div class="dropdown-menu dropdown-menu-right">-->
-                  <!--&lt;!&ndash;lista klientow&ndash;&gt;-->
-                  <!--<div *ngFor="let client of filteredClients">-->
-                    <!--<a class="dropdown-item"-->
-                       <!--style="cursor: pointer;"-->
-                       <!--(click)="onSelectClient(client)">{{ client.companyName }}</a>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
             </div>
           </div>
 
@@ -282,7 +264,6 @@
              [formGroupName]="i"
              style="margin-top: 10px;">
           <!--nazwa produktu-->
-          <!--{{ i + 1 }}.-->
           <div class="form-group col-12 col-md-6 col-lg-4 px-1">
             <label class="d-block d-md-none" for="name">Nazwa Produktu</label>
 
@@ -300,25 +281,6 @@
                      class="form-control"
                      formControlName="name"
                      autocomplete="product-name">
-              <!--<input id="name" type="text" class="form-control" formControlName="name" #myInput-->
-                     <!--(input)="filterProducts(myInput.value)" autocomplete="product-name">-->
-              <!--<div class="input-group-append">-->
-                <!--<button type="button"-->
-                        <!--class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"-->
-                        <!--data-toggle="dropdown"-->
-                        <!--aria-haspopup="true"-->
-                        <!--aria-expanded="false">-->
-                  <!--<span class="sr-only">Toggle Dropdown</span>-->
-                <!--</button>-->
-                <!--<div class="dropdown-menu dropdown-menu-right">-->
-                  <!--&lt;!&ndash;lista produktow&ndash;&gt;-->
-                  <!--<div *ngFor="let product of filteredProducts">-->
-                    <!--<a class="dropdown-item"-->
-                       <!--style="cursor: pointer;"-->
-                       <!--(click)="onSelectProduct(i, product)">{{ product.name }}  {{ product.priceNetto }}</a>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
             </div>
           </div>
           <div class="form-group col-lg-2 px-1" *ngIf="displayPKWiUCode">

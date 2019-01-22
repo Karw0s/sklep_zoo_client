@@ -79,11 +79,11 @@ export class ProductEditComponent implements OnInit {
       'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^(([1-9]+[0-9]*)|0)(,[0-9]{2})?$/)]),
       'priceNetto': new FormControl(priceNetto, [
         Validators.required,
-        // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
+        Validators.pattern(/^([1-9]+[0-9]*,[0-9]{2}|[1-9]+[0-9]*\.[0-9]{2})$/)
       ]),
       'priceBrutto': new FormControl(priceBrutto, [
         Validators.required,
-        // Validators.pattern(/^[1-9]+[0-9]*,[0-9]{2}$/)
+        Validators.pattern(/^([1-9]+[0-9]*,[0-9]{2}|[1-9]+[0-9]*\.[0-9]{2})$/)
       ]),
       'tax': new FormControl(tax, [Validators.required]),
       'pkwiuCode': new FormControl(pkwiuCode),
@@ -113,7 +113,6 @@ export class ProductEditComponent implements OnInit {
       this.productService.addProduct(product)
         .subscribe(
           (response: HttpEvent<Object>) => {
-            console.log(response);
             this.router.navigate(['../'], {relativeTo: this.route});
           }
         );
@@ -122,7 +121,6 @@ export class ProductEditComponent implements OnInit {
         .pipe(tap(
           product => {
             this.productForm.patchValue(product);
-            console.log(product);
           }
         ))
         .subscribe(

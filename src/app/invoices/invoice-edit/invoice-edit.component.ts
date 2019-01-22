@@ -48,8 +48,6 @@ export class InvoiceEditComponent implements OnInit {
   private id: number;
   private editMode = false;
   private clientID: number;
-  private filteredProducts: any[] & ProductDetailsDTO[];
-  private filteredClients: any[] & Client[];
 
   constructor(private invoiceService: InvoiceService,
               private clientService: ClientService,
@@ -68,7 +66,6 @@ export class InvoiceEditComponent implements OnInit {
     this.productService.getProducts()
       .subscribe(
         (products: ProductDetailsDTO[]) => {
-          console.log('products', products);
           this.products = products;
         });
 
@@ -113,8 +110,6 @@ export class InvoiceEditComponent implements OnInit {
                         client => {
                           this.client = client;
                           this.client.id = this.clientID;
-                          console.log('client', client);
-                          console.log('buyer', this.invoice.buyer);
                           this.invoice.buyer = this.client;
                           this.invoiceForm.get('buyer').patchValue(this.client);
                         }
@@ -172,7 +167,6 @@ export class InvoiceEditComponent implements OnInit {
         .subscribe(
           (invoice: InvoiceDTO) => {
             this.invoice = invoice;
-            console.log('faktura get', invoice);
             this.invoiceForm.patchValue(invoice);
             this.invoiceForm.patchValue({
               issueDate: new Date(invoice.issueDate),
@@ -205,7 +199,6 @@ export class InvoiceEditComponent implements OnInit {
             this.sellerDetailsDTO = invoice.seller;
             this.sellerDetails = true;
             this.displayPKWiUCode = invoice.showPKWIUCode;
-            console.log('form after get', this.invoiceForm);
           }
         );
     } else {
@@ -235,13 +228,9 @@ export class InvoiceEditComponent implements OnInit {
       const issueDate: Date = this.invoiceForm.controls['issueDate'].value;
       const saleDate: Date = this.invoiceForm.controls['saleDate'].value;
       this.invoice.issueDate = issueDate.toJSON();
-      // formatDate(this.invoiceForm.value.issueDate, 'shortDate', 'en-US');
       this.invoice.saleDate = saleDate.toJSON();
 
-      console.log(this.invoice);
-
       if (this.editMode) {
-        console.log('updating...');
         this.invoiceService.updateInvoice(this.id, this.invoice)
           .pipe(finalize(
             () => {
@@ -250,7 +239,6 @@ export class InvoiceEditComponent implements OnInit {
           ))
           .subscribe(
             res => {
-              console.log('updated', res);
               this.toastr.success('Faktura została pomyślnie zaktualizowana', 'Sukces');
               this.router.navigate(['/', 'invoices', this.id]);
             },
@@ -270,7 +258,6 @@ export class InvoiceEditComponent implements OnInit {
           ))
           .subscribe(
             (res: InvoiceCreateResponseDTO) => {
-              console.log(res);
               this.toastr.success('Faktura została pomyślnie utworzona', 'Sukces');
               this.router.navigate(['/', 'invoices', res.id]);
             },
@@ -326,7 +313,6 @@ export class InvoiceEditComponent implements OnInit {
         }
       )
     );
-    console.log(this.invoiceForm);
   }
 
   onDeletePosition(i: number) {
@@ -337,7 +323,6 @@ export class InvoiceEditComponent implements OnInit {
   }
 
   onSelectProduct(i: number, e: TypeaheadMatch): void {
-    console.log('Selected value: ', e.item);
     const product = e.item;
     let tax;
     if (product.tax === 'zw') {
@@ -393,7 +378,6 @@ export class InvoiceEditComponent implements OnInit {
           tax = 0;
         }
         const priceNetto = position.get('priceNetto').value.toString().replace(',', '\.');
-        console.log(priceNetto);
         if (!isNaN(priceNetto)) {
           if (priceNetto !== '' && priceNetto !== null) {
             position.patchValue({
@@ -544,6 +528,5 @@ export class InvoiceEditComponent implements OnInit {
 
   onPKWiUChange() {
     this.displayPKWiUCode = this.invoiceForm.controls['showPKWIUCode'].value;
-    console.log('displayPKWiUCode', this.displayPKWiUCode);
   }
 }

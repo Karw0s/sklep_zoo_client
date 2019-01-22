@@ -3,7 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { InvoiceService } from '../invoice.service';
 import { finalize } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
-import { InvoiceDTO } from '../../models/dto/invoice/invoice-dto';
 
 @Component({
   selector: 'app-invoice-view',
@@ -30,9 +29,6 @@ export class InvoiceViewComponent implements OnInit {
         (prams: Params) => {
           this.id = +prams['id'];
           this.invoiceService.getInvoicePdf(this.id, false)
-            // .pipe(finalize(
-            //   () => this.isLoading = false
-            // ))
             .subscribe(
               res => {
                 const blob = new Blob([res.content], {type: 'application/pdf'});

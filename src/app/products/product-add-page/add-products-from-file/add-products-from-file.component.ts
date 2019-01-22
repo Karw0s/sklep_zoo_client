@@ -21,7 +21,6 @@ export class AddProductsFromFileComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    console.log(event);
     if (event.target.files.length !== 0) {
       this.fileToUpload = event.target.files[0];
       this.labelInput.nativeElement.innerText = event.target.files[0].name;
@@ -32,8 +31,6 @@ export class AddProductsFromFileComponent implements OnInit {
   }
 
   onUpload() {
-    // upload code goes here
-    console.log(this.fileToUpload);
     if (this.fileToUpload !== null) {
       if (this.fileToUpload.type === 'text/csv' || this.fileToUpload.type === 'application/vnd.ms-excel') {
         this.isUploading = true;
@@ -43,11 +40,9 @@ export class AddProductsFromFileComponent implements OnInit {
           ))
           .subscribe(
             resp => {
-              console.log(resp);
               this.toastr.success('Produkty zostały pomyślnie dodane', 'Sukces');
             },
             error => {
-              console.log('EEEERRRRORR');
               this.toastr.error('Błąd podczas odczytywania danych z pliku');
             }
           );

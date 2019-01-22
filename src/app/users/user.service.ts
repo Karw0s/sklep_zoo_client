@@ -1,6 +1,5 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserDetails } from '../models/user-details.model';
 import { AppUserDetailsDTO } from '../models/dto/users/app-user-details-dto';
 import { environment } from '../../environments/environment';
 

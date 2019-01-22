@@ -45,7 +45,6 @@ export class AuthService {
             exp: response['exp'],
             verified: false
           });
-          console.log('authService', this.credentials);
         }
       ));
   }

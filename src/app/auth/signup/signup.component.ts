@@ -25,8 +25,8 @@ export class SignupComponent implements OnInit {
   }
 
   static MatchPassword(AC: AbstractControl) {
-    let password = AC.get('password').value; // to get value in input tag
-    let confirmPassword = AC.get('confirmPassword').value; // to get value in input tag
+    let password = AC.get('password').value;
+    let confirmPassword = AC.get('confirmPassword').value;
     if (password !== confirmPassword) {
       AC.get('confirmPassword').setErrors({MatchPassword: true});
     } else {
@@ -48,7 +48,7 @@ export class SignupComponent implements OnInit {
       confirmPassword: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     }, {
-      validator: SignupComponent.MatchPassword // your validation method
+      validator: SignupComponent.MatchPassword
     });
   }
 
@@ -56,7 +56,6 @@ export class SignupComponent implements OnInit {
     console.log(this.signupForm);
     if (this.signupForm.valid) {
       if (this.signupForm.controls['password'].value === this.signupForm.controls['confirmPassword'].value) {
-        console.log(this.signupForm.value);
         const userRegistration: UserRegistrationDTO = new UserRegistrationDTO();
         userRegistration.email = this.signupForm.controls['email'].value;
         userRegistration.password = this.signupForm.controls['password'].value;
@@ -66,13 +65,11 @@ export class SignupComponent implements OnInit {
         this.authService.register(userRegistration)
           .subscribe(
             success => {
-              console.log('sukces', success);
               this.isLoading = false;
               this.openModal(template);
               this.router.navigate(['/signin'], {replaceUrl: true});
             },
             error => {
-              console.log('error', error);
               this.isLoading = false;
               this.errorMessage = error.error;
             }

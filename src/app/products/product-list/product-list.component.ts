@@ -36,12 +36,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
         }
       );
     this.setProductList();
-
-      // .subscribe(
-      //   products => {
-      //      = products;
-      //   }
-      // );
   }
 
   ngOnDestroy() {
@@ -70,6 +64,5 @@ export class ProductListComponent implements OnInit, OnDestroy {
         }
       );
   }
-
 
 }
